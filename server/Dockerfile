@@ -1,9 +1,9 @@
-FROM golang:1.21.6 as builder
+FROM golang:1.21.6-alpine as builder
 
 WORKDIR /app
 
 COPY go.mod ./
-# COPY go.sum ./
+COPY go.sum ./
 
 RUN go mod download
 
@@ -17,4 +17,4 @@ COPY --from=builder /app/main ./
 
 EXPOSE 3000
 
-CMD [ "/main" ]
+CMD [ "./main" ]
