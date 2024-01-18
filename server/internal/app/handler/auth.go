@@ -8,7 +8,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func ClientLogin(c *fiber.Ctx) error {
+func LoginClient(c *fiber.Ctx) error {
 	input := new(entity.Auth)
 	var ud entity.User
 
@@ -60,7 +60,7 @@ func ClientLogin(c *fiber.Ctx) error {
 	return c.JSON(fiber.Map{"status": "success", "message": "Success login", "data": token})
 }
 
-func RestaurantLogin(c *fiber.Ctx) error {
+func LoginRestaurant(c *fiber.Ctx) error {
 	input := new(entity.Auth)
 	var ud entity.User
 
@@ -112,7 +112,7 @@ func RestaurantLogin(c *fiber.Ctx) error {
 	return c.JSON(fiber.Map{"status": "success", "message": "Success login", "data": token})
 }
 
-func AdminLogin(c *fiber.Ctx) error {
+func LoginAdmin(c *fiber.Ctx) error {
 	input := new(entity.Auth)
 	var ud entity.User
 

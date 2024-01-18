@@ -32,7 +32,7 @@ func GetClient(c *fiber.Ctx) error {
 	return c.JSON(fiber.Map{"status": "success", "message": "User found", "data": user})
 }
 
-func CreateClient(c *fiber.Ctx) error {
+func RegisterClient(c *fiber.Ctx) error {
 	type NewUser struct {
 		Email    string `json:"email"`
 		Password string `json:"password"`
