@@ -16,8 +16,8 @@ func SetupRoutes(app *fiber.App) {
 	auth.Post("/clientLogin", handler.ClientLogin)
 	auth.Post("/clientCreate", handler.CreateClient)
 
-	client := api.Group("/client", middleware.Protected())
-	client.Get("/:id", middleware.RoleCheck("client"), handler.GetClient)
+	client := api.Group("/client", middleware.AuthMiddleware("client"))
+	client.Get("/:id", handler.GetClient)
 
 	app.Use(func(c *fiber.Ctx) error {
 		return c.SendStatus(404)
