@@ -7,11 +7,12 @@ import (
 type OrderStatus string
 
 const (
-	OrderStarted OrderStatus = "started"
+	OrderCart    OrderStatus = "cart"
 	OrderPending OrderStatus = "pending"
 	OrderRefused OrderStatus = "refused"
+	OrderStarted OrderStatus = "started"
 	OrderReady   OrderStatus = "ready"
-	OrderSent    OrderStatus = "sent"
+	OrderEecover OrderStatus = "recover"
 )
 
 type Order struct {
@@ -20,5 +21,5 @@ type Order struct {
 	RestaurantID       uint        `gorm:"not null" json:"restaurantId"`
 	OrderItems         []OrderItem `gorm:"foreignKey:OrderID" json:"orderItems"`
 	IdentificationCode string      `gorm:"not null" json:"identificationCode"`
-	Status             OrderStatus `gorm:"type:varchar(20);check:status IN ('started', 'pending', 'refused', 'ready', 'sent')" json:"status"`
+	Status             OrderStatus `gorm:"type:varchar(20);check:status IN ('cart', 'started', 'pending', 'refused', 'ready', 'recover')" json:"status"`
 }
