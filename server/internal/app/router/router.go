@@ -12,7 +12,7 @@ func SetupRoutes(app *fiber.App) {
 	api.Get("/", handler.Hello)
 
 	auth := api.Group("/auth")
-	auth.Post("/login", handler.ClientLogin)
+	auth.Post("/clientLogin", handler.ClientLogin)
 
 	client := api.Group("/client")
 	client.Get("/:id", handler.GetClient)
