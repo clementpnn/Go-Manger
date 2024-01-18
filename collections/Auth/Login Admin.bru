@@ -1,18 +1,18 @@
 meta {
-  name: Login Client
+  name: Login Admin
   type: http
-  seq: 1
+  seq: 2
 }
 
 post {
-  url: {{baseUrl}}/auth/login/client
+  url: {{baseUrl}}/auth/login/admin
   body: json
   auth: none
 }
 
 body:json {
   {
-    "email": "mail@client.com",
+    "email": "mail@admin.com",
     "password": "azerty"
   }
 }

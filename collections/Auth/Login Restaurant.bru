@@ -1,0 +1,18 @@
+meta {
+  name: Login Restaurant
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/auth/login/restaurant
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email": "mail@restaurant.com",
+    "password": "azerty"
+  }
+}
