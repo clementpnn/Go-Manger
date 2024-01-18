@@ -1,0 +1,18 @@
+meta {
+  name: Login Client
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/auth/clientLogin
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email": "mail@test.com",
+    "password": "azerty"
+  }
+}

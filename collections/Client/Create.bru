@@ -1,0 +1,18 @@
+meta {
+  name: Create
+  type: http
+  seq: 1
+}
+
+post {
+  url: /client
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email": "mail@test.com",
+    "password": "azerty"
+  }
+}
