@@ -1,0 +1,10 @@
+root = true
+
+[*]
+end_of_line = auto
+insert_final_newline = false
+charset = utf-8
+indent_style = space
+indent_size = 2
+max_line_length = 140
+trim_trailing_whitespace = true
