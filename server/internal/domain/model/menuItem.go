@@ -17,7 +17,6 @@ type MenuItem struct {
 	gorm.Model
 	Name         string       `gorm:"not null" json:"name"`
 	Description  string       `gorm:"not null" json:"description"`
-	Image        string       `gorm:"not null" json:"image"`
 	Available    bool         `gorm:"not null" json:"available"`
 	Type         MenuItemType `gorm:"type:varchar(20);check:status IN ('starter', 'dish', 'dessert', 'drink')" json:"type"`
 	Price        float64      `gorm:"not null" json:"price"`
