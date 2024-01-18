@@ -52,7 +52,7 @@ func ClientLogin(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"status": "error", "message": "Invalid password", "data": nil})
 	}
 
-	token, err := service.GenerateJWT(ud.Email, ud.ID)
+	token, err := service.GenerateJWT(ud.Email, ud.ID, "client")
 	if err != nil {
 		return c.SendStatus(fiber.StatusInternalServerError)
 	}
@@ -104,7 +104,7 @@ func RestaurantLogin(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"status": "error", "message": "Invalid password", "data": nil})
 	}
 
-	token, err := service.GenerateJWT(ud.Email, ud.ID)
+	token, err := service.GenerateJWT(ud.Email, ud.ID, "restaurant")
 	if err != nil {
 		return c.SendStatus(fiber.StatusInternalServerError)
 	}
@@ -156,7 +156,7 @@ func AdminLogin(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"status": "error", "message": "Invalid password", "data": nil})
 	}
 
-	token, err := service.GenerateJWT(ud.Email, ud.ID)
+	token, err := service.GenerateJWT(ud.Email, ud.ID, "admin")
 	if err != nil {
 		return c.SendStatus(fiber.StatusInternalServerError)
 	}

@@ -63,7 +63,7 @@ func CreateAdmin(c *fiber.Ctx) error {
 		return c.Status(500).JSON(fiber.Map{"status": "error", "message": "Couldn't create user", "data": err})
 	}
 
-	token, err := service.GenerateJWT(newUser.Email, newUser.ID)
+	token, err := service.GenerateJWT(newUser.Email, newUser.ID, "admin")
 	if err != nil {
 		return c.SendStatus(fiber.StatusInternalServerError)
 	}
