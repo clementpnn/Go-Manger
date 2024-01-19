@@ -19,3 +19,8 @@ clean: down
 
 ps:
 	docker-compose ps
+
+upsafe:
+	docker-compose down
+	docker volume prune -f
+	docker-compose up
