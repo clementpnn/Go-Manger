@@ -1,14 +1,12 @@
 package handler
 
 import (
-	"errors"
 	"go-manger/internal/domain/model"
 	"go-manger/internal/domain/service"
 	"go-manger/internal/infrastructure/database"
 	"strconv"
 
 	"github.com/gofiber/fiber/v2"
-	"gorm.io/gorm"
 )
 
 func GetAdmin(c *fiber.Ctx) error {
@@ -71,16 +69,14 @@ func RegisterAdmin(c *fiber.Ctx) error {
 	return c.JSON(fiber.Map{"status": "success", "message": "User successfully created", "data": token})
 }
 
-func getAdminByEmail(e string) (*model.Admin, error) {
+func getAdminByEmail(email string) (*model.Admin, error) {
 	db := database.DB
-	var user model.Admin
-	if err := db.Where(&model.Admin{Email: e}).Find(&user).Error; err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return nil, nil
-		}
+	var admin model.Admin
+	err := db.Where("email = ?", email).First(&admin).Error
+	if err != nil {
 		return nil, err
 	}
-	return &user, nil
+	return &admin, nil
 }
 
 func validAdmin(id string, p string) bool {

@@ -1,6 +1,6 @@
 package entity
 
 type Auth struct {
-	Identity string `json:"identity"`
+	Email    string `json:"email"`
 	Password string `json:"password"`
 }

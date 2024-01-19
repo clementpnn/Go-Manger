@@ -10,49 +10,28 @@ import (
 
 func LoginClient(c *fiber.Ctx) error {
 	input := new(entity.Auth)
-	var ud entity.User
 
 	if err := c.BodyParser(&input); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"status": "error", "message": "Error on login request", "data": err})
 	}
 
-	identity := input.Identity
-	pass := input.Password
-	user, email, err := new(model.Client), new(model.Client), *new(error)
-
-	if service.Valid(identity) {
-		email, err = getClientByEmail(identity)
+	user, err := new(model.Client), *new(error)
+	if service.Valid(input.Email) {
+		user, err = getClientByEmail(input.Email)
 		if err != nil {
 			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"status": "error", "message": "Error on email", "data": err})
 		}
 	}
 
-	if email == nil && user == nil {
+	if user == nil {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"status": "error", "message": "User not found", "data": err})
 	}
 
-	if email != nil {
-		ud = entity.User{
-			ID:       email.ID,
-			Email:    email.Email,
-			Password: email.Password,
-		}
-
-	}
-
-	if user != nil {
-		ud = entity.User{
-			ID:       user.ID,
-			Email:    user.Email,
-			Password: user.Password,
-		}
-	}
-
-	if !service.CheckPasswordHash(pass, ud.Password) {
+	if !service.CheckPasswordHash(input.Password, user.Password) {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"status": "error", "message": "Invalid password", "data": nil})
 	}
 
-	token, err := service.GenerateJWT(ud.Email, ud.ID, "client")
+	token, err := service.GenerateJWT(user.Email, user.ID, "client")
 	if err != nil {
 		return c.SendStatus(fiber.StatusInternalServerError)
 	}
@@ -62,49 +41,28 @@ func LoginClient(c *fiber.Ctx) error {
 
 func LoginRestaurant(c *fiber.Ctx) error {
 	input := new(entity.Auth)
-	var ud entity.User
 
 	if err := c.BodyParser(&input); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"status": "error", "message": "Error on login request", "data": err})
 	}
 
-	identity := input.Identity
-	pass := input.Password
-	user, email, err := new(model.Restaurant), new(model.Restaurant), *new(error)
-
-	if service.Valid(identity) {
-		email, err = getRestaurantByEmail(identity)
+	user, err := new(model.Restaurant), *new(error)
+	if service.Valid(input.Email) {
+		user, err = getRestaurantByEmail(input.Email)
 		if err != nil {
 			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"status": "error", "message": "Error on email", "data": err})
 		}
 	}
 
-	if email == nil && user == nil {
+	if user == nil {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"status": "error", "message": "User not found", "data": err})
 	}
 
-	if email != nil {
-		ud = entity.User{
-			ID:       email.ID,
-			Email:    email.Email,
-			Password: email.Password,
-		}
-
-	}
-
-	if user != nil {
-		ud = entity.User{
-			ID:       user.ID,
-			Email:    user.Email,
-			Password: user.Password,
-		}
-	}
-
-	if !service.CheckPasswordHash(pass, ud.Password) {
+	if !service.CheckPasswordHash(input.Password, user.Password) {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"status": "error", "message": "Invalid password", "data": nil})
 	}
 
-	token, err := service.GenerateJWT(ud.Email, ud.ID, "restaurant")
+	token, err := service.GenerateJWT(user.Email, user.ID, "client")
 	if err != nil {
 		return c.SendStatus(fiber.StatusInternalServerError)
 	}
@@ -114,49 +72,28 @@ func LoginRestaurant(c *fiber.Ctx) error {
 
 func LoginAdmin(c *fiber.Ctx) error {
 	input := new(entity.Auth)
-	var ud entity.User
 
 	if err := c.BodyParser(&input); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"status": "error", "message": "Error on login request", "data": err})
 	}
 
-	identity := input.Identity
-	pass := input.Password
-	user, email, err := new(model.Admin), new(model.Admin), *new(error)
-
-	if service.Valid(identity) {
-		email, err = getAdminByEmail(identity)
+	user, err := new(model.Admin), *new(error)
+	if service.Valid(input.Email) {
+		user, err = getAdminByEmail(input.Email)
 		if err != nil {
 			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"status": "error", "message": "Error on email", "data": err})
 		}
 	}
 
-	if email == nil && user == nil {
+	if user == nil {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"status": "error", "message": "User not found", "data": err})
 	}
 
-	if email != nil {
-		ud = entity.User{
-			ID:       email.ID,
-			Email:    email.Email,
-			Password: email.Password,
-		}
-
-	}
-
-	if user != nil {
-		ud = entity.User{
-			ID:       user.ID,
-			Email:    user.Email,
-			Password: user.Password,
-		}
-	}
-
-	if !service.CheckPasswordHash(pass, ud.Password) {
+	if !service.CheckPasswordHash(input.Password, user.Password) {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"status": "error", "message": "Invalid password", "data": nil})
 	}
 
-	token, err := service.GenerateJWT(ud.Email, ud.ID, "admin")
+	token, err := service.GenerateJWT(user.Email, user.ID, "client")
 	if err != nil {
 		return c.SendStatus(fiber.StatusInternalServerError)
 	}

@@ -1,14 +1,12 @@
 package handler
 
 import (
-	"errors"
 	"go-manger/internal/domain/model"
 	"go-manger/internal/domain/service"
 	"go-manger/internal/infrastructure/database"
 	"strconv"
 
 	"github.com/gofiber/fiber/v2"
-	"gorm.io/gorm"
 )
 
 func GetAllRestaurant(c *fiber.Ctx) error {
@@ -24,11 +22,11 @@ func GetAllRestaurant(c *fiber.Ctx) error {
 
 func AddRestaurant(c *fiber.Ctx) error {
 	type NewRestaurant struct {
-		Name string `json:"name"`
+		Name        string `json:"name"`
 		Description string `json:"description"`
-		Image string `json:"image"`
-		Email string `json:"email"`
-		Password string `json:"password"`
+		Image       string `json:"image"`
+		Email       string `json:"email"`
+		Password    string `json:"password"`
 	}
 
 	db := database.DB
@@ -48,11 +46,11 @@ func AddRestaurant(c *fiber.Ctx) error {
 	}
 
 	newRestaurant := &model.Restaurant{
-		Name: restaurant.Name,
+		Name:        restaurant.Name,
 		Description: restaurant.Description,
-		Image: restaurant.Image,
-		Email: restaurant.Email,
-		Password: hash,
+		Image:       restaurant.Image,
+		Email:       restaurant.Email,
+		Password:    hash,
 	}
 
 	if err := db.Create(&newRestaurant).Error; err != nil {
@@ -127,16 +125,14 @@ func RegisterRestaurant(c *fiber.Ctx) error {
 	return c.JSON(fiber.Map{"status": "success", "message": "User successfully created", "data": token})
 }
 
-func getRestaurantByEmail(e string) (*model.Restaurant, error) {
+func getRestaurantByEmail(email string) (*model.Restaurant, error) {
 	db := database.DB
-	var user model.Restaurant
-	if err := db.Where(&model.Restaurant{Email: e}).Find(&user).Error; err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return nil, nil
-		}
+	var restaurant model.Restaurant
+	err := db.Where("email = ?", email).First(&restaurant).Error
+	if err != nil {
 		return nil, err
 	}
-	return &user, nil
+	return &restaurant, nil
 }
 
 func validRestaurant(id string, p string) bool {
