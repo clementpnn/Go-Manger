@@ -30,4 +30,8 @@ func Database() {
 	}
 
 	DB.AutoMigrate(&model.Client{}, &model.Admin{}, &model.Restaurant{}, &model.MenuItem{}, &model.Order{}, &model.OrderItem{})
+
+	SeedClients()
+	SeedAdmins()
+	SeedRestaurants()
 }
