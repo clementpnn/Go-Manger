@@ -31,11 +31,11 @@ func SetupRoutes(app *fiber.App) {
 	client := api.Group("/client", middleware.AuthMiddleware("client"))
 	client.Get("/", handler.GetClient)
 	// // ? Lister les commandes d'un client.
-	// client.Get("/order") // TODO: créé handler
+	client.Post("/order/:id", handler.AddOrder) // TODO: créé handler
 	// // ? Créer une commande.
 	// client.Post("/order") // TODO: créé handler
 	// // ? Voir une commande.
-	// client.Get("/order/:id") // TODO: créé handler
+	client.Get("/order/:id", handler.GetOrder) // TODO: créé handler
 	// // ? Modifier une commande.
 	// client.Put("/order/:id") // TODO: créé handler
 	client.Delete("/order/:id", handler.DeleteOrder)
