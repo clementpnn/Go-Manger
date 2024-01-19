@@ -52,3 +52,41 @@ func DeleteMenuItem(c *fiber.Ctx) error {
 	return c.JSON(fiber.Map{"status": "success", "message": "Menu item deleted", "data": nil})
 
 }
+
+func UpdateMenuItem(c *fiber.Ctx) error {
+	id := c.Params("id")
+	menuItempInput := new(model.MenuItem)
+
+	if err := c.BodyParser(menuItempInput); err != nil {
+		return c.Status(500).JSON(fiber.Map{"status": "error", "message": "Review your input", "data": err})
+	}
+
+	var menuItem model.MenuItem
+	if result := database.DB.First(&menuItem, id); result.Error != nil {
+		return c.Status(404).JSON(fiber.Map{"status": "error", "message": "Menu item not found", "data": result.Error})
+	}
+
+	if menuItempInput.Name != menuItem.Name {
+		menuItem.Name = menuItempInput.Name
+	}
+
+	if menuItempInput.Description != menuItem.Description {
+		menuItem.Description = menuItempInput.Description
+	}
+
+	if menuItempInput.Available != menuItem.Available {
+		menuItem.Available = menuItempInput.Available
+	}
+
+	if menuItempInput.Type != menuItem.Type {
+		menuItem.Type = menuItempInput.Type
+	}
+
+	if menuItempInput.Price != menuItem.Price {
+		menuItem.Price = menuItempInput.Price
+	}
+
+	database.DB.Updates(&menuItem)
+
+	return c.JSON(fiber.Map{"status": "success", "message": "Menu item updated", "data": nil})
+}
