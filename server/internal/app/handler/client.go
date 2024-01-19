@@ -37,6 +37,10 @@ func RegisterClient(c *fiber.Ctx) error {
 		return c.Status(500).JSON(fiber.Map{"status": "error", "message": "Review your input", "data": err})
 	}
 
+	if !service.Valid(user.Email) {
+		return c.Status(400).JSON(fiber.Map{"status": "error", "message": "Invalid email", "data": nil})
+	}
+
 	var existingUser model.Client
 
 	if err := db.Where("email = ?", user.Email).First(&existingUser).Error; err == nil {
@@ -73,17 +77,4 @@ func getClientByEmail(email string) (*model.Client, error) {
 		return nil, err
 	}
 	return &client, nil
-}
-
-func validClient(id string, p string) bool {
-	db := database.DB
-	var user model.Client
-	db.First(&user, id)
-	if user.Email == "" {
-		return false
-	}
-	if !service.CheckPasswordHash(p, user.Password) {
-		return false
-	}
-	return true
 }
