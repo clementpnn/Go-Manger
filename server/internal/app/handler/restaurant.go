@@ -138,7 +138,7 @@ func DeleteRestaurant(c *fiber.Ctx) error {
 
 func UpdateRestaurant(c *fiber.Ctx) error {
 	id := c.Params("id")
-	restaurant_input := new(entity.Restaurant)
+	restaurant_input := new(model.Restaurant)
 
 	if err := c.BodyParser(restaurant_input); err != nil {
 		return c.Status(500).JSON(fiber.Map{"status": "error", "message": "Review your input", "data": err})

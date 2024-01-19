@@ -15,10 +15,9 @@ func GetClient(c *fiber.Ctx) error {
 		return c.Status(500).JSON(fiber.Map{"status": "error", "message": "Couldn't get user", "data": err})
 	}
 
-	db := database.DB
 	var user model.Client
 
-	if result := db.First(&user, id); result.Error != nil {
+	if result := database.DB.First(&user, id); result.Error != nil {
 		return c.Status(500).JSON(fiber.Map{"status": "error", "message": result.Error.Error(), "data": nil})
 	}
 
@@ -30,7 +29,6 @@ func GetClient(c *fiber.Ctx) error {
 }
 
 func RegisterClient(c *fiber.Ctx) error {
-	db := database.DB
 	user := new(entity.Auth)
 
 	if err := c.BodyParser(user); err != nil {
@@ -43,7 +41,7 @@ func RegisterClient(c *fiber.Ctx) error {
 
 	var existingUser model.Client
 
-	if err := db.Where("email = ?", user.Email).First(&existingUser).Error; err == nil {
+	if err := database.DB.Where("email = ?", user.Email).First(&existingUser).Error; err == nil {
 		return c.Status(400).JSON(fiber.Map{"status": "error", "message": "Email already exists", "data": nil})
 	}
 
@@ -57,7 +55,7 @@ func RegisterClient(c *fiber.Ctx) error {
 		Password: hash,
 	}
 
-	if err := db.Create(&newUser).Error; err != nil {
+	if err := database.DB.Create(&newUser).Error; err != nil {
 		return c.Status(500).JSON(fiber.Map{"status": "error", "message": "Couldn't create user", "data": err})
 	}
 

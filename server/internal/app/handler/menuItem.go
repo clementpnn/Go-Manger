@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"go-manger/internal/domain/entity"
 	"go-manger/internal/domain/model"
 	"go-manger/internal/domain/service"
 	"go-manger/internal/infrastructure/database"
@@ -16,7 +15,7 @@ func AddNewMenuItem(c *fiber.Ctx) error {
 		return c.Status(500).JSON(fiber.Map{"status": "error", "message": "Couldn't get user", "data": err})
 	}
 
-	input := new(entity.MenuItem)
+	input := new(model.MenuItem)
 	if err := c.BodyParser(&input); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"status": "error", "message": "Error on menu item request", "data": err})
 	}

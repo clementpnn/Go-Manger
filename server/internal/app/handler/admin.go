@@ -17,10 +17,9 @@ func GetAdmin(c *fiber.Ctx) error {
 		return c.Status(400).JSON(fiber.Map{"status": "error", "message": "Invalid ID format", "data": nil})
 	}
 
-	db := database.DB
 	var user model.Admin
 
-	if result := db.First(&user, id); result.Error != nil {
+	if result := database.DB.First(&user, id); result.Error != nil {
 		return c.Status(500).JSON(fiber.Map{"status": "error", "message": result.Error.Error(), "data": nil})
 	}
 
@@ -32,7 +31,6 @@ func GetAdmin(c *fiber.Ctx) error {
 }
 
 func RegisterAdmin(c *fiber.Ctx) error {
-	db := database.DB
 	user := new(entity.Auth)
 
 	if err := c.BodyParser(user); err != nil {
@@ -45,7 +43,7 @@ func RegisterAdmin(c *fiber.Ctx) error {
 
 	var existingUser model.Admin
 
-	if err := db.Where("email = ?", user.Email).First(&existingUser).Error; err == nil {
+	if err := database.DB.Where("email = ?", user.Email).First(&existingUser).Error; err == nil {
 		return c.Status(400).JSON(fiber.Map{"status": "error", "message": "Email already exists", "data": nil})
 	}
 
@@ -59,7 +57,7 @@ func RegisterAdmin(c *fiber.Ctx) error {
 		Password: hash,
 	}
 
-	if err := db.Create(&newUser).Error; err != nil {
+	if err := database.DB.Create(&newUser).Error; err != nil {
 		return c.Status(500).JSON(fiber.Map{"status": "error", "message": "Couldn't create user", "data": err})
 	}
 
@@ -72,9 +70,8 @@ func RegisterAdmin(c *fiber.Ctx) error {
 }
 
 func getAdminByEmail(email string) (*model.Admin, error) {
-	db := database.DB
 	var admin model.Admin
-	err := db.Where("email = ?", email).First(&admin).Error
+	err := database.DB.Where("email = ?", email).First(&admin).Error
 	if err != nil {
 		return nil, err
 	}
