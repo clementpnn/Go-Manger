@@ -16,6 +16,7 @@ func LoginClient(c *fiber.Ctx) error {
 	}
 
 	user, err := new(model.Client), *new(error)
+
 	if service.Valid(input.Email) {
 		user, err = getClientByEmail(input.Email)
 		if err != nil {
@@ -23,7 +24,7 @@ func LoginClient(c *fiber.Ctx) error {
 		}
 	}
 
-	if user == nil {
+	if user.Email == "" {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"status": "error", "message": "User not found", "data": err})
 	}
 
@@ -47,6 +48,7 @@ func LoginRestaurant(c *fiber.Ctx) error {
 	}
 
 	user, err := new(model.Restaurant), *new(error)
+
 	if service.Valid(input.Email) {
 		user, err = getRestaurantByEmail(input.Email)
 		if err != nil {
@@ -54,7 +56,7 @@ func LoginRestaurant(c *fiber.Ctx) error {
 		}
 	}
 
-	if user == nil {
+	if user.Email == "" {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"status": "error", "message": "User not found", "data": err})
 	}
 
@@ -62,7 +64,7 @@ func LoginRestaurant(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"status": "error", "message": "Invalid password", "data": nil})
 	}
 
-	token, err := service.GenerateJWT(user.Email, user.ID, "client")
+	token, err := service.GenerateJWT(user.Email, user.ID, "restaurant")
 	if err != nil {
 		return c.SendStatus(fiber.StatusInternalServerError)
 	}
@@ -78,6 +80,7 @@ func LoginAdmin(c *fiber.Ctx) error {
 	}
 
 	user, err := new(model.Admin), *new(error)
+
 	if service.Valid(input.Email) {
 		user, err = getAdminByEmail(input.Email)
 		if err != nil {
@@ -85,7 +88,7 @@ func LoginAdmin(c *fiber.Ctx) error {
 		}
 	}
 
-	if user == nil {
+	if user.Email == "" {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"status": "error", "message": "User not found", "data": err})
 	}
 
@@ -93,7 +96,7 @@ func LoginAdmin(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"status": "error", "message": "Invalid password", "data": nil})
 	}
 
-	token, err := service.GenerateJWT(user.Email, user.ID, "client")
+	token, err := service.GenerateJWT(user.Email, user.ID, "admin")
 	if err != nil {
 		return c.SendStatus(fiber.StatusInternalServerError)
 	}
