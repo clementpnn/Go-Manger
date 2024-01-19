@@ -59,8 +59,7 @@ func SetupRoutes(app *fiber.App) {
 	restaurant.Post("/menu", handler.AddNewMenuItem)
 	// // ? Modifier un item du menu.
 	// restaurant.Put("/:id/menu/:itemId") // TODO: créé handler
-	// // ? Supprimer un item du menu.
-	// restaurant.Delete("/:id/menu/:itemId") // TODO: créé handler
+	restaurant.Delete("/menu/:id", handler.DeleteMenuItem)
 
 	app.Use(func(c *fiber.Ctx) error {
 		return c.SendStatus(404)

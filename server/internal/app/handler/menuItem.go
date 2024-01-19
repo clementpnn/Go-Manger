@@ -5,6 +5,7 @@ import (
 	"go-manger/internal/domain/model"
 	"go-manger/internal/domain/service"
 	"go-manger/internal/infrastructure/database"
+	"strconv"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -34,4 +35,21 @@ func AddNewMenuItem(c *fiber.Ctx) error {
 	}
 
 	return c.JSON(fiber.Map{"status": "success", "message": "Menu item created", "data": nil})
+}
+
+func DeleteMenuItem(c *fiber.Ctx) error {
+	id := c.Params("id")
+
+	if _, err := strconv.Atoi(id); err != nil {
+		return c.Status(400).JSON(fiber.Map{"status": "error", "message": "Invalid ID format", "data": nil})
+	}
+
+	var item model.MenuItem
+
+	if result := database.DB.Delete(&item, id); result.Error != nil {
+		return c.Status(500).JSON(fiber.Map{"status": "error", "message": result.Error.Error(), "data": nil})
+	}
+
+	return c.JSON(fiber.Map{"status": "success", "message": "Menu item deleted", "data": nil})
+
 }
