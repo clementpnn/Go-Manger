@@ -135,3 +135,31 @@ func DeleteRestaurant(c *fiber.Ctx) error {
 	return c.JSON(fiber.Map{"status": "success", "message": "Restaurant deleted", "data": nil})
 
 }
+
+func UpdateRestaurant(c *fiber.Ctx) error {
+	id := c.Params("id")
+	restaurant_input := new(entity.Restaurant)
+
+	if err := c.BodyParser(restaurant_input); err != nil {
+		return c.Status(500).JSON(fiber.Map{"status": "error", "message": "Review your input", "data": err})
+	}
+
+	var restaurant model.Restaurant
+	database.DB.First(&restaurant, id)
+
+	if restaurant_input.Name != "" {
+		restaurant.Name = restaurant_input.Name
+	}
+
+	if restaurant_input.Description != "" {
+		restaurant.Description = restaurant_input.Description
+	}
+
+	if restaurant_input.Image != "" {
+		restaurant.Image = restaurant_input.Image
+	}
+
+	database.DB.Save(&restaurant)
+
+	return c.JSON(fiber.Map{"status": "success", "message": "Restaurant updated", "data": nil})
+}
