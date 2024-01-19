@@ -41,9 +41,9 @@ func SetupRoutes(app *fiber.App) {
 	// // ? Supprimer une commande.
 	// client.Delete("/order/:id") // TODO: créé handler
 
-	// admin := api.Group("/admin", middleware.AuthMiddleware("admin"))
+	admin := api.Group("/admin", middleware.AuthMiddleware("admin"))
 	// // ? Lister tous les restaurants disponibles dans le food-court.
-	// admin.Get("/restaurant") // TODO: créé handler
+	admin.Get("/restaurant", handler.GetAllRestaurant)
 	// // ? Créer un restaurant.
 	// admin.Post("/restaurant") // TODO: créé handler
 	// // ? Modifier un restaurant.

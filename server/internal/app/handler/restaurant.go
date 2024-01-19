@@ -11,6 +11,17 @@ import (
 	"gorm.io/gorm"
 )
 
+func GetAllRestaurant(c *fiber.Ctx) error {
+	db := database.DB
+	var restaurants []model.Restaurant
+
+	if result := db.Find(&restaurants); result.Error != nil {
+		return c.Status(500).JSON(fiber.Map{"status": "error", "message": result.Error.Error(), "data": nil})
+	}
+
+	return c.JSON(fiber.Map{"status": "success", "message": "Restaurants found", "data": &restaurants})
+}
+
 func GetRestaurant(c *fiber.Ctx) error {
 	id := c.Params("id")
 
