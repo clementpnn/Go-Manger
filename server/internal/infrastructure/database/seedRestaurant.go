@@ -15,7 +15,7 @@ func SeedRestaurants() {
 				Name:        "Restaurant 1",
 				Description: "Description for Restaurant 1",
 				Image:       "image-url-1",
-				Email:       "contact@restaurant1.com",
+				Email:       "restaurant1@example.com",
 				Password:    "password1",
 				MenuItems: []model.MenuItem{
 					{
@@ -56,7 +56,7 @@ func SeedRestaurants() {
 				Name:        "Restaurant 2",
 				Description: "Description for Restaurant 2",
 				Image:       "image-url-2",
-				Email:       "contact@restaurant2.com",
+				Email:       "restaurant2@example.com",
 				Password:    "password2",
 				MenuItems: []model.MenuItem{
 					{

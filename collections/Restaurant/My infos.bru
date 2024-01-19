@@ -1,0 +1,15 @@
+meta {
+  name: My infos
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/restaurant/
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{jwt}}
+}

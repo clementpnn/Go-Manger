@@ -1,0 +1,15 @@
+meta {
+  name: List All Restaurants
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/admin/restaurant
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{jwt}}
+}
