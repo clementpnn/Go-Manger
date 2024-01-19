@@ -163,3 +163,19 @@ func UpdateRestaurant(c *fiber.Ctx) error {
 
 	return c.JSON(fiber.Map{"status": "success", "message": "Restaurant updated", "data": nil})
 }
+
+func GetRestaurantMenu(c *fiber.Ctx) error {
+	id := c.Params("id")
+
+	if _, err := strconv.Atoi(id); err != nil {
+		return c.JSON(fiber.Map{"status": "error", "message": "Invalid ID format", "data": nil})
+	}
+
+	var restaurantMenu []model.MenuItem
+
+	if result := database.DB.Where("restaurant_Id = ?", id).Find(&restaurantMenu); result.Error != nil {
+		return c.JSON(fiber.Map{"status": "error", "message": result.Error.Error(), "data": nil})
+	}
+
+	return c.JSON(fiber.Map{"status": "success", "message": "Restaurant's menu found", "data": &restaurantMenu})
+}

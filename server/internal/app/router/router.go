@@ -39,6 +39,7 @@ func SetupRoutes(app *fiber.App) {
 	// // ? Modifier une commande.
 	// client.Put("/order/:id") // TODO: créé handler
 	client.Delete("/order/:id", handler.DeleteOrder)
+	client.Get("/restaurant/:id/menu", handler.GetRestaurantMenu)
 
 	admin := api.Group("/admin", middleware.AuthMiddleware("admin"))
 	admin.Get("/restaurant", handler.GetAllRestaurant)
