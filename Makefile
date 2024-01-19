@@ -23,4 +23,4 @@ ps:
 upsafe:
 	docker-compose down
 	docker volume prune -f
-	docker-compose up
+	docker-compose up -d --build

@@ -147,15 +147,15 @@ func UpdateRestaurant(c *fiber.Ctx) error {
 	var restaurant model.Restaurant
 	database.DB.First(&restaurant, id)
 
-	if restaurant_input.Name != "" {
+	if restaurant_input.Name != restaurant.Name {
 		restaurant.Name = restaurant_input.Name
 	}
 
-	if restaurant_input.Description != "" {
+	if restaurant_input.Description != restaurant.Description {
 		restaurant.Description = restaurant_input.Description
 	}
 
-	if restaurant_input.Image != "" {
+	if restaurant_input.Image != restaurant.Image {
 		restaurant.Image = restaurant_input.Image
 	}
 
