@@ -22,6 +22,51 @@ func GetAllRestaurant(c *fiber.Ctx) error {
 	return c.JSON(fiber.Map{"status": "success", "message": "Restaurants found", "data": &restaurants})
 }
 
+func AddRestaurant(c *fiber.Ctx) error {
+	type NewRestaurant struct {
+		Name string `json:"name"`
+		Description string `json:"description"`
+		Image string `json:"image"`
+		Email string `json:"email"`
+		Password string `json:"password"`
+	}
+
+	db := database.DB
+	restaurant := new(NewRestaurant)
+	if err := c.BodyParser(restaurant); err != nil {
+		return c.Status(500).JSON(fiber.Map{"status": "error", "message": "Review your input", "data": err})
+	}
+
+	var existingRestaurant model.Restaurant
+	if err := db.Where("name = ?", restaurant.Name).First(&existingRestaurant).Error; err == nil {
+		return c.Status(400).JSON(fiber.Map{"status": "error", "message": "Restaurant already exists", "data": nil})
+	}
+
+	hash, err := service.HashPassword(restaurant.Password)
+	if err != nil {
+		return c.Status(500).JSON(fiber.Map{"status": "error", "message": "Couldn't hash password", "data": err})
+	}
+
+	newRestaurant := &model.Restaurant{
+		Name: restaurant.Name,
+		Description: restaurant.Description,
+		Image: restaurant.Image,
+		Email: restaurant.Email,
+		Password: hash,
+	}
+
+	if err := db.Create(&newRestaurant).Error; err != nil {
+		return c.Status(500).JSON(fiber.Map{"status": "error", "message": "Couldn't create user", "data": err})
+	}
+
+	token, err := service.GenerateJWT(newRestaurant.Email, newRestaurant.ID, "restaurant")
+	if err != nil {
+		return c.SendStatus(fiber.StatusInternalServerError)
+	}
+
+	return c.JSON(fiber.Map{"status": "success", "message": "Restaurant successfully created", "data": token})
+}
+
 func GetRestaurant(c *fiber.Ctx) error {
 	id := c.Params("id")
 
