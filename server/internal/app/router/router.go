@@ -35,7 +35,7 @@ func SetupRoutes(app *fiber.App) {
 	// // ? Créer une commande.
 	// client.Post("/order") // TODO: créé handler
 	// // ? Voir une commande.
-	// client.Get("/order/:id") // TODO: créé handler
+	client.Get("/order/:id", handler.GetOrder) // TODO: créé handler
 	// // ? Modifier une commande.
 	// client.Put("/order/:id") // TODO: créé handler
 	client.Delete("/order/:id", handler.DeleteOrder)
