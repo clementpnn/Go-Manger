@@ -29,7 +29,7 @@ func SetupRoutes(app *fiber.App) {
 	login.Post("/admin", handler.LoginAdmin)
 
 	client := api.Group("/client", middleware.AuthMiddleware("client"))
-	client.Get("/:id", handler.GetClient)
+	client.Get("/", handler.GetClient)
 	// // ? Lister les commandes d'un client.
 	// client.Get("/order") // TODO: créé handler
 	// // ? Créer une commande.

@@ -1,20 +1,21 @@
 package handler
 
 import (
-	"errors"
 	"go-manger/internal/domain/model"
 	"go-manger/internal/domain/service"
 	"go-manger/internal/infrastructure/database"
 	"strconv"
 
 	"github.com/gofiber/fiber/v2"
-	"gorm.io/gorm"
 )
 
 func GetClient(c *fiber.Ctx) error {
-	id := c.Params("id")
+	id, err := service.GetUserIDFromJWT(c)
+	if err != nil {
+		return c.Status(500).JSON(fiber.Map{"status": "error", "message": "Couldn't get user", "data": err})
+	}
 
-	if _, err := strconv.Atoi(id); err != nil {
+	if _, err := strconv.Atoi(strconv.Itoa(int(id))); err != nil {
 		return c.Status(400).JSON(fiber.Map{"status": "error", "message": "Invalid ID format", "data": nil})
 	}
 
@@ -71,16 +72,14 @@ func RegisterClient(c *fiber.Ctx) error {
 	return c.JSON(fiber.Map{"status": "success", "message": "User successfully created", "data": token})
 }
 
-func getClientByEmail(e string) (*model.Client, error) {
+func getClientByEmail(email string) (*model.Client, error) {
 	db := database.DB
-	var user model.Client
-	if err := db.Where(&model.Client{Email: e}).Find(&user).Error; err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return nil, nil
-		}
+	var client model.Client
+	err := db.Where("email = ?", email).First(&client).Error
+	if err != nil {
 		return nil, err
 	}
-	return &user, nil
+	return &client, nil
 }
 
 func validClient(id string, p string) bool {
