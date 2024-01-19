@@ -1,0 +1,22 @@
+meta {
+  name: Update Menu Item
+  type: http
+  seq: 3
+}
+
+put {
+  url: {{baseUrl}}/restaurant/menu/1
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{jwt}}
+}
+
+body:json {
+  {
+    "name": "test",
+    "price": 5.50
+  }
+}
