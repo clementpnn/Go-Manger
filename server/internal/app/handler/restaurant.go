@@ -159,7 +159,7 @@ func UpdateRestaurant(c *fiber.Ctx) error {
 		restaurant.Image = restaurant_input.Image
 	}
 
-	database.DB.Save(&restaurant)
+	database.DB.Updates(&restaurant)
 
 	return c.JSON(fiber.Map{"status": "success", "message": "Restaurant updated", "data": nil})
 }
