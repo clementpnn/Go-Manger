@@ -1,0 +1,15 @@
+meta {
+  name: Get Order
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/client/order/1
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImNsaWVudDFAZXhhbXBsZS5jb20iLCJleHAiOjE3MDU5NDU5NTcsInJvbGUiOiJjbGllbnQiLCJ1c2VyX2lkIjoxfQ.7M8fl0sQXCWl8CI9oaKKrTe882WWKmu2YJEezYxnBnI
+}
