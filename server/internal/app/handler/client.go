@@ -1,10 +1,10 @@
 package handler
 
 import (
+	"go-manger/internal/domain/entity"
 	"go-manger/internal/domain/model"
 	"go-manger/internal/domain/service"
 	"go-manger/internal/infrastructure/database"
-	"strconv"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -13,10 +13,6 @@ func GetClient(c *fiber.Ctx) error {
 	id, err := service.GetUserIDFromJWT(c)
 	if err != nil {
 		return c.Status(500).JSON(fiber.Map{"status": "error", "message": "Couldn't get user", "data": err})
-	}
-
-	if _, err := strconv.Atoi(strconv.Itoa(int(id))); err != nil {
-		return c.Status(400).JSON(fiber.Map{"status": "error", "message": "Invalid ID format", "data": nil})
 	}
 
 	db := database.DB
@@ -34,18 +30,15 @@ func GetClient(c *fiber.Ctx) error {
 }
 
 func RegisterClient(c *fiber.Ctx) error {
-	type NewUser struct {
-		Email    string `json:"email"`
-		Password string `json:"password"`
-	}
-
 	db := database.DB
-	user := new(NewUser)
+	user := new(entity.Auth)
+
 	if err := c.BodyParser(user); err != nil {
 		return c.Status(500).JSON(fiber.Map{"status": "error", "message": "Review your input", "data": err})
 	}
 
 	var existingUser model.Client
+
 	if err := db.Where("email = ?", user.Email).First(&existingUser).Error; err == nil {
 		return c.Status(400).JSON(fiber.Map{"status": "error", "message": "Email already exists", "data": nil})
 	}

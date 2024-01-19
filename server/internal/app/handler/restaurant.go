@@ -1,10 +1,10 @@
 package handler
 
 import (
+	"go-manger/internal/domain/entity"
 	"go-manger/internal/domain/model"
 	"go-manger/internal/domain/service"
 	"go-manger/internal/infrastructure/database"
-	"strconv"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -21,16 +21,8 @@ func GetAllRestaurant(c *fiber.Ctx) error {
 }
 
 func AddRestaurant(c *fiber.Ctx) error {
-	type NewRestaurant struct {
-		Name        string `json:"name"`
-		Description string `json:"description"`
-		Image       string `json:"image"`
-		Email       string `json:"email"`
-		Password    string `json:"password"`
-	}
-
 	db := database.DB
-	restaurant := new(NewRestaurant)
+	restaurant := new(model.Restaurant)
 	if err := c.BodyParser(restaurant); err != nil {
 		return c.Status(500).JSON(fiber.Map{"status": "error", "message": "Review your input", "data": err})
 	}
@@ -66,10 +58,9 @@ func AddRestaurant(c *fiber.Ctx) error {
 }
 
 func GetRestaurant(c *fiber.Ctx) error {
-	id := c.Params("id")
-
-	if _, err := strconv.Atoi(id); err != nil {
-		return c.Status(400).JSON(fiber.Map{"status": "error", "message": "Invalid ID format", "data": nil})
+	id, err := service.GetUserIDFromJWT(c)
+	if err != nil {
+		return c.Status(500).JSON(fiber.Map{"status": "error", "message": "Couldn't get user", "data": err})
 	}
 
 	db := database.DB
@@ -87,18 +78,19 @@ func GetRestaurant(c *fiber.Ctx) error {
 }
 
 func RegisterRestaurant(c *fiber.Ctx) error {
-	type NewUser struct {
-		Email    string `json:"email"`
-		Password string `json:"password"`
-	}
-
 	db := database.DB
-	user := new(NewUser)
+	user := new(entity.Auth)
+
 	if err := c.BodyParser(user); err != nil {
 		return c.Status(500).JSON(fiber.Map{"status": "error", "message": "Review your input", "data": err})
 	}
 
+	if !service.Valid(user.Email) {
+		return c.Status(400).JSON(fiber.Map{"status": "error", "message": "Invalid email", "data": nil})
+	}
+
 	var existingUser model.Restaurant
+
 	if err := db.Where("email = ?", user.Email).First(&existingUser).Error; err == nil {
 		return c.Status(400).JSON(fiber.Map{"status": "error", "message": "Email already exists", "data": nil})
 	}
@@ -133,17 +125,4 @@ func getRestaurantByEmail(email string) (*model.Restaurant, error) {
 		return nil, err
 	}
 	return &restaurant, nil
-}
-
-func validRestaurant(id string, p string) bool {
-	db := database.DB
-	var user model.Restaurant
-	db.First(&user, id)
-	if user.Email == "" {
-		return false
-	}
-	if !service.CheckPasswordHash(p, user.Password) {
-		return false
-	}
-	return true
 }

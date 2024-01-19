@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"go-manger/internal/domain/entity"
 	"go-manger/internal/domain/model"
 	"go-manger/internal/domain/service"
 	"go-manger/internal/infrastructure/database"
@@ -31,18 +32,19 @@ func GetAdmin(c *fiber.Ctx) error {
 }
 
 func RegisterAdmin(c *fiber.Ctx) error {
-	type NewUser struct {
-		Email    string `json:"email"`
-		Password string `json:"password"`
-	}
-
 	db := database.DB
-	user := new(NewUser)
+	user := new(entity.Auth)
+
 	if err := c.BodyParser(user); err != nil {
 		return c.Status(500).JSON(fiber.Map{"status": "error", "message": "Review your input", "data": err})
 	}
 
+	if !service.Valid(user.Email) {
+		return c.Status(400).JSON(fiber.Map{"status": "error", "message": "Invalid email", "data": nil})
+	}
+
 	var existingUser model.Admin
+
 	if err := db.Where("email = ?", user.Email).First(&existingUser).Error; err == nil {
 		return c.Status(400).JSON(fiber.Map{"status": "error", "message": "Email already exists", "data": nil})
 	}
@@ -77,17 +79,4 @@ func getAdminByEmail(email string) (*model.Admin, error) {
 		return nil, err
 	}
 	return &admin, nil
-}
-
-func validAdmin(id string, p string) bool {
-	db := database.DB
-	var user model.Admin
-	db.First(&user, id)
-	if user.Email == "" {
-		return false
-	}
-	if !service.CheckPasswordHash(p, user.Password) {
-		return false
-	}
-	return true
 }
