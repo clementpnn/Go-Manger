@@ -1,0 +1,31 @@
+meta {
+  name: Add Order
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/client/order/1
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImNsaWVudDFAZXhhbXBsZS5jb20iLCJleHAiOjE3MDU5NDM4NDUsInJvbGUiOiJjbGllbnQiLCJ1c2VyX2lkIjoxfQ.j_vHBodrown9Bkbu78x96QnYZD8rC0LDnpQtm-WItxk
+}
+
+body:json {
+  {
+    "orderItems": [
+      {
+        "menuItemId": 1,
+        "quantity": 2
+      },
+      {
+        "menuItemId": 2,
+        "quantity": 3
+      }
+    ],
+    "status": "cart"
+  }
+}
