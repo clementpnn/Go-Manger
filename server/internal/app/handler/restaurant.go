@@ -11,10 +11,9 @@ import (
 )
 
 func GetAllRestaurant(c *fiber.Ctx) error {
-	db := database.DB
 	var restaurants []model.Restaurant
 
-	if result := db.Find(&restaurants); result.Error != nil {
+	if result := database.DB.Find(&restaurants); result.Error != nil {
 		return c.Status(500).JSON(fiber.Map{"status": "error", "message": result.Error.Error(), "data": nil})
 	}
 
@@ -22,14 +21,13 @@ func GetAllRestaurant(c *fiber.Ctx) error {
 }
 
 func AddRestaurant(c *fiber.Ctx) error {
-	db := database.DB
 	restaurant := new(model.Restaurant)
 	if err := c.BodyParser(restaurant); err != nil {
 		return c.Status(500).JSON(fiber.Map{"status": "error", "message": "Review your input", "data": err})
 	}
 
 	var existingRestaurant model.Restaurant
-	if err := db.Where("name = ?", restaurant.Name).First(&existingRestaurant).Error; err == nil {
+	if err := database.DB.Where("name = ?", restaurant.Name).First(&existingRestaurant).Error; err == nil {
 		return c.Status(400).JSON(fiber.Map{"status": "error", "message": "Restaurant already exists", "data": nil})
 	}
 
@@ -46,7 +44,7 @@ func AddRestaurant(c *fiber.Ctx) error {
 		Password:    hash,
 	}
 
-	if err := db.Create(&newRestaurant).Error; err != nil {
+	if err := database.DB.Create(&newRestaurant).Error; err != nil {
 		return c.Status(500).JSON(fiber.Map{"status": "error", "message": "Couldn't create user", "data": err})
 	}
 
@@ -64,22 +62,16 @@ func GetRestaurant(c *fiber.Ctx) error {
 		return c.Status(500).JSON(fiber.Map{"status": "error", "message": "Couldn't get user", "data": err})
 	}
 
-	db := database.DB
 	var user model.Restaurant
 
-	if result := db.First(&user, id); result.Error != nil {
+	if result := database.DB.First(&user, id); result.Error != nil {
 		return c.Status(500).JSON(fiber.Map{"status": "error", "message": result.Error.Error(), "data": nil})
-	}
-
-	if user.Email == "" {
-		return c.Status(404).JSON(fiber.Map{"status": "error", "message": "No user found with ID", "data": nil})
 	}
 
 	return c.JSON(fiber.Map{"status": "success", "message": "User found", "data": user})
 }
 
 func RegisterRestaurant(c *fiber.Ctx) error {
-	db := database.DB
 	user := new(entity.Auth)
 
 	if err := c.BodyParser(user); err != nil {
@@ -92,7 +84,7 @@ func RegisterRestaurant(c *fiber.Ctx) error {
 
 	var existingUser model.Restaurant
 
-	if err := db.Where("email = ?", user.Email).First(&existingUser).Error; err == nil {
+	if err := database.DB.Where("email = ?", user.Email).First(&existingUser).Error; err == nil {
 		return c.Status(400).JSON(fiber.Map{"status": "error", "message": "Email already exists", "data": nil})
 	}
 
@@ -106,7 +98,7 @@ func RegisterRestaurant(c *fiber.Ctx) error {
 		Password: hash,
 	}
 
-	if err := db.Create(&newUser).Error; err != nil {
+	if err := database.DB.Create(&newUser).Error; err != nil {
 		return c.Status(500).JSON(fiber.Map{"status": "error", "message": "Couldn't create user", "data": err})
 	}
 
@@ -119,9 +111,8 @@ func RegisterRestaurant(c *fiber.Ctx) error {
 }
 
 func getRestaurantByEmail(email string) (*model.Restaurant, error) {
-	db := database.DB
 	var restaurant model.Restaurant
-	err := db.Where("email = ?", email).First(&restaurant).Error
+	err := database.DB.Where("email = ?", email).First(&restaurant).Error
 	if err != nil {
 		return nil, err
 	}
@@ -135,14 +126,12 @@ func DeleteRestaurant(c *fiber.Ctx) error {
 		return c.Status(400).JSON(fiber.Map{"status": "error", "message": "Invalid ID format", "data": nil})
 	}
 
-	db := database.DB
 	var restaurant model.Restaurant
 
-	if result := db.Delete(&restaurant, id); result.Error != nil {
+	if result := database.DB.Delete(&restaurant, id); result.Error != nil {
 		return c.Status(500).JSON(fiber.Map{"status": "error", "message": result.Error.Error(), "data": nil})
 	}
 
 	return c.JSON(fiber.Map{"status": "success", "message": "Restaurant deleted", "data": nil})
 
 }
-

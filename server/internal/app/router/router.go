@@ -50,8 +50,8 @@ func SetupRoutes(app *fiber.App) {
 	// admin.Put("/restaurant/:id") // TODO: créé handler
 	admin.Delete("/restaurant/:id", handler.DeleteRestaurant)
 
-	// restaurant := api.Group("/restaurant", middleware.AuthMiddleware("restaurant"))
-	// restaurant.Get("/:id/", handler.GetRestaurant)
+	restaurant := api.Group("/restaurant", middleware.AuthMiddleware("restaurant"))
+	restaurant.Get("/", handler.GetRestaurant)
 	// // ? Lister toutes les commandes pour un restaurant.
 	// restaurant.Get("/:id/order") // TODO: créé handler (SSE ou WebSockets)
 	// // ? Mettre à jour le statut d'une commande.
