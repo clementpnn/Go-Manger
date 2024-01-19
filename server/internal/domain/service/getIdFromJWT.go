@@ -5,11 +5,11 @@ import (
 	"github.com/golang-jwt/jwt/v4"
 )
 
-func GetUserIDFromJWT(c *fiber.Ctx) (uint, error) {
+func GetUserIDFromJWT(c *fiber.Ctx) (int, error) {
 	user := c.Locals("user")
 	token := user.(*jwt.Token)
 	claims := token.Claims.(jwt.MapClaims)
-	userID := uint(claims["user_id"].(float64))
+	userID := claims["user_id"].(int)
 
 	return userID, nil
 }
