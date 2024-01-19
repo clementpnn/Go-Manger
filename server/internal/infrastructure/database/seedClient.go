@@ -2,8 +2,7 @@ package database
 
 import (
 	"go-manger/internal/domain/model"
-
-	"golang.org/x/crypto/bcrypt"
+	"go-manger/internal/domain/service"
 )
 
 func SeedClients() {
@@ -17,10 +16,7 @@ func SeedClients() {
 		}
 
 		for _, client := range clients {
-			hashedPassword, err := bcrypt.GenerateFromPassword([]byte(client.Password), bcrypt.DefaultCost)
-			if err != nil {
-				panic("Failed to hash a password")
-			}
+			hashedPassword, _ := service.HashPassword(client.Password)
 
 			client.Password = string(hashedPassword)
 			DB.Create(&client)
