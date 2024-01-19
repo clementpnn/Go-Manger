@@ -56,8 +56,7 @@ func SetupRoutes(app *fiber.App) {
 	// restaurant.Get("/:id/order") // TODO: créé handler (SSE ou WebSockets)
 	// // ? Mettre à jour le statut d'une commande.
 	// restaurant.Put("/:id/order/:orderId") // TODO: créé handler
-	// // ? Ajouter des items au menu.
-	// restaurant.Post("/:id/menu") // TODO: créé handler
+	restaurant.Post("/menu", handler.AddNewMenuItem)
 	// // ? Modifier un item du menu.
 	// restaurant.Put("/:id/menu/:itemId") // TODO: créé handler
 	// // ? Supprimer un item du menu.
