@@ -36,3 +36,18 @@ func AddOrder(c *fiber.Ctx) error {
 
 }
 
+func GetOrder(c *fiber.Ctx) error {
+	orderID := c.Params("id")
+
+	orderIDInt, err := strconv.Atoi(orderID)
+	if err != nil {
+			return c.Status(400).JSON(fiber.Map{"status": "error", "message": "ID de commande invalide", "data": nil})
+	}
+
+	order := model.Order{}
+	if result := database.DB.Preload("OrderItems").First(&order, orderIDInt); result.Error != nil {
+			return c.Status(404).JSON(fiber.Map{"status": "error", "message": "Commande non trouvée", "data": nil})
+	}
+
+	return c.JSON(fiber.Map{"status": "success", "message": "Commande trouvée", "data": order})
+}
