@@ -5,6 +5,7 @@ import (
 	"go-manger/internal/domain/model"
 	"go-manger/internal/domain/service"
 	"go-manger/internal/infrastructure/database"
+	"strconv"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -126,3 +127,22 @@ func getRestaurantByEmail(email string) (*model.Restaurant, error) {
 	}
 	return &restaurant, nil
 }
+
+func DeleteRestaurant(c *fiber.Ctx) error {
+	id := c.Params("id")
+
+	if _, err := strconv.Atoi(id); err != nil {
+		return c.Status(400).JSON(fiber.Map{"status": "error", "message": "Invalid ID format", "data": nil})
+	}
+
+	db := database.DB
+	var restaurant model.Restaurant
+
+	if result := db.Delete(&restaurant, id); result.Error != nil {
+		return c.Status(500).JSON(fiber.Map{"status": "error", "message": result.Error.Error(), "data": nil})
+	}
+
+	return c.JSON(fiber.Map{"status": "success", "message": "Restaurant deleted", "data": nil})
+
+}
+
