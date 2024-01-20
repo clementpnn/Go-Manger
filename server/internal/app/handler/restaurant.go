@@ -13,11 +13,21 @@ import (
 func GetAllRestaurant(c *fiber.Ctx) error {
 	var restaurants []model.Restaurant
 
-	if result := database.DB.Select("id", "name", "description", "image").Where("deleted_at IS NULL").Find(&restaurants); result.Error != nil {
+	if result := database.DB.Where("deleted_at IS NULL").Find(&restaurants); result.Error != nil {
 		return c.Status(500).JSON(fiber.Map{"status": "error", "message": result.Error.Error(), "data": nil})
 	}
 
-	return c.JSON(fiber.Map{"status": "Success", "message": "Restaurants Found", "data": &restaurants})
+	response := make([]entity.Restaurant, len(restaurants))
+	for i, r := range restaurants {
+		response[i] = entity.Restaurant{
+			ID:          r.ID,
+			Name:        r.Name,
+			Description: r.Description,
+			Image:       r.Image,
+		}
+	}
+
+	return c.JSON(fiber.Map{"status": "Success", "message": "Restaurants Found", "data": response})
 }
 
 func AddRestaurant(c *fiber.Ctx) error {
@@ -171,11 +181,31 @@ func GetRestaurantMenu(c *fiber.Ctx) error {
 		return c.JSON(fiber.Map{"status": "error", "message": "Invalid ID format", "data": nil})
 	}
 
-	var restaurantMenu []model.MenuItem
-
-	if result := database.DB.Where("restaurant_Id = ?", id).Find(&restaurantMenu); result.Error != nil {
-		return c.JSON(fiber.Map{"status": "error", "message": result.Error.Error(), "data": nil})
+	var restaurant model.Restaurant
+	result := database.DB.Preload("MenuItems", "deleted_at IS NULL").Where("id = ? AND deleted_at IS NULL", id).First(&restaurant)
+	if result.Error != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "Database error", "data": nil})
 	}
 
-	return c.JSON(fiber.Map{"status": "success", "message": "Restaurant's menu found", "data": &restaurantMenu})
+	menuItems := make([]entity.RestaurantMenuItem, len(restaurant.MenuItems))
+	for i, r := range restaurant.MenuItems {
+		menuItems[i] = entity.RestaurantMenuItem{
+			ID:          r.ID,
+			Name:        r.Name,
+			Description: r.Description,
+			Price:       r.Price,
+			Available:   r.Available,
+			Type:        r.Type,
+		}
+	}
+
+	restaurantWithMenu := entity.RestaurantWithMenu{
+		ID:          restaurant.ID,
+		Name:        restaurant.Name,
+		Description: restaurant.Description,
+		Image:       restaurant.Image,
+		MenuItems:   menuItems,
+	}
+
+	return c.JSON(fiber.Map{"status": "success", "message": "Restaurant's menu found", "data": restaurantWithMenu})
 }
