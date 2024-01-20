@@ -1,4 +1,4 @@
-import { H4 } from "@/components/typography/h1";
+import { H4 } from "@/components/typography/h4";
 import { H3 } from "@/components/typography/h3";
 import { P } from "@/components/typography/p";
 import { RestaurantInfoPublicService } from "@/services/public";
