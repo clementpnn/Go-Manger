@@ -11,10 +11,8 @@ import (
 func SetupRoutes(app *fiber.App) {
 	api := app.Group("/api", logger.New())
 	api.Get("/", handler.Hello)
-	// // ? Lister tous les restaurants disponibles dans le food-court.
-	// api.Get("/restaurant") // TODO: créé handler
-	// // ? Voir le menu d’un restaurant.
-	// api.Get("/restaurant/:id/menu") // TODO: créé handler
+	api.Get("/restaurant", handler.GetAllRestaurant)
+	api.Get("/restaurant/:id", handler.GetRestaurantMenu)
 
 	auth := api.Group("/auth")
 
@@ -39,7 +37,7 @@ func SetupRoutes(app *fiber.App) {
 	// // ? Modifier une commande.
 	// client.Put("/order/:id") // TODO: créé handler
 	client.Delete("/order/:id", handler.DeleteOrder)
-	client.Get("/restaurant/:id/menu", handler.GetRestaurantMenu)
+	client.Get("/restaurant/:id", handler.GetRestaurantMenu)
 
 	admin := api.Group("/admin", middleware.AuthMiddleware("admin"))
 	admin.Get("/restaurant", handler.GetAllRestaurant)
