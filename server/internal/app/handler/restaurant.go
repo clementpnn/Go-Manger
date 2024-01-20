@@ -13,11 +13,11 @@ import (
 func GetAllRestaurant(c *fiber.Ctx) error {
 	var restaurants []model.Restaurant
 
-	if result := database.DB.Find(&restaurants); result.Error != nil {
+	if result := database.DB.Select("id", "name", "description", "image").Where("deleted_at IS NULL").Find(&restaurants); result.Error != nil {
 		return c.Status(500).JSON(fiber.Map{"status": "error", "message": result.Error.Error(), "data": nil})
 	}
 
-	return c.JSON(fiber.Map{"status": "success", "message": "Restaurants found", "data": &restaurants})
+	return c.JSON(fiber.Map{"status": "Success", "message": "Restaurants Found", "data": &restaurants})
 }
 
 func AddRestaurant(c *fiber.Ctx) error {
