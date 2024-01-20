@@ -1,0 +1,23 @@
+{
+  "extends": ["plugin:react-hooks/recommended"],
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["react-refresh"],
+  "rules": {
+    "react-refresh/only-export-components": ["warn", { "allowConstantExport": true }],
+    "quotes": ["error", "double"],
+    "no-var": "error",
+    "object-curly-spacing": ["error", "always"],
+    "eqeqeq": ["error", "always"],
+    "no-trailing-spaces": "error",
+    "indent": ["error", 2],
+    "no-empty": "error",
+    "space-in-parens": ["error", "never"],
+    "no-multiple-empty-lines": ["error", { "max": 1 }],
+    "no-multi-spaces": "error",
+    "comma-spacing": ["error", { "before": false, "after": true }],
+    "array-bracket-spacing": ["error", "never"],
+    "keyword-spacing": ["error", { "before": true, "after": true }],
+    "space-before-blocks": ["error", "always"],
+    "brace-style": ["error", "1tbs"]
+  }
+}
