@@ -11,3 +11,7 @@ export function LoginService({ type, email, password }: { type: "client" | "rest
 export function RestaurantInfoPublicService(id: number): Promise<RestaurantInfoPublic> {
   return kyInstancePublic.get(`restaurant/${id}`).json()
 }
+
+export function AdminRestaurantService(): Promise<HomeRequest> {
+  return kyInstancePublic.get("/admin/restaurant").json()
+}
