@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { HomeService } from "@/services/public";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
@@ -15,6 +16,9 @@ export default function Home() {
 
   return (
     <div className="flex flex-col gap-4">
+      <Link to="/signin">
+        <Button>Login</Button>
+      </Link>
       {data.data.map((item: Restaurant) => (
         <Link key={item.id} to="/restaurant/$id" params={{ id: item.id.toString() }} className="pointer">
           <h2>{item.name}</h2>

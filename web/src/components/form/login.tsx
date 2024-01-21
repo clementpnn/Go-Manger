@@ -13,10 +13,8 @@ import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import Spinner from "@/assets/icons/spinner.svg?react";
 import { H3 } from "../typography/h3";
-import useJWT from "@/hooks/useJWT";
 
 export default function LoginForm({ type }: { type: "client" | "restaurant" | "admin" }) {
-  const { setJWT } = useJWT();
   const navigate = useNavigate({ from: "/signin" });
   const form = useForm<z.infer<typeof login>>({
     resolver: zodResolver(login),
@@ -28,7 +26,7 @@ export default function LoginForm({ type }: { type: "client" | "restaurant" | "a
 
   useEffect(() => {
     if (status === "success") {
-      setJWT(data.data);
+      localStorage.setItem("jwtToken", data.data);
       toast(data.message);
       navigate({ to: `/${type}` });
     }
@@ -36,7 +34,7 @@ export default function LoginForm({ type }: { type: "client" | "restaurant" | "a
     if (isError) {
       console.log(error);
     }
-  }, [status, data, isError, error, navigate, type, setJWT]);
+  }, [status, data, isError, error, navigate, type]);
 
   function onSubmit(values: z.infer<typeof login>) {
     mutate({ ...values, type });
