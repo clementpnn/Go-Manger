@@ -10,15 +10,14 @@ import (
 )
 
 func main() {
+	database.Database()
 	app := fiber.New()
 	app.Use(cors.New(cors.Config{
 		AllowOrigins:     "*",
-		AllowHeaders:     "Origin, Content-Type, Accept, Authorization",
+		AllowHeaders:     "Origin, Content-Type, Accept, Content-Length, Accept-Language, Accept-Encoding, Connection, Access-Control-Allow-Origin, Authorization",
 		AllowMethods:     "GET, POST, PUT, DELETE",
 		AllowCredentials: true,
 	}))
-
-	database.Database()
 
 	router.SetupRoutes(app)
 

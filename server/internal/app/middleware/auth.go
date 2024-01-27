@@ -1,22 +1,28 @@
 package middleware
 
 import (
+	"fmt"
 	"os"
+	"strings"
 
 	"github.com/gofiber/fiber/v2"
-	jwtware "github.com/gofiber/jwt/v2"
 	"github.com/golang-jwt/jwt/v4"
 )
 
 func AuthMiddleware(allowedRoles ...string) fiber.Handler {
-	validateJWT := jwtware.New(jwtware.Config{
-		SigningKey:   []byte(os.Getenv("SECRET")),
-		ErrorHandler: jwtError,
-	})
+	return func(c *fiber.Ctx) error {
+		tokenString := c.Get("Authorization")
 
-	checkRole := func(c *fiber.Ctx) error {
-		user := c.Locals("user").(*jwt.Token)
-		claims := user.Claims.(jwt.MapClaims)
+		token, err := validateToken(tokenString)
+		if err != nil {
+			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
+				"status":  "error",
+				"message": "Invalid or expired JWT",
+			})
+		}
+
+		c.Locals("user", token)
+		claims := token.Claims.(jwt.MapClaims)
 		role := claims["role"].(string)
 
 		for _, allowedRole := range allowedRoles {
@@ -30,26 +36,26 @@ func AuthMiddleware(allowedRoles ...string) fiber.Handler {
 			"message": "Accès non autorisé pour le rôle de l'utilisateur",
 		})
 	}
-
-	return func(c *fiber.Ctx) error {
-		err := validateJWT(c)
-		if err != nil {
-			return err
-		}
-
-		return checkRole(c)
-	}
 }
 
-func jwtError(c *fiber.Ctx, err error) error {
-	if err.Error() == "Missing or malformed JWT" {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"status":  "error",
-			"message": "Missing or malformed JWT",
-		})
+func validateToken(tokenString string) (*jwt.Token, error) {
+	splitToken := strings.Split(tokenString, "Bearer ")
+	if len(splitToken) == 2 {
+		tokenString = strings.TrimSpace(splitToken[1])
+	} else {
+		return nil, fmt.Errorf("format du JWT incorrect")
 	}
-	return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
-		"status":  "error",
-		"message": "Invalid or expired JWT",
+
+	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fmt.Errorf("méthode de signature JWT inattendue: %v", token.Header["alg"])
+		}
+		return []byte(os.Getenv("SECRET")), nil
 	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	return token, nil
 }
