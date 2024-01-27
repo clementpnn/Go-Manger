@@ -13,23 +13,23 @@ func AddOrder(c *fiber.Ctx) error {
 	restaurantID := c.Params("id")
 	userID, err := service.GetUserIDFromJWT(c)
 	if err != nil {
-			return c.Status(500).JSON(fiber.Map{"status": "error", "message": "Impossible de récupérer l'ID de l'utilisateur à partir du JWT", "data": err})
+		return c.Status(500).JSON(fiber.Map{"status": "error", "message": "Impossible de récupérer l'ID de l'utilisateur à partir du JWT", "data": err})
 	}
 
 	order := new(model.Order)
 	if err := c.BodyParser(order); err != nil {
-			return c.Status(500).JSON(fiber.Map{"status": "error", "message": "Vérifiez votre entrée", "data": err})
+		return c.Status(500).JSON(fiber.Map{"status": "error", "message": "Vérifiez votre entrée", "data": err})
 	}
 
 	restaurantIDInt, err := strconv.Atoi(restaurantID)
 	if err != nil {
-			return c.Status(400).JSON(fiber.Map{"status": "error", "message": "ID de restaurant invalide", "data": nil})
+		return c.Status(400).JSON(fiber.Map{"status": "error", "message": "ID de restaurant invalide", "data": nil})
 	}
 	order.RestaurantID = uint(restaurantIDInt)
 	order.ClientID = uint(userID)
 
 	if err := database.DB.Create(&order).Error; err != nil {
-			return c.Status(500).JSON(fiber.Map{"status": "error", "message": "Impossible de créer la commande", "data": err})
+		return c.Status(500).JSON(fiber.Map{"status": "error", "message": "Impossible de créer la commande", "data": err})
 	}
 
 	return c.JSON(fiber.Map{"status": "success", "message": "Commande créée avec succès", "data": order})
@@ -41,12 +41,12 @@ func GetOrder(c *fiber.Ctx) error {
 
 	orderIDInt, err := strconv.Atoi(orderID)
 	if err != nil {
-			return c.Status(400).JSON(fiber.Map{"status": "error", "message": "ID de commande invalide", "data": nil})
+		return c.Status(400).JSON(fiber.Map{"status": "error", "message": "ID de commande invalide", "data": nil})
 	}
 
 	order := model.Order{}
 	if result := database.DB.Preload("OrderItems").First(&order, orderIDInt); result.Error != nil {
-			return c.Status(404).JSON(fiber.Map{"status": "error", "message": "Commande non trouvée", "data": nil})
+		return c.Status(404).JSON(fiber.Map{"status": "error", "message": "Commande non trouvée", "data": nil})
 	}
 
 	return c.JSON(fiber.Map{"status": "success", "message": "Commande trouvée", "data": order})
