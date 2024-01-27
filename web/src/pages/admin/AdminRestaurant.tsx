@@ -16,6 +16,7 @@ export default function AdminRestaurant() {
   return (
     <div className="flex flex-col gap-4">
       {data.data.map((item: Restaurant) => (
+        // changer la route pour afficher le restaurant pour les admins
         <Link key={item.id} to="/restaurant/$id" params={{ id: item.id.toString() }} className="pointer">
           <h2>{item.name}</h2>
           <p>{item.description}</p>
