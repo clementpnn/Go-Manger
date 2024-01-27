@@ -28,6 +28,10 @@ func LoginClient(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"status": "error", "message": "User not found", "data": err})
 	}
 
+	if user.DeletedAt.Valid {
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"status": "error", "message": "User deleted", "data": err})
+	}
+
 	if !service.CheckPasswordHash(input.Password, user.Password) {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"status": "error", "message": "Invalid password", "data": nil})
 	}
@@ -60,6 +64,10 @@ func LoginRestaurant(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"status": "error", "message": "User not found", "data": err})
 	}
 
+	if user.DeletedAt.Valid {
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"status": "error", "message": "User deleted", "data": err})
+	}
+
 	if !service.CheckPasswordHash(input.Password, user.Password) {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"status": "error", "message": "Invalid password", "data": nil})
 	}
@@ -90,6 +98,10 @@ func LoginAdmin(c *fiber.Ctx) error {
 
 	if user.Email == "" {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"status": "error", "message": "User not found", "data": err})
+	}
+
+	if user.DeletedAt.Valid {
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"status": "error", "message": "User deleted", "data": err})
 	}
 
 	if !service.CheckPasswordHash(input.Password, user.Password) {
