@@ -1,7 +1,7 @@
 import { KyInstancePublic } from "./utils/instance"
 
 export function HomeService(): Promise<HomeRequest> {
-  return KyInstancePublic.get("restaurant").json()
+  return KyInstancePublic.get("home").json()
 }
 
 export function LoginService({ type, email, password }: { type: "client" | "restaurant" | "admin", email: string, password: string }): Promise<SignInRequest> {
@@ -9,5 +9,5 @@ export function LoginService({ type, email, password }: { type: "client" | "rest
 }
 
 export function RestaurantInfoPublicService(id: number): Promise<RestaurantInfoPublic> {
-  return KyInstancePublic.get(`restaurant/${id}`).json()
+  return KyInstancePublic.get(`search/${id}`).json()
 }
