@@ -71,14 +71,20 @@ func GetRestaurant(c *fiber.Ctx) error {
 	if err != nil {
 		return c.Status(500).JSON(fiber.Map{"status": "error", "message": "Couldn't get user", "data": err})
 	}
-
 	var user model.Restaurant
 
-	if result := database.DB.First(&user, id); result.Error != nil {
+	if result := database.DB.Where("deleted_at IS NULL").Find(&user, id); result.Error != nil {
 		return c.Status(500).JSON(fiber.Map{"status": "error", "message": result.Error.Error(), "data": nil})
 	}
 
-	return c.JSON(fiber.Map{"status": "success", "message": "User found", "data": user})
+	response := entity.Restaurant{
+		ID:          user.ID,
+		Name:        user.Name,
+		Description: user.Description,
+		Image:       user.Image,
+	}
+
+	return c.JSON(fiber.Map{"status": "success", "message": "User found", "data": response})
 }
 
 func RegisterRestaurant(c *fiber.Ctx) error {
