@@ -18,15 +18,17 @@ func GetClient(c *fiber.Ctx) error {
 
 	var user model.Client
 
-	if result := database.DB.First(&user, id); result.Error != nil {
+	if result := database.DB.Where("deleted_at IS NULL").Find(&user, id); result.Error != nil {
 		return c.Status(500).JSON(fiber.Map{"status": "error", "message": result.Error.Error(), "data": nil})
 	}
 
-	if user.Email == "" {
-		return c.Status(404).JSON(fiber.Map{"status": "error", "message": "No user found with ID", "data": nil})
+	response := entity.Client{
+		ID:    user.ID,
+		Name:  user.Name,
+		Email: user.Email,
 	}
 
-	return c.JSON(fiber.Map{"status": "success", "message": "User found", "data": user})
+	return c.JSON(fiber.Map{"status": "success", "message": "User found", "data": response})
 }
 
 func RegisterClient(c *fiber.Ctx) error {
@@ -82,13 +84,13 @@ func DeleteOrder(c *fiber.Ctx) error {
 	id := c.Params("id")
 
 	if _, err := strconv.Atoi(id); err != nil {
-		return c.JSON(fiber.Map{"status":"error", "message": "Invalid ID format", "data": nil})
+		return c.JSON(fiber.Map{"status": "error", "message": "Invalid ID format", "data": nil})
 	}
 
 	var order model.Order
 
 	if result := database.DB.Delete(&order, id); result.Error != nil {
-		return c.Status(500).JSON(fiber.Map{"status": "error", "message": result.Error.Error(), "data": nil}) 
+		return c.Status(500).JSON(fiber.Map{"status": "error", "message": result.Error.Error(), "data": nil})
 	}
 
 	return c.JSON(fiber.Map{"status": "success", "message": "Order deleted", "data": nil})
