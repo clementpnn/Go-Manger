@@ -1,4 +1,4 @@
-import image1 from "@/assets/1.png"
+import dishesImage from "@/assets/images/dishes.png"
 import { Button } from "@/components/ui/button"
 import { Link } from "@tanstack/react-router"
 
@@ -24,7 +24,7 @@ export default function SignIn() {
           </div>
         </div>
       </div>
-      <img src={image1} alt="image of two restaurants plates" className="w-3/5"/>
+      <img src={dishesImage} alt="image of two restaurants plates" className="w-3/5"/>
     </div>
   );
 }
