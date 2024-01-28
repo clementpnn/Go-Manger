@@ -12,7 +12,7 @@ export default function SignIn() {
             <span className="text-primary">Manger</span>
           </div>
           <div className="flex flex-col gap-y-10">
-            <Link to="/">
+            <Link to="/loginAdmin">
               <Button className="w-full">Administrateur</Button>
             </Link>
             <Link to="/">

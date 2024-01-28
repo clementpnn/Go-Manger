@@ -43,42 +43,47 @@ export default function LoginForm({ type }: { type: "client" | "restaurant" | "a
   }
 
   return (
-    <>
-      <H3>{type.charAt(0).toUpperCase() + type.slice(1)}</H3>
+    <div className="flex flex-col justify-center gap-y-20 px-20 w-2/5">
+      <div className="header-1 flex flex-row gap-x-4">
+        <span>Go</span>
+        <span className="text-primary">Manger</span>
+      </div>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="flex">
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email</FormLabel>
-                <FormControl>
-                  <Input {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+        <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-y-[3.75rem]">
+          <div className="flex flex-col gap-y-10">
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input {...field} placeholder="Entrez votre email"/>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Password</FormLabel>
-                <FormControl>
-                  <Input {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <Button type="submit" className="ml-5">
-            {status === "pending" ? <Spinner /> : "Send"}
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Password</FormLabel>
+                  <FormControl>
+                    <Input {...field} placeholder="Entrez votre mot de passe"/>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <Button type="submit">
+            {status === "pending" ? <Spinner /> : "Se connecter"}
           </Button>
         </form>
       </Form>
-    </>
+    </div>
   );
 }
