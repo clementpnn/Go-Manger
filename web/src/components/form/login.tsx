@@ -42,7 +42,7 @@ export default function LoginForm({ type }: { type: "client" | "restaurant" | "a
   }
 
   return (
-    <div className="flex flex-col justify-center gap-y-20 px-20 w-2/5">
+    <div className="flex flex-col justify-center gap-y-20 px-5 w-full lg:px-20 lg:w-2/5">
       <div className="header-1 flex flex-row gap-x-4">
         <span>Go</span>
         <span className="text-primary">Manger</span>

@@ -18,7 +18,7 @@ export default function SignIn() {
             <Link to="/loginRestaurateur">
               <Button className="w-full">Restaurateur</Button>
             </Link>
-            <Link to="/">
+            <Link to="/loginClient">
               <Button className="w-full">Client</Button>
             </Link>
           </div>
