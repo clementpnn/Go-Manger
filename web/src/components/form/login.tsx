@@ -82,7 +82,7 @@ export default function LoginForm({ type }: { type: "client" | "restaurant" | "a
             <Button type="submit">
               {status === "pending" ? <Spinner /> : "Se connecter"}
             </Button>
-            {(type === "restaurant" || type === "client") &&
+            {type === "client" &&
               <Button variant={"link"} className="text-primary">
                 Pas de compte ? Vous identifiez
               </Button>
