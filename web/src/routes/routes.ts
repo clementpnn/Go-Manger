@@ -18,6 +18,7 @@ import AdminUpdateRestaurant from "@/pages/admin/AdminUpdateRestaurant";
 import withClientAuth from "@/middleware/auth";
 import LoginAdmin from "@/pages/public/LoginAdmin";
 import LoginRestaurateur from "@/pages/public/LoginRestaurateur";
+import LoginClient from "@/pages/public/LoginClient";
 
 const rootRoute = new RootRoute()
 // Public routes
@@ -26,6 +27,7 @@ const signInRoute = new Route({ getParentRoute: () => rootRoute, path: "/signin"
 const RestaurantInfoRoute = new Route({ getParentRoute: () => rootRoute, path: "/restaurant/$id", component: Restaurant })
 const LoginAdminRoute = new Route({ getParentRoute : () => rootRoute, path: "/loginAdmin", component: LoginAdmin })
 const LoginRestaurateurRoute = new Route({ getParentRoute : () => rootRoute, path: "/loginRestaurateur", component: LoginRestaurateur })
+const LoginClientRoute = new Route({ getParentRoute : () => rootRoute, path: "/loginClient", component: LoginClient })
 // Client routes
 const ClientRoute = new Route({ getParentRoute: () => rootRoute, path: "/client", component: withClientAuth(ClientInfo, "client") })
 const ClientOrderRoute = new Route({ getParentRoute: () => rootRoute, path: "/client/order", component: withClientAuth(ClientOrder, "client") })
@@ -46,6 +48,7 @@ const NotFoundRoute = new Route({ getParentRoute: () => rootRoute, path: "*", co
 
 const routeTree = rootRoute.addChildren([indexRoute, signInRoute, RestaurantInfoRoute, LoginAdminRoute,
   LoginRestaurateurRoute,
+  LoginClientRoute,
   ClientRoute,
   ClientOrderRoute,
   ClientNewOrderRoute,
