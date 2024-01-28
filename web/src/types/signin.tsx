@@ -33,3 +33,17 @@ export const register = z
     message: "Passwords must match",
     path: ["password_confirmation"],
   });
+
+export const registerRestaurant = z.object({
+  email: z
+    .string()
+    .email()
+    .min(1, { message: "Email cannot be empty" })
+    .max(255, { message: "Email cannot be longer than 255 characters" }),
+  name: z.string().min(4, { message: "Username cannot be empty" }).max(25, { message: "Username cannot be longer than 25 characters" }),
+  image: z
+    .instanceof(File, { message: "Must be a file" })
+    .refine((file) => file.type === "image/png" || file.type === "image/jpeg" || file.type === "image/jpg" || file.type === "image/webp", {
+      message: "Invalid file type. Only PNG, JPEG, JPG or WEBP are allowed.",
+    }),
+});
