@@ -35,8 +35,8 @@ const RestaurantUpdateMenuItemRoute = new Route({ getParentRoute: () => rootRout
 // Admin routes
 const AdminRoute = new Route({ getParentRoute: () => rootRoute, path: "/admin", component: withClientAuth(Admin, "admin") })
 const AdminRestaurantRoute = new Route({ getParentRoute: () => rootRoute, path: "/admin/restaurant", component: withClientAuth(AdminRestaurant, "admin") })
-const AdminAddRestaurantRoute = new Route({ getParentRoute: () => rootRoute, path: "/admin/add", component: withClientAuth(AdminAddRestaurant, "admin") })
-const AdminUpdateRestaurantRoute = new Route({ getParentRoute: () => rootRoute, path: "/admin/update/$id", component: withClientAuth(AdminUpdateRestaurant, "admin") })
+const AdminAddRestaurantRoute = new Route({ getParentRoute: () => rootRoute, path: "/admin/restaurant/add", component: withClientAuth(AdminAddRestaurant, "admin") })
+const AdminUpdateRestaurantRoute = new Route({ getParentRoute: () => rootRoute, path: "/admin/restaurant/update/$id", component: withClientAuth(AdminUpdateRestaurant, "admin") })
 // Not found route
 const NotFoundRoute = new Route({ getParentRoute: () => rootRoute, path: "*", component: NotFound })
 

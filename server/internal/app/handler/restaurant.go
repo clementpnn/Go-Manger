@@ -41,29 +41,34 @@ func AddRestaurant(c *fiber.Ctx) error {
 		return c.Status(400).JSON(fiber.Map{"status": "error", "message": "Restaurant already exists", "data": nil})
 	}
 
-	hash, err := service.HashPassword(restaurant.Password)
+	// hash, err := service.HashPassword(service.GeneratePassword())
+	// if err != nil {
+	// 	return c.Status(500).JSON(fiber.Map{"status": "error", "message": "Couldn't hash password", "data": err})
+	// }
+
+	file, err := c.FormFile("image")
 	if err != nil {
-		return c.Status(500).JSON(fiber.Map{"status": "error", "message": "Couldn't hash password", "data": err})
+		return c.Status(500).JSON(fiber.Map{"status": "error", "message": "Couldn't get image", "data": err})
 	}
 
-	newRestaurant := &model.Restaurant{
-		Name:        restaurant.Name,
-		Description: restaurant.Description,
-		Image:       restaurant.Image,
-		Email:       restaurant.Email,
-		Password:    hash,
-	}
+	// err = c.SaveFile(file, "./uploads/"+file.Filename)
+	// if err != nil {
+	// 	return c.Status(500).JSON(fiber.Map{"status": "error", "message": "Couldn't save image", "data": err})
+	// }
 
-	if err := database.DB.Create(&newRestaurant).Error; err != nil {
-		return c.Status(500).JSON(fiber.Map{"status": "error", "message": "Couldn't create user", "data": err})
-	}
+	// newRestaurant := &model.Restaurant{
+	// 	Name:        restaurant.Name,
+	// 	Description: restaurant.Description,
+	// 	Image:       restaurant.Image,
+	// 	Email:       restaurant.Email,
+	// 	Password:    hash,
+	// }
 
-	token, err := service.GenerateJWT(newRestaurant.Email, newRestaurant.ID, "restaurant")
-	if err != nil {
-		return c.SendStatus(fiber.StatusInternalServerError)
-	}
+	// if err := database.DB.Create(&newRestaurant).Error; err != nil {
+	// 	return c.Status(500).JSON(fiber.Map{"status": "error", "message": "Couldn't create user", "data": err})
+	// }
 
-	return c.JSON(fiber.Map{"status": "success", "message": "Restaurant successfully created", "data": token})
+	return c.JSON(fiber.Map{"status": "success", "message": "Restaurant successfully created", "data": file.Filename})
 }
 
 func GetRestaurant(c *fiber.Ctx) error {

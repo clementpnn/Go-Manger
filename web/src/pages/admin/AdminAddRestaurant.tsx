@@ -1,3 +1,5 @@
+import RegisterRestaurantForm from "@/components/form/registerRestaurant";
+
 export default function AdminAddRestaurant() {
-  return <div>AdminAddRestaurant</div>;
+  return <RegisterRestaurantForm />;
 }
