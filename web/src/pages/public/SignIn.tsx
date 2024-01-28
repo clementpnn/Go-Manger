@@ -24,7 +24,7 @@ export default function SignIn() {
           </div>
         </div>
       </div>
-      <img src={dishesImage} alt="image of two restaurants plates" className="w-3/5"/>
+      <img src={dishesImage} alt="image of two restaurants plates" className="w-3/5 h-screen"/>
     </div>
   );
 }
