@@ -12,7 +12,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import Spinner from "@/assets/icons/spinner.svg?react";
-import { H3 } from "../typography/h3";
 
 export default function LoginForm({ type }: { type: "client" | "restaurant" | "admin" }) {
   const navigate = useNavigate({ from: "/signin" });
@@ -79,9 +78,16 @@ export default function LoginForm({ type }: { type: "client" | "restaurant" | "a
               )}
             />
           </div>
-          <Button type="submit">
-            {status === "pending" ? <Spinner /> : "Se connecter"}
-          </Button>
+          <div className="flex flex-col gap-y-3">
+            <Button type="submit">
+              {status === "pending" ? <Spinner /> : "Se connecter"}
+            </Button>
+            {(type === "restaurant" || type === "client") &&
+              <Button variant={"link"} className="text-primary">
+                Pas de compte ? Vous identifiez
+              </Button>
+            }
+          </div>
         </form>
       </Form>
     </div>

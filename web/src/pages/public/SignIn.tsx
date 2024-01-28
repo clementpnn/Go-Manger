@@ -15,7 +15,7 @@ export default function SignIn() {
             <Link to="/loginAdmin">
               <Button className="w-full">Administrateur</Button>
             </Link>
-            <Link to="/">
+            <Link to="/loginRestaurateur">
               <Button className="w-full">Restaurateur</Button>
             </Link>
             <Link to="/">
