@@ -79,18 +79,12 @@ export default function RegisterRestaurantForm() {
                 <FormLabel>Image</FormLabel>
                 <FormControl>
                   <Input
-                    {...field}
-                    onChange={(e) => {
-                      const file = e.target.files ? e.target.files[0] : null;
-                      field.onChange(file);
-                      if (file) {
-                        form.setValue("image", file);
-                      }
-                    }}
-                    value={field.value.name || ""}
-                    type="file"
-                    accept="image/*"
+                    accept=".jpg, .jpeg, .png, .webp"
                     multiple={false}
+                    type="file"
+                    onChange={(e) =>
+                      field.onChange(e.target.files ? e.target.files[0] : null)
+                    }
                   />
                 </FormControl>
                 <FormMessage />
