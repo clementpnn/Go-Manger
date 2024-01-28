@@ -1,11 +1,30 @@
-import LoginForm from "@/components/form/login";
+import image1 from "@/assets/1.png"
+import { Button } from "@/components/ui/button"
+import { Link } from "@tanstack/react-router"
 
 export default function SignIn() {
   return (
-    <div>
-      <LoginForm type="client" />
-      <LoginForm type="restaurant" />
-      <LoginForm type="admin" />
+    <div className="flex flex-row">
+      <div className="flex flex-col px-20 items-center justify-center w-2/5">
+        <div className="flex flex-col gap-y-20 w-full">
+          <div className="header-1 flex flex-row gap-x-4">
+            <span>Go</span>
+            <span className="text-primary">Manger</span>
+          </div>
+          <div className="flex flex-col gap-y-10">
+            <Link to="/">
+              <Button className="w-full">Administrateur</Button>
+            </Link>
+            <Link to="/">
+              <Button className="w-full">Restaurateur</Button>
+            </Link>
+            <Link to="/">
+              <Button className="w-full">Client</Button>
+            </Link>
+          </div>
+        </div>
+      </div>
+      <img src={image1} alt="image of two restaurants plates" className="w-3/5"/>
     </div>
   );
 }

@@ -17,10 +17,11 @@ export default {
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
-        primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
-        },
+        primary: "#007F6C",
+        "neutral-0": "#FFFFFF",
+        "neutral-1": "#FBFBFB",
+        "neutral-2": "#2D2D2D",
+        "neutral-3": "#000000",
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",

@@ -65,12 +65,68 @@
     --ring: 212.7 26.8% 83.9%;
   }
 }
+
+@layer utilities {
+  .header-1 {
+    @apply Nifty text-6xl leading-[4.5rem] tracking-[0.375rem] capitalize;
+  }
+
+  .header-2 {
+    @apply Nifty text-4xl leading-[3rem] tracking-[0.375rem] capitalize;
+  }
+
+  .header-3 {
+    @apply Nifty text-3xl leading-[2.4rem] tracking-[0.375rem] capitalize;
+  }
+
+  .header-4 {
+    @apply Nifty text-2xl leading-[1.8rem] tracking-[0.375rem] capitalize;
+  }
+
+  .button {
+    @apply Poppins text-xl leading-[1.875rem] font-bold capitalize;
+  }
+
+  .label {
+    @apply Poppins text-xl leading-[1.875rem] font-bold tracking-[0.375rem] capitalize;
+  }
+
+  .placeholder {
+    @apply Poppins text-xl leading-[1.875rem] tracking-[0.375rem];
+  }
+
+  .body {
+    @apply Poppins text-xl leading-[1.875rem];
+  }
+
+  .body-sm {
+    @apply Poppins text-base leading-[1.5rem];
+  }
+}
  
 @layer base {
   * {
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-neutral-1 w-full;
   }
+}
+
+@font-face {
+  font-family: Poppins;
+  src: url(@/assets/fonts/POPPINS-REGULAR.TTF)
+}
+
+.Poppins {
+  font-family: Poppins;
+}
+
+@font-face {
+  font-family: Nifty;
+  src: url(@/assets/fonts/NIFTY-REGULAR.OTF)
+}
+
+.Nifty {
+  font-family: Nifty;
 }
