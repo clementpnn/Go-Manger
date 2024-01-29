@@ -1,3 +1,5 @@
+import RestaurantCard from "@/components/card/restaurantCard";
+import NavbarAdmin from "@/components/navbar/navbarAdmin";
 import { Button } from "@/components/ui/button";
 import { AdminRestaurantService } from "@/services/admin";
 import { useQuery } from "@tanstack/react-query";
@@ -15,19 +17,23 @@ export default function AdminRestaurant() {
   }
 
   return (
-    <>
-      <Link to="/admin/restaurant/add">
-        <Button>Add Restaurant</Button>
-      </Link>
-      <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-y-[3.75rem]">
+      <NavbarAdmin />
+      <div className="flex flex-col gap-y-[3.75rem] px-20">
+        <div className="flex flex-row justify-between items-center">
+          <p className="header-2 text-neutral-3">Restaurants</p>
+          <Link to="/admin/restaurant/add">
+            <Button>Add Restaurant</Button>
+          </Link>
+        </div>
+      </div>
+      <div className="flex flex-wrap justify-between px-20 gap-y-10">
         {data.data.map((item: Restaurant) => (
-          // changer la route pour afficher le restaurant pour les admins
           <Link key={item.id} to="/restaurant/$id" params={{ id: item.id.toString() }} className="pointer">
-            <h2>{item.name}</h2>
-            <p>{item.description}</p>
+            <RestaurantCard restaurantName={item.name} description={item.description} image={item.image} />
           </Link>
         ))}
       </div>
-    </>
+    </div>
   );
 }
