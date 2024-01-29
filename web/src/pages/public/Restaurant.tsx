@@ -1,8 +1,4 @@
-// import { H4 } from "@/components/typography/h4";
-// import { H3 } from "@/components/typography/h3";
-// import { P } from "@/components/typography/p";
 import NavbarAdmin from "@/components/navbar/navbarAdmin";
-import { P } from "@/components/typography/p";
 import { RestaurantInfoPublicService } from "@/services/public";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "@tanstack/react-router";
