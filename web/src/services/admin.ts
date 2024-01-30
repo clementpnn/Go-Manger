@@ -7,3 +7,7 @@ export function AdminRestaurantService(): Promise<HomeRequest> {
 export function RegisterRestaurantService({ email, name, image }: { email: string, name: string, image: File }): Promise<SignInRequest> {
   return KyInstancePrivate.post("admin/restaurant", { json: { email, name, image } }).json()
 }
+
+export function GetAdminProfileService(): Promise<AdminProfileInfo> {
+  return KyInstancePrivate.get("admin/profile").json()
+}

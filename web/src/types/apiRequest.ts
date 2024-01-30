@@ -34,3 +34,13 @@ type RestaurantWithMenu = Restaurant & {
 type RestaurantInfoPublic = ApiRequest & {
   data: RestaurantWithMenu
 }
+
+type Admin = {
+  id: number
+  name: string
+  email: string
+}
+
+type AdminProfileInfo = ApiRequest & {
+  data: Admin
+}

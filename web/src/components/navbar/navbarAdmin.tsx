@@ -15,7 +15,7 @@ export default function NavbarAdmin() {
         <Link to="/">
           <Button variant={"link"}>messages</Button>
         </Link>
-        <Link to="/">
+        <Link to="/admin/profile">
           <Button variant={"link"}>profile</Button>
         </Link>
       </div>

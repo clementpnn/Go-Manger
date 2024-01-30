@@ -40,6 +40,7 @@ func SetupRoutes(app *fiber.App) {
 	admin.Post("/restaurant", handler.AddRestaurant)
 	admin.Put("/restaurant/:id", handler.UpdateRestaurant)
 	admin.Delete("/restaurant/:id", handler.DeleteRestaurant)
+	admin.Get("/profile", handler.GetAdmin)
 
 	restaurant := api.Group("/restaurant", middleware.AuthMiddleware("restaurant"))
 	restaurant.Get("/me", handler.GetRestaurant)
