@@ -5,16 +5,15 @@ import (
 	"go-manger/internal/domain/model"
 	"go-manger/internal/domain/service"
 	"go-manger/internal/infrastructure/database"
-	"strconv"
 
 	"github.com/gofiber/fiber/v2"
 )
 
 func GetAdmin(c *fiber.Ctx) error {
-	id := c.Params("id")
+	id, err := service.GetUserIDFromJWT(c)
 
-	if _, err := strconv.Atoi(id); err != nil {
-		return c.Status(400).JSON(fiber.Map{"status": "error", "message": "Invalid ID format", "data": nil})
+	if err != nil {
+		return c.Status(500).JSON(fiber.Map{"status": "error", "message": "Couldn't get user", "data": err})
 	}
 
 	var user model.Admin
@@ -23,11 +22,17 @@ func GetAdmin(c *fiber.Ctx) error {
 		return c.Status(500).JSON(fiber.Map{"status": "error", "message": result.Error.Error(), "data": nil})
 	}
 
+	response := entity.AdminProfile{
+		ID:    user.ID,
+		Name:  user.Name,
+		Email: user.Email,
+	}
+
 	if user.Email == "" {
 		return c.Status(404).JSON(fiber.Map{"status": "error", "message": "No user found with ID", "data": nil})
 	}
 
-	return c.JSON(fiber.Map{"status": "success", "message": "User found", "data": user})
+	return c.JSON(fiber.Map{"status": "success", "message": "User found", "data": response})
 }
 
 func RegisterAdmin(c *fiber.Ctx) error {
