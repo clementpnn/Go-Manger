@@ -9,7 +9,7 @@ export default function NavbarAdmin() {
         <span className="text-primary">Manger</span>
       </div>
       <div className="flex flex-row gap-x-10">
-        <Link to="/">
+        <Link to="/admin/restaurant">
           <Button variant={"link"}>restaurants</Button>
         </Link>
         <Link to="/">
