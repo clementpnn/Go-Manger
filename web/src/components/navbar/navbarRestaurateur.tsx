@@ -1,3 +1,4 @@
+import { Link } from "@tanstack/react-router";
 import { Button } from "../ui/button";
 
 export default function NavbarRestaurateur() {
@@ -8,8 +9,12 @@ export default function NavbarRestaurateur() {
         <span className="text-primary">Manger</span>
       </div>
       <div className="flex flex-row gap-x-10">
-        <Button variant={"link"}>Commandes</Button>
-        <Button variant={"link"}>Restaurant</Button>
+        <Link to="/">
+          <Button variant={"link"}>Commandes</Button>
+        </Link>
+        <Link to="/">
+          <Button variant={"link"}>Restaurant</Button>
+        </Link>
       </div>
     </div>
   )
