@@ -25,7 +25,7 @@ export default function AdminProfile() {
           <p className="body text-neutral-2">{data.data.name}</p>
           <p className="body text-neutral-2">{data.data.email}</p>
         </div>
-        <Link to="/">
+        <Link to="/admin/profile/update">
           <Button>Modifier</Button>
         </Link>
       </div>

@@ -11,3 +11,7 @@ export function RegisterRestaurantService({ email, name, image }: { email: strin
 export function GetAdminProfileService(): Promise<AdminProfileInfo> {
   return KyInstancePrivate.get("admin/profile").json()
 }
+
+export function UpdateAdminProfileService({ email, name }: { email: string, name: string }): Promise<UpdateRequest> {
+  return KyInstancePrivate.put("admin/profile", { json: { email, name } }).json()
+}

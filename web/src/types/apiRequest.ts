@@ -7,6 +7,10 @@ type SignInRequest = ApiRequest & {
   data: string
 }
 
+type UpdateRequest = ApiRequest & {
+  data: string
+}
+
 type Restaurant = {
   id: number
   name: string
