@@ -82,3 +82,35 @@ func getAdminByEmail(email string) (*model.Admin, error) {
 	}
 	return &admin, nil
 }
+
+func UpdateAdmin(c *fiber.Ctx) error {
+	id, err := service.GetUserIDFromJWT(c)
+
+	if err != nil {
+		return c.Status(500).JSON(fiber.Map{"status": "error", "message": "Couldn't get user", "data": err})
+	}
+	admin_input := new(model.Admin)
+
+	if err := c.BodyParser(admin_input); err != nil {
+		return c.Status(500).JSON(fiber.Map{"status": "error", "message": "Review your input", "data": err})
+	}
+
+	var admin model.Admin
+	database.DB.First(&admin, id)
+
+	if admin_input.Name != admin.Name {
+		admin.Name = admin_input.Name
+	}
+
+	if admin_input.Email != admin.Email {
+		admin.Email = admin_input.Email
+	}
+
+	if admin_input.Password != admin.Password {
+		admin.Password = admin_input.Password
+	}
+
+	database.DB.Updates(&admin)
+
+	return c.JSON(fiber.Map{"status": "success", "message": "Your admin profile is updated", "data": nil})
+}
