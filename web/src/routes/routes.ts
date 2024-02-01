@@ -7,6 +7,7 @@ import Restaurant from "@/pages/public/Restaurant";
 import ClientOrder from "@/pages/client/ClientOrder";
 import ClientNewOrder from "@/pages/client/ClientNewOrder";
 import ClientOrderDetail from "@/pages/client/ClientOrderDetail";
+import ClientProfile from "@/pages/client/ClientProfile";
 import RestaurantInfo from "@/pages/restaurant/RestaurantInfo";
 import RestaurantOrder from "@/pages/restaurant/RestaurantOrder";
 import RestaurantMenuItem from "@/pages/restaurant/RestaurantMenuItem";
@@ -36,6 +37,7 @@ const ClientRoute = new Route({ getParentRoute: () => rootRoute, path: "/client"
 const ClientOrderRoute = new Route({ getParentRoute: () => rootRoute, path: "/client/order", component: withClientAuth(ClientOrder, "client") })
 const ClientNewOrderRoute = new Route({ getParentRoute: () => rootRoute, path: "/client/new", component: withClientAuth(ClientNewOrder, "client") })
 const ClientOrderDetailRoute = new Route({ getParentRoute: () => rootRoute, path: "/client/order/$id", component: withClientAuth(ClientOrderDetail, "client") })
+const ClientProfileRoute = new Route({ getParentRoute: () => rootRoute, path: "/client/profile", component: withClientAuth(ClientProfile, "client") })
 // Restaurant routes
 const RestaurantRoute = new Route({ getParentRoute: () => rootRoute, path: "/restaurant", component: withClientAuth(RestaurantInfo, "restaurant") })
 const RestaurantOrderRoute = new Route({ getParentRoute: () => rootRoute, path: "/restaurant/order", component: withClientAuth(RestaurantOrder, "restaurant") })
@@ -59,6 +61,7 @@ const routeTree = rootRoute.addChildren([indexRoute, signInRoute, RestaurantInfo
   ClientOrderRoute,
   ClientNewOrderRoute,
   ClientOrderDetailRoute,
+  ClientProfileRoute,
   RestaurantRoute,
   RestaurantOrderRoute,
   RestaurantMenuItemRoute,
