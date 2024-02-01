@@ -18,6 +18,10 @@ type Restaurant = {
   image: string
 }
 
+type RestaurantProfile = ApiRequest & {
+  data: Restaurant
+}
+
 type HomeRequest = ApiRequest & {
   data: Restaurant[]
 }
