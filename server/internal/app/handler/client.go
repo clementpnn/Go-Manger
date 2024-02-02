@@ -96,3 +96,41 @@ func DeleteOrder(c *fiber.Ctx) error {
 	return c.JSON(fiber.Map{"status": "success", "message": "Order deleted", "data": nil})
 
 }
+
+func UpdateClient(c *fiber.Ctx) error {
+	id, err := service.GetUserIDFromJWT(c)
+
+	if err != nil {
+		return c.Status(500).JSON(fiber.Map{"status": "error", "message": "Couldn't get user", "data": err})
+	}
+	client_input := new(model.Client)
+
+	if err := c.BodyParser(client_input); err != nil {
+		return c.Status(500).JSON(fiber.Map{"status": "error", "message": "Review your input", "data": err})
+	}
+
+	var client model.Client
+
+	hash, err := service.HashPassword(client_input.Password)
+	if err != nil {
+		return c.Status(500).JSON(fiber.Map{"status": "error", "message": "Couldn't hash password", "data": err})
+	}
+
+	database.DB.First(&client, id)
+
+	if client_input.Name != client.Name {
+		client.Name = client_input.Name
+	}
+
+	if client_input.Email != client.Email {
+		client.Email = client_input.Email
+	}
+
+	if client_input.Password != client.Password {
+		client.Password = hash
+	}
+
+	database.DB.Updates(&client)
+
+	return c.JSON(fiber.Map{"status": "success", "message": "Your client profile is updated", "data": nil})
+}

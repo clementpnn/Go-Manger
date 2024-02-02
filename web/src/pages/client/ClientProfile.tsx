@@ -24,8 +24,7 @@ export default function ClientProfile() {
           <p className="body text-neutral-2">{data.data.name}</p>
           <p className="body text-neutral-2">{data.data.email}</p>
         </div>
-        {/* /client/profile/update */}
-        <Link to="/">
+        <Link to="/client/profile/update">
           <Button>Modifier</Button>
         </Link>
       </div>
