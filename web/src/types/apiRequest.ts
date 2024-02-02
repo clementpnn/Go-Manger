@@ -52,3 +52,13 @@ type Admin = {
 type AdminProfileInfo = ApiRequest & {
   data: Admin
 }
+
+type Client = {
+  id: number
+  name: string
+  email: string
+}
+
+type ClientProfile = ApiRequest & {
+  data: Client
+}
