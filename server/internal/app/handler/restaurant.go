@@ -5,7 +5,6 @@ import (
 	"go-manger/internal/domain/model"
 	"go-manger/internal/domain/service"
 	"go-manger/internal/infrastructure/database"
-	"log"
 	"path/filepath"
 	"strconv"
 
@@ -52,7 +51,6 @@ func AddRestaurant(c *fiber.Ctx) error {
 
 	file, err := c.FormFile("image")
 	if err != nil {
-		log.Printf("Erreur lors de la récupération du fichier : %v", err)
 		return c.Status(500).JSON(fiber.Map{"status": "error", "message": "Couldn't get image", "data": err})
 	}
 
@@ -61,7 +59,6 @@ func AddRestaurant(c *fiber.Ctx) error {
 
 	err = c.SaveFile(file, "../../../uploads/"+uniqueFileName)
 	if err != nil {
-		log.Printf("Erreur lors de la sauvegarde du fichier : %v", err)
 		return c.Status(500).JSON(fiber.Map{"status": "error", "message": "Couldn't save image", "data": err})
 	}
 
