@@ -31,6 +31,7 @@ func SetupRoutes(app *fiber.App) {
 	client.Get("/", handler.GetClient)
 	client.Post("/order/:id", handler.AddOrder) // TODO: supprimer restaurant id
 	client.Get("/order/:id", handler.GetOrder)
+	client.Put("/update", handler.UpdateClient)
 	// // ? Modifier une commande.
 	// client.Put("/order/:id") // TODO: créé handler
 	// client.Delete("/order/:id", handler.DeleteOrder) // TODO: à supprimer
