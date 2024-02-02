@@ -4,6 +4,7 @@ import (
 	"go-manger/internal/app/router"
 	"go-manger/internal/infrastructure/database"
 	"log"
+	"os"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
@@ -18,6 +19,13 @@ func main() {
 		AllowMethods:     "GET, POST, PUT, DELETE",
 		AllowCredentials: true,
 	}))
+
+	path := "./uploads/"
+	if _, err := os.Stat(path); os.IsNotExist(err) {
+		os.MkdirAll(path, os.ModePerm)
+	}
+
+	app.Static("/uploads", "./uploads")
 
 	router.SetupRoutes(app)
 

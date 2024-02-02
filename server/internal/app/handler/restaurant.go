@@ -5,7 +5,11 @@ import (
 	"go-manger/internal/domain/model"
 	"go-manger/internal/domain/service"
 	"go-manger/internal/infrastructure/database"
+	"log"
+	"path/filepath"
 	"strconv"
+
+	"github.com/google/uuid"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -31,7 +35,7 @@ func GetAllRestaurant(c *fiber.Ctx) error {
 }
 
 func AddRestaurant(c *fiber.Ctx) error {
-	restaurant := new(model.Restaurant)
+	restaurant := new(entity.AddRestaurant)
 	if err := c.BodyParser(restaurant); err != nil {
 		return c.Status(500).JSON(fiber.Map{"status": "error", "message": "Review your input", "data": err})
 	}
@@ -41,34 +45,39 @@ func AddRestaurant(c *fiber.Ctx) error {
 		return c.Status(400).JSON(fiber.Map{"status": "error", "message": "Restaurant already exists", "data": nil})
 	}
 
-	// hash, err := service.HashPassword(service.GeneratePassword())
-	// if err != nil {
-	// 	return c.Status(500).JSON(fiber.Map{"status": "error", "message": "Couldn't hash password", "data": err})
-	// }
+	hash, err := service.HashPassword(service.GeneratePassword())
+	if err != nil {
+		return c.Status(500).JSON(fiber.Map{"status": "error", "message": "Couldn't hash password", "data": err})
+	}
 
 	file, err := c.FormFile("image")
 	if err != nil {
+		log.Printf("Erreur lors de la récupération du fichier : %v", err)
 		return c.Status(500).JSON(fiber.Map{"status": "error", "message": "Couldn't get image", "data": err})
 	}
 
-	// err = c.SaveFile(file, "./uploads/"+file.Filename)
-	// if err != nil {
-	// 	return c.Status(500).JSON(fiber.Map{"status": "error", "message": "Couldn't save image", "data": err})
-	// }
+	extension := filepath.Ext(file.Filename)
+	uniqueFileName := uuid.New().String() + extension
 
-	// newRestaurant := &model.Restaurant{
-	// 	Name:        restaurant.Name,
-	// 	Description: restaurant.Description,
-	// 	Image:       restaurant.Image,
-	// 	Email:       restaurant.Email,
-	// 	Password:    hash,
-	// }
+	err = c.SaveFile(file, "../../../uploads/"+uniqueFileName)
+	if err != nil {
+		log.Printf("Erreur lors de la sauvegarde du fichier : %v", err)
+		return c.Status(500).JSON(fiber.Map{"status": "error", "message": "Couldn't save image", "data": err})
+	}
 
-	// if err := database.DB.Create(&newRestaurant).Error; err != nil {
-	// 	return c.Status(500).JSON(fiber.Map{"status": "error", "message": "Couldn't create user", "data": err})
-	// }
+	newRestaurant := &model.Restaurant{
+		Name:        restaurant.Name,
+		Description: restaurant.Description,
+		Image:       uniqueFileName,
+		Email:       restaurant.Email,
+		Password:    hash,
+	}
 
-	return c.JSON(fiber.Map{"status": "success", "message": "Restaurant successfully created", "data": file.Filename})
+	if err := database.DB.Create(&newRestaurant).Error; err != nil {
+		return c.Status(500).JSON(fiber.Map{"status": "error", "message": "Couldn't create user", "data": err})
+	}
+
+	return c.JSON(fiber.Map{"status": "success", "message": "Restaurant created", "data": nil})
 }
 
 func GetRestaurant(c *fiber.Ctx) error {

@@ -12,7 +12,7 @@ export const register = z
       .email()
       .min(1, { message: "Email cannot be empty" })
       .max(255, { message: "Email cannot be longer than 255 characters" }),
-    name: z.string().min(4, { message: "Username cannot be empty" }).max(25, { message: "Username cannot be longer than 25 characters" }),
+    name: z.string().min(4, { message: "Username cannot be empty" }).max(255, { message: "Username cannot be longer than 255 characters" }),
     password: z
       .string()
       .min(8, { message: "Password cannot be empty" })
@@ -40,7 +40,11 @@ export const registerRestaurant = z.object({
     .email()
     .min(1, { message: "Email cannot be empty" })
     .max(255, { message: "Email cannot be longer than 255 characters" }),
-  name: z.string().min(4, { message: "Username cannot be empty" }).max(25, { message: "Username cannot be longer than 25 characters" }),
+  name: z.string().min(4, { message: "Username cannot be empty" }).max(255, { message: "Username cannot be longer than 255 characters" }),
+  description: z
+    .string()
+    .min(4, { message: "Description cannot be empty" })
+    .max(255, { message: "Description cannot be longer than 255 characters" }),
   image: z
     .instanceof(File, { message: "Must be a file" })
     .refine((file) => file.type === "image/png" || file.type === "image/jpeg" || file.type === "image/jpg" || file.type === "image/webp", {

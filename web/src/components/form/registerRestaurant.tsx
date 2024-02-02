@@ -17,7 +17,7 @@ export default function RegisterRestaurantForm() {
   const form = useForm<z.infer<typeof registerRestaurant>>({
     resolver: zodResolver(registerRestaurant),
     mode: "onSubmit",
-    defaultValues: { email: "", name: "", image: new File([], "") },
+    defaultValues: { email: "", name: "", description: "", image: new File([], "") },
   });
 
   const { mutate, data, isError, error, status } = useMutation({ mutationFn: RegisterRestaurantService });
@@ -74,6 +74,20 @@ export default function RegisterRestaurantForm() {
 
             <FormField
               control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Description</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
               name="image"
               render={({ field }) => (
                 <FormItem>
@@ -83,9 +97,7 @@ export default function RegisterRestaurantForm() {
                       accept=".jpg, .jpeg, .png, .webp"
                       multiple={false}
                       type="file"
-                      onChange={(e) =>
-                        field.onChange(e.target.files ? e.target.files[0] : null)
-                      }
+                      onChange={(e) => field.onChange(e.target.files ? e.target.files[0] : null)}
                     />
                   </FormControl>
                   <FormMessage />
@@ -93,9 +105,7 @@ export default function RegisterRestaurantForm() {
               )}
             />
           </div>
-          <Button type="submit">
-            {status === "pending" ? <Spinner /> : "Ajouter le restaurant"}
-          </Button>
+          <Button type="submit">{status === "pending" ? <Spinner /> : "Ajouter le restaurant"}</Button>
         </form>
       </Form>
     </div>
