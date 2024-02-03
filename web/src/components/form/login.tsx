@@ -26,6 +26,7 @@ export default function LoginForm({ type }: { type: "client" | "restaurant" | "a
   useEffect(() => {
     if (status === "success") {
       localStorage.setItem("jwtToken", data.data);
+
       toast(data.message);
       navigate({ to: `/${type}` });
     }
@@ -57,7 +58,7 @@ export default function LoginForm({ type }: { type: "client" | "restaurant" | "a
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input {...field} placeholder="Entrez votre email"/>
+                    <Input {...field} placeholder="Entrez votre email" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -71,7 +72,7 @@ export default function LoginForm({ type }: { type: "client" | "restaurant" | "a
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input {...field} placeholder="Entrez votre mot de passe"/>
+                    <Input {...field} placeholder="Entrez votre mot de passe" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -79,14 +80,12 @@ export default function LoginForm({ type }: { type: "client" | "restaurant" | "a
             />
           </div>
           <div className="flex flex-col gap-y-3">
-            <Button type="submit">
-              {status === "pending" ? <Spinner /> : "Se connecter"}
-            </Button>
-            {type === "client" &&
+            <Button type="submit">{status === "pending" ? <Spinner /> : "Se connecter"}</Button>
+            {type === "client" && (
               <Button variant={"link"} className="text-primary">
                 Pas de compte ? Vous identifiez
               </Button>
-            }
+            )}
           </div>
         </form>
       </Form>

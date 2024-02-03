@@ -12,12 +12,12 @@ import (
 func AddNewMenuItem(c *fiber.Ctx) error {
 	id, err := service.GetUserIDFromJWT(c)
 	if err != nil {
-		return c.Status(500).JSON(fiber.Map{"status": "error", "message": "Couldn't get user", "data": err})
+		return c.Status(500).JSON(fiber.Map{"message": "Couldn't get user", "data": err})
 	}
 
 	input := new(model.MenuItem)
 	if err := c.BodyParser(&input); err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"status": "error", "message": "Error on menu item request", "data": err})
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"message": "Error on menu item request", "data": err})
 	}
 
 	newItem := &model.MenuItem{
@@ -30,26 +30,26 @@ func AddNewMenuItem(c *fiber.Ctx) error {
 	}
 
 	if result := database.DB.Create(&newItem); result.Error != nil {
-		return c.Status(500).JSON(fiber.Map{"status": "error", "message": "Couldn't create menu item", "data": err})
+		return c.Status(500).JSON(fiber.Map{"message": "Couldn't create menu item", "data": err})
 	}
 
-	return c.JSON(fiber.Map{"status": "success", "message": "Menu item created", "data": nil})
+	return c.JSON(fiber.Map{"message": "Menu item created", "data": nil})
 }
 
 func DeleteMenuItem(c *fiber.Ctx) error {
 	id := c.Params("id")
 
 	if _, err := strconv.Atoi(id); err != nil {
-		return c.Status(400).JSON(fiber.Map{"status": "error", "message": "Invalid ID format", "data": nil})
+		return c.Status(400).JSON(fiber.Map{"message": "Invalid ID format", "data": nil})
 	}
 
 	var item model.MenuItem
 
 	if result := database.DB.Delete(&item, id); result.Error != nil {
-		return c.Status(500).JSON(fiber.Map{"status": "error", "message": result.Error.Error(), "data": nil})
+		return c.Status(500).JSON(fiber.Map{"message": result.Error.Error(), "data": nil})
 	}
 
-	return c.JSON(fiber.Map{"status": "success", "message": "Menu item deleted", "data": nil})
+	return c.JSON(fiber.Map{"message": "Menu item deleted", "data": nil})
 
 }
 
@@ -58,12 +58,12 @@ func UpdateMenuItem(c *fiber.Ctx) error {
 	menuItempInput := new(model.MenuItem)
 
 	if err := c.BodyParser(menuItempInput); err != nil {
-		return c.Status(500).JSON(fiber.Map{"status": "error", "message": "Review your input", "data": err})
+		return c.Status(500).JSON(fiber.Map{"message": "Review your input", "data": err})
 	}
 
 	var menuItem model.MenuItem
 	if result := database.DB.First(&menuItem, id); result.Error != nil {
-		return c.Status(404).JSON(fiber.Map{"status": "error", "message": "Menu item not found", "data": result.Error})
+		return c.Status(404).JSON(fiber.Map{"message": "Menu item not found", "data": result.Error})
 	}
 
 	if menuItempInput.Name != menuItem.Name {
@@ -88,5 +88,5 @@ func UpdateMenuItem(c *fiber.Ctx) error {
 
 	database.DB.Updates(&menuItem)
 
-	return c.JSON(fiber.Map{"status": "success", "message": "Menu item updated", "data": nil})
+	return c.JSON(fiber.Map{"message": "Menu item updated", "data": nil})
 }

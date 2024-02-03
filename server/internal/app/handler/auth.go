@@ -4,114 +4,206 @@ import (
 	"go-manger/internal/domain/entity"
 	"go-manger/internal/domain/model"
 	"go-manger/internal/domain/service"
+	"go-manger/internal/infrastructure/database"
+	"path/filepath"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/google/uuid"
 )
 
-func LoginClient(c *fiber.Ctx) error {
+func LoginAdmin(c *fiber.Ctx) error {
 	input := new(entity.Auth)
-
 	if err := c.BodyParser(&input); err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"status": "error", "message": "Error on login request", "data": err})
+		return c.SendStatus(fiber.StatusBadRequest)
 	}
 
-	user, err := new(model.Client), *new(error)
-
-	if service.Valid(input.Email) {
-		user, err = getClientByEmail(input.Email)
-		if err != nil {
-			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"status": "error", "message": "Error on email", "data": err})
-		}
+	if !service.Valid(input.Email) {
+		return c.SendStatus(fiber.StatusBadRequest)
 	}
 
-	if user.Email == "" {
-		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"status": "error", "message": "User not found", "data": err})
-	}
-
-	if user.DeletedAt.Valid {
-		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"status": "error", "message": "User deleted", "data": err})
+	user := new(model.Admin)
+	if err := database.DB.Where("email = ?", input.Email).First(&user).Error; err != nil {
+		return c.SendStatus(fiber.StatusNotFound)
 	}
 
 	if !service.CheckPasswordHash(input.Password, user.Password) {
-		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"status": "error", "message": "Invalid password", "data": nil})
+		return c.SendStatus(fiber.StatusUnauthorized)
 	}
 
-	token, err := service.GenerateJWT(user.Email, user.ID, "client")
+	token, err := service.GenerateJWT(user.Email, user.ID, string(entity.AdminType))
 	if err != nil {
 		return c.SendStatus(fiber.StatusInternalServerError)
 	}
 
-	return c.JSON(fiber.Map{"status": "success", "message": "Success login", "data": token})
+	return c.JSON(fiber.Map{"message": "Success login", "data": token})
+}
+
+func LoginClient(c *fiber.Ctx) error {
+	input := new(entity.Auth)
+	if err := c.BodyParser(&input); err != nil {
+		return c.SendStatus(fiber.StatusBadRequest)
+	}
+
+	if !service.Valid(input.Email) {
+		return c.SendStatus(fiber.StatusBadRequest)
+	}
+
+	user := new(model.Client)
+	if err := database.DB.Where("email = ?", input.Email).First(&user).Error; err != nil {
+		return c.SendStatus(fiber.StatusNotFound)
+	}
+
+	if !service.CheckPasswordHash(input.Password, user.Password) {
+		return c.SendStatus(fiber.StatusUnauthorized)
+	}
+
+	token, err := service.GenerateJWT(user.Email, user.ID, string(entity.ClientType))
+	if err != nil {
+		return c.SendStatus(fiber.StatusInternalServerError)
+	}
+
+	return c.JSON(fiber.Map{"message": "Success login", "data": token})
 }
 
 func LoginRestaurant(c *fiber.Ctx) error {
 	input := new(entity.Auth)
-
 	if err := c.BodyParser(&input); err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"status": "error", "message": "Error on login request", "data": err})
+		return c.SendStatus(fiber.StatusBadRequest)
 	}
 
-	user, err := new(model.Restaurant), *new(error)
-
-	if service.Valid(input.Email) {
-		user, err = getRestaurantByEmail(input.Email)
-		if err != nil {
-			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"status": "error", "message": "Error on email", "data": err})
-		}
+	if !service.Valid(input.Email) {
+		return c.SendStatus(fiber.StatusBadRequest)
 	}
 
-	if user.Email == "" {
-		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"status": "error", "message": "User not found", "data": err})
-	}
-
-	if user.DeletedAt.Valid {
-		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"status": "error", "message": "User deleted", "data": err})
+	user := new(model.Restaurant)
+	if err := database.DB.Where("email = ?", input.Email).First(&user).Error; err != nil {
+		return c.SendStatus(fiber.StatusNotFound)
 	}
 
 	if !service.CheckPasswordHash(input.Password, user.Password) {
-		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"status": "error", "message": "Invalid password", "data": nil})
+		return c.SendStatus(fiber.StatusUnauthorized)
 	}
 
-	token, err := service.GenerateJWT(user.Email, user.ID, "restaurant")
+	token, err := service.GenerateJWT(user.Email, user.ID, string(entity.RestaurantType))
 	if err != nil {
 		return c.SendStatus(fiber.StatusInternalServerError)
 	}
 
-	return c.JSON(fiber.Map{"status": "success", "message": "Success login", "data": token})
+	return c.JSON(fiber.Map{"message": "Success login", "data": token})
 }
 
-func LoginAdmin(c *fiber.Ctx) error {
-	input := new(entity.Auth)
-
-	if err := c.BodyParser(&input); err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"status": "error", "message": "Error on login request", "data": err})
+func RegisterAdmin(c *fiber.Ctx) error {
+	user := new(model.Admin)
+	if err := c.BodyParser(user); err != nil {
+		return c.SendStatus(fiber.StatusBadRequest)
 	}
 
-	user, err := new(model.Admin), *new(error)
-
-	if service.Valid(input.Email) {
-		user, err = getAdminByEmail(input.Email)
-		if err != nil {
-			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"status": "error", "message": "Error on email", "data": err})
-		}
+	if !service.Valid(user.Email) {
+		return c.SendStatus(fiber.StatusBadRequest)
 	}
 
-	if user.Email == "" {
-		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"status": "error", "message": "User not found", "data": err})
+	var existingUser model.Admin
+	if err := database.DB.Where("email = ?", user.Email).First(&existingUser).Error; err == nil {
+		return c.SendStatus(fiber.StatusConflict)
 	}
 
-	if user.DeletedAt.Valid {
-		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"status": "error", "message": "User deleted", "data": err})
-	}
-
-	if !service.CheckPasswordHash(input.Password, user.Password) {
-		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"status": "error", "message": "Invalid password", "data": nil})
-	}
-
-	token, err := service.GenerateJWT(user.Email, user.ID, "admin")
+	hash, err := service.HashPassword(user.Password)
 	if err != nil {
 		return c.SendStatus(fiber.StatusInternalServerError)
 	}
 
-	return c.JSON(fiber.Map{"status": "success", "message": "Success login", "data": token})
+	user.Password = hash
+
+	if err := database.DB.Create(&user).Error; err != nil {
+		return c.SendStatus(fiber.StatusInternalServerError)
+	}
+
+	token, err := service.GenerateJWT(user.Email, user.ID, string(entity.AdminType))
+	if err != nil {
+		return c.SendStatus(fiber.StatusInternalServerError)
+	}
+
+	return c.JSON(fiber.Map{"message": "Admin created", "data": token})
+}
+
+func RegisterClient(c *fiber.Ctx) error {
+	user := new(model.Client)
+	if err := c.BodyParser(user); err != nil {
+		return c.SendStatus(fiber.StatusBadRequest)
+	}
+
+	if !service.Valid(user.Email) {
+		return c.SendStatus(fiber.StatusBadRequest)
+	}
+
+	var existingUser model.Client
+	if err := database.DB.Where("email = ?", user.Email).First(&existingUser).Error; err == nil {
+		return c.SendStatus(fiber.StatusConflict)
+	}
+
+	hash, err := service.HashPassword(user.Password)
+	if err != nil {
+		return c.SendStatus(fiber.StatusInternalServerError)
+	}
+
+	user.Password = hash
+
+	if err := database.DB.Create(&user).Error; err != nil {
+		return c.SendStatus(fiber.StatusInternalServerError)
+	}
+
+	token, err := service.GenerateJWT(user.Email, user.ID, string(entity.ClientType))
+	if err != nil {
+		return c.SendStatus(fiber.StatusInternalServerError)
+	}
+
+	return c.JSON(fiber.Map{"message": "User created", "data": token})
+}
+
+func RegisterRestaurant(c *fiber.Ctx) error {
+	user := new(entity.AddRestaurant)
+	if err := c.BodyParser(user); err != nil {
+		return c.SendStatus(fiber.StatusBadRequest)
+	}
+
+	if !service.Valid(user.Email) {
+		return c.SendStatus(fiber.StatusBadRequest)
+	}
+
+	var existingUser model.Restaurant
+	if err := database.DB.Where("email = ?", user.Email).First(&existingUser).Error; err == nil {
+		return c.SendStatus(fiber.StatusConflict)
+	}
+
+	hash, err := service.HashPassword(service.GeneratePassword())
+	if err != nil {
+		return c.SendStatus(fiber.StatusInternalServerError)
+	}
+
+	file, err := c.FormFile("image")
+	if err != nil {
+		return c.SendStatus(fiber.StatusInternalServerError)
+	}
+
+	extension := filepath.Ext(file.Filename)
+	uniqueFileName := uuid.New().String() + extension
+
+	err = c.SaveFile(file, "../../../uploads/"+uniqueFileName)
+	if err != nil {
+		return c.SendStatus(fiber.StatusInternalServerError)
+	}
+
+	newUser := &model.Restaurant{
+		Name:        user.Name,
+		Description: user.Description,
+		Image:       uniqueFileName,
+		Email:       user.Email,
+		Password:    hash,
+	}
+
+	if err := database.DB.Create(&newUser).Error; err != nil {
+		return c.SendStatus(fiber.StatusInternalServerError)
+	}
+
+	return c.JSON(fiber.Map{"message": "Restaurant created", "data": nil})
 }

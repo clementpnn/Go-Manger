@@ -3,6 +3,7 @@ package router
 import (
 	"go-manger/internal/app/handler"
 	"go-manger/internal/app/middleware"
+	"go-manger/internal/domain/entity"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/logger"
@@ -18,36 +19,34 @@ func SetupRoutes(app *fiber.App) {
 
 	register := auth.Group("/register")
 	register.Post("/client", handler.RegisterClient)
-	register.Post("/restaurant", middleware.AuthMiddleware("admin"), handler.RegisterRestaurant)
-	register.Post("/admin", middleware.AuthMiddleware("admin"), handler.RegisterAdmin)
+	register.Post("/restaurant", middleware.AuthMiddleware(string(entity.AdminType)), handler.RegisterRestaurant)
+	register.Post("/admin", middleware.AuthMiddleware(string(entity.AdminType)), handler.RegisterAdmin)
 
 	login := auth.Group("/login")
-	// vérifier si le user n'est pas supprimé
 	login.Post("/client", handler.LoginClient)
 	login.Post("/restaurant", handler.LoginRestaurant)
 	login.Post("/admin", handler.LoginAdmin)
 
-	client := api.Group("/client", middleware.AuthMiddleware("client"))
+	client := api.Group("/client", middleware.AuthMiddleware(string(entity.ClientType)))
 	client.Get("/", handler.GetClient)
 	client.Post("/order/:id", handler.AddOrder) // TODO: supprimer restaurant id
 	client.Get("/order/:id", handler.GetOrder)
-	client.Put("/update", handler.UpdateClient)
+	client.Put("/update", handler.ClientUpdate)
 	// // ? Modifier une commande.
 	// client.Put("/order/:id") // TODO: créé handler
-	// client.Delete("/order/:id", handler.DeleteOrder) // TODO: à supprimer
 
-	admin := api.Group("/admin", middleware.AuthMiddleware("admin"))
+	admin := api.Group("/admin", middleware.AuthMiddleware(string(entity.AdminType)))
 	admin.Get("/restaurant", handler.GetAllRestaurant)
-	admin.Post("/restaurant", handler.AddRestaurant)
+	admin.Post("/restaurant", handler.RegisterRestaurant)
 	admin.Put("/restaurant/:id", handler.UpdateRestaurant)
 	admin.Delete("/restaurant/:id", handler.DeleteRestaurant)
 	admin.Get("/profile", handler.GetAdmin)
 	admin.Put("/profile", handler.UpdateAdmin)
 
-	restaurant := api.Group("/restaurant", middleware.AuthMiddleware("restaurant"))
+	restaurant := api.Group("/restaurant", middleware.AuthMiddleware(string(entity.RestaurantType)))
 	restaurant.Get("/me", handler.GetRestaurant)
 	// // ? Lister toutes les commandes pour un restaurant.
-	// restaurant.Get("/:id/order") // TODO: créé handler (SSE ou WebSockets)
+	// restaurant.Get("/order", handler.GetRestaurantOrder)
 	// // ? Mettre à jour le statut d'une commande.
 	// restaurant.Put("/:id/order/:orderId") // TODO: créé handler
 	restaurant.Post("/menu", handler.AddNewMenuItem)

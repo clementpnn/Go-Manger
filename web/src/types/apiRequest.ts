@@ -1,5 +1,4 @@
 type ApiRequest = {
-  status: string
   message: string
 }
 
