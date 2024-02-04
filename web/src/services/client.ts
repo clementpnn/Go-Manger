@@ -10,10 +10,5 @@ export function UpdateClientProfileService({ email, name, password }: { email: s
 }
 
 export function RegisterClientService({ email, name, password }: { email: string, name: string, password: string }): Promise<SignInRequest> {
-  const formData = new FormData();
-  formData.append("email", email);
-  formData.append("name", name);
-  formData.append("password", password);
-
-  return KyInstancePublic.post("auth/register/client", { body: formData }).json();
+  return KyInstancePublic.post("auth/register/client", { json: { email, name, password } }).json()
 }
