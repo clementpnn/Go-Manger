@@ -12,13 +12,14 @@ import (
 func AuthMiddleware(allowedRoles ...string) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		tokenString := c.Get("Authorization")
+		if tokenString == "" {
+			tokenString = "Bearer " + c.Query("token")
+		}
 
 		token, err := validateToken(tokenString)
 		if err != nil {
-			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
-				"status":  "error",
-				"message": "Invalid or expired JWT",
-			})
+
+			return c.SendStatus(fiber.StatusUnauthorized)
 		}
 
 		c.Locals("user", token)
@@ -31,10 +32,7 @@ func AuthMiddleware(allowedRoles ...string) fiber.Handler {
 			}
 		}
 
-		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
-			"status":  "error",
-			"message": "Accès non autorisé pour le rôle de l'utilisateur",
-		})
+		return c.SendStatus(fiber.StatusUnauthorized)
 	}
 }
 
@@ -43,7 +41,7 @@ func validateToken(tokenString string) (*jwt.Token, error) {
 	if len(splitToken) == 2 {
 		tokenString = strings.TrimSpace(splitToken[1])
 	} else {
-		return nil, fmt.Errorf("format du JWT incorrect")
+		return nil, fmt.Errorf("mauvais format de jeton")
 	}
 
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {

@@ -46,7 +46,7 @@ func SetupRoutes(app *fiber.App) {
 	restaurant := api.Group("/restaurant", middleware.AuthMiddleware(string(entity.RestaurantType)))
 	restaurant.Get("/me", handler.GetRestaurant)
 	// // ? Lister toutes les commandes pour un restaurant.
-	// restaurant.Get("/order", handler.GetRestaurantOrder)
+	restaurant.Get("/order", handler.GetRestaurantOrder)
 	// // ? Mettre à jour le statut d'une commande.
 	// restaurant.Put("/:id/order/:orderId") // TODO: créé handler
 	restaurant.Post("/menu", handler.AddNewMenuItem)

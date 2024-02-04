@@ -1,13 +1,19 @@
 package handler
 
 import (
+	"bufio"
+	"encoding/json"
+	"fmt"
 	"go-manger/internal/domain/entity"
 	"go-manger/internal/domain/model"
 	"go-manger/internal/domain/service"
 	"go-manger/internal/infrastructure/database"
+	"log"
 	"strconv"
+	"time"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/valyala/fasthttp"
 )
 
 func GetAllRestaurant(c *fiber.Ctx) error {
@@ -104,16 +110,66 @@ func GetRestaurantMenu(c *fiber.Ctx) error {
 	return c.JSON(fiber.Map{"message": "Restaurant's menu found", "data": fiber.Map{"id": restaurant.ID, "name": restaurant.Name, "description": restaurant.Description, "image": restaurant.Image, "menuItems": menuItems}})
 }
 
-// func GetRestaurantOrder(c *fiber.Ctx) error {
-// 	id, err := service.GetUserIDFromJWT(c)
-// 	if err != nil {
-// 		return c.Status(500).JSON(fiber.Map{"status": "error", "message": "Couldn't get user", "data": err})
-// 	}
-// 	var user model.Restaurant
+func GetRestaurantOrder(c *fiber.Ctx) error {
+	c.Set("Content-Type", "text/event-stream")
+	c.Set("Cache-Control", "no-cache")
+	c.Set("Connection", "keep-alive")
+	c.Set("Transfer-Encoding", "chunked")
 
-// 	if result := database.DB.Find(&user, id); result.Error != nil {
-// 		return c.Status(500).JSON(fiber.Map{"status": "error", "message": result.Error.Error(), "data": nil})
-// 	}
+	id, err := service.GetUserIDFromJWT(c)
+	if err != nil {
+		return c.SendStatus(fiber.StatusBadRequest)
+	}
 
-// 	return c.JSON(fiber.Map{"status": "success", "message": "Order found", "data": order})
-// }
+	c.Context().SetBodyStreamWriter(fasthttp.StreamWriter(func(w *bufio.Writer) {
+		newOrders := make(chan entity.OrderData)
+		go listenForNewOrders(uint(id), newOrders)
+
+		for {
+			select {
+			case order := <-newOrders:
+				jsonData, _ := json.Marshal(order)
+				fmt.Fprintf(w, "data: %s\n\n", jsonData)
+				if err := w.Flush(); err != nil {
+					fmt.Printf("Error while flushing: %v. Closing http connection.\n", err)
+					return
+				}
+			case <-time.After(2 * time.Second):
+				fmt.Fprintf(w, ":keep-alive\n\n")
+				if err := w.Flush(); err != nil {
+					fmt.Printf("Error while flushing: %v. Closing http connection.\n", err)
+					return
+				}
+			}
+		}
+	}))
+
+	return nil
+}
+
+func listenForNewOrders(restaurantID uint, newOrders chan<- entity.OrderData) {
+	var lastChecked time.Time
+
+	for {
+		time.Sleep(2 * time.Second)
+
+		var orders []entity.OrderData
+		if err := database.DB.Model(&model.Order{}).
+			Select("orders.id, orders.identification_code, orders.status, clients.name as client_name").
+			Joins("left join clients on clients.id = orders.client_id").
+			Where("orders.restaurant_id = ? AND orders.created_at > ?", restaurantID, lastChecked).
+			Order("orders.updated_at DESC").
+			Find(&orders).Error; err != nil {
+			log.Printf("Error querying new orders: %v", err)
+			continue
+		}
+
+		for _, order := range orders {
+			newOrders <- order
+		}
+
+		if len(orders) > 0 {
+			lastChecked = time.Now()
+		}
+	}
+}
