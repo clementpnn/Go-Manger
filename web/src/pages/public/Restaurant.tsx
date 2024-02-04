@@ -26,7 +26,7 @@ export default function Restaurant() {
           <p className="header-2 text-neutral-3">{data.data.name}</p>
           <p className="body text-neutral-2">{data.data.description}</p>
         </div>
-        <img src={data.data.image} alt={`image of ${data.data.image}`} className="w-[25.75rem] h-[13.25rem] rounded-md"/>
+        <img src={`http://localhost:3000/uploads/${data.data.image}`} alt={`image of ${data.data.image}`} className="w-[25.75rem] h-[13.25rem] rounded-md"/>
       </div>
       <div className="flex flex-col gap-y-10 px-20">
         <p className="header-3 text-neutral-3">Menu</p>
