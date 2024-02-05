@@ -35,6 +35,7 @@ func SetupRoutes(app *fiber.App) {
 	client.Delete("/delete", handler.DeleteClient)
 
 	admin := api.Group("/admin", middleware.AuthMiddleware(string(entity.AdminType)))
+	admin.Get(("/order"), handler.GetRestaurantsOrders)
 	admin.Get("/restaurant", handler.GetAllRestaurant)
 	admin.Post("/restaurant", handler.RegisterRestaurant)
 	admin.Put("/restaurant/:id", handler.UpdateRestaurant)

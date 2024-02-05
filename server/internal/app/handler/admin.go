@@ -1,13 +1,19 @@
 package handler
 
 import (
+	"bufio"
+	"encoding/json"
+	"fmt"
 	"go-manger/internal/domain/entity"
 	"go-manger/internal/domain/model"
 	"go-manger/internal/domain/service"
 	"go-manger/internal/infrastructure/database"
+	"log"
 	"strconv"
+	"time"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/valyala/fasthttp"
 )
 
 func GetAdmin(c *fiber.Ctx) error {
@@ -162,4 +168,64 @@ func ClientUpdateAdmin(c *fiber.Ctx) error {
 	}
 
 	return c.JSON(fiber.Map{"message": "User Updated", "data": nil})
+}
+
+func GetRestaurantsOrders(c *fiber.Ctx) error {
+	c.Set("Content-Type", "text/event-stream")
+	c.Set("Cache-Control", "no-cache")
+	c.Set("Connection", "keep-alive")
+	c.Set("Transfer-Encoding", "chunked")
+
+	c.Context().SetBodyStreamWriter(fasthttp.StreamWriter(func(w *bufio.Writer) {
+		newOrders := make(chan entity.Order)
+		go listenForNewOrdersAdmin(newOrders)
+
+		for {
+			select {
+			case order := <-newOrders:
+				jsonData, _ := json.Marshal(order)
+				fmt.Fprintf(w, "data: %s\n\n", jsonData)
+				if err := w.Flush(); err != nil {
+					fmt.Printf("Error while flushing: %v. Closing http connection.\n", err)
+					return
+				}
+			case <-time.After(2 * time.Second):
+				fmt.Fprintf(w, ":keep-alive\n\n")
+				if err := w.Flush(); err != nil {
+					fmt.Printf("Error while flushing: %v. Closing http connection.\n", err)
+					return
+				}
+			}
+		}
+	}))
+
+	return nil
+}
+
+func listenForNewOrdersAdmin(newOrders chan<- entity.Order) {
+	var lastChecked time.Time
+
+	for {
+		time.Sleep(2 * time.Second)
+
+		var orders []entity.Order
+		if err := database.DB.Model(&model.Order{}).
+			Select("orders.id, orders.identification_code, orders.status, clients.name as client_name, restaurants.name as restaurants_name").
+			Joins("left join clients on clients.id = orders.client_id").
+			Joins("left join restaurants on restaurants.id = orders.restaurants_id").
+			Where("orders.created_at > ?", lastChecked).
+			Order("orders.updated_at DESC").
+			Find(&orders).Error; err != nil {
+			log.Printf("Error querying new orders: %v", err)
+			continue
+		}
+
+		for _, order := range orders {
+			newOrders <- order
+		}
+
+		if len(orders) > 0 {
+			lastChecked = time.Now()
+		}
+	}
 }
