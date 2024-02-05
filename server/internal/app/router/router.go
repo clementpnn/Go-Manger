@@ -45,6 +45,7 @@ func SetupRoutes(app *fiber.App) {
 
 	restaurant := api.Group("/restaurant", middleware.AuthMiddleware(string(entity.RestaurantType)))
 	restaurant.Get("/me", handler.GetRestaurant)
+	restaurant.Put("/me/update", handler.UpdateRestaurant)
 	// // ? Lister toutes les commandes pour un restaurant.
 	restaurant.Get("/order", handler.GetRestaurantOrder)
 	// // ? Mettre à jour le statut d'une commande.

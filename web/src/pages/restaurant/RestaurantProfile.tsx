@@ -22,12 +22,11 @@ export default function RestaurantProfile() {
       <p className="header-2 text-neutral-3 px-20">profile</p>
       <div className="flex flex-row justify-between items-center px-20">
         <div className="flex flex-col gap-y-10 justify-center">
-          <img src={data.data.image} alt="profile picture" className="w-[12rem] h-[12rem] rounded-md"/>
+          <img src={`http://localhost:3000/uploads/${data.data.image}`} alt={`image of ${data.data.image}`} className="w-[12rem] h-[12rem] rounded-md"/>
           <p className="body text-neutral-2">{data.data.name}</p>
           <p className="body text-neutral-2">{data.data.description}</p>
         </div>
-        {/* /restaurant/profile/update */}
-        <Link to="/">
+        <Link to="/restaurant/profile/update">
           <Button>Modifier</Button>
         </Link>
       </div>
