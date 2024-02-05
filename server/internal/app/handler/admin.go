@@ -118,3 +118,18 @@ func DeleteRestaurantAdmin(c *fiber.Ctx) error {
 	return c.JSON(fiber.Map{"message": "Restaurant deleted", "data": nil})
 
 }
+
+func DeleteClientAdmin(c *fiber.Ctx) error {
+	id := c.Params("id")
+	if _, err := strconv.Atoi(id); err != nil {
+		return c.SendStatus(fiber.StatusBadRequest)
+	}
+
+	var client model.Client
+	if result := database.DB.Delete(&client, id); result.Error != nil {
+		return c.SendStatus(fiber.StatusInternalServerError)
+	}
+
+	return c.JSON(fiber.Map{"message": "User deleted", "data": nil})
+
+}
