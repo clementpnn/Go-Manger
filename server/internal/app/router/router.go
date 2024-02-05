@@ -39,12 +39,15 @@ func SetupRoutes(app *fiber.App) {
 	admin.Get("/restaurant", handler.GetAllRestaurant)
 	admin.Post("/restaurant", handler.RegisterRestaurant)
 	admin.Put("/restaurant/:id", handler.UpdateRestaurant)
-	admin.Delete("/restaurant/:id", handler.DeleteRestaurant)
+	admin.Delete("/restaurant/:id", handler.DeleteRestaurantAdmin)
 	admin.Get("/profile", handler.GetAdmin)
 	admin.Put("/profile", handler.UpdateAdmin)
+	admin.Get("/client", handler.GetAllClient)
+	admin.Get("/client/:id", handler.GetClientAdmin)
 
 	restaurant := api.Group("/restaurant", middleware.AuthMiddleware(string(entity.RestaurantType)))
 	restaurant.Get("/me", handler.GetRestaurant)
+	restaurant.Delete("/me", handler.DeleteRestaurant)
 	// // ? Lister toutes les commandes pour un restaurant.
 	restaurant.Get("/order", handler.GetRestaurantOrder)
 	// // ? Mettre à jour le statut d'une commande.
