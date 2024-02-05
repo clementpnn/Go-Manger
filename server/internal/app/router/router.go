@@ -32,8 +32,6 @@ func SetupRoutes(app *fiber.App) {
 	client.Post("/order/:id", handler.AddOrder) // TODO: supprimer restaurant id
 	client.Get("/order/:id", handler.GetOrder)
 	client.Put("/update", handler.ClientUpdate)
-	// // ? Modifier une commande.
-	// client.Put("/order/:id") // TODO: créé handler
 
 	admin := api.Group("/admin", middleware.AuthMiddleware(string(entity.AdminType)))
 	admin.Get("/restaurant", handler.GetAllRestaurant)
@@ -48,7 +46,6 @@ func SetupRoutes(app *fiber.App) {
 	restaurant := api.Group("/restaurant", middleware.AuthMiddleware(string(entity.RestaurantType)))
 	restaurant.Get("/me", handler.GetRestaurant)
 	restaurant.Delete("/me", handler.DeleteRestaurant)
-	// // ? Lister toutes les commandes pour un restaurant.
 	restaurant.Get("/order", handler.GetRestaurantOrder)
 	// // ? Mettre à jour le statut d'une commande.
 	// restaurant.Put("/:id/order/:orderId") // TODO: créé handler
