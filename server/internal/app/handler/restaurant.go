@@ -49,8 +49,8 @@ func GetRestaurant(c *fiber.Ctx) error {
 }
 
 func DeleteRestaurant(c *fiber.Ctx) error {
-	id := c.Params("id")
-	if _, err := strconv.Atoi(id); err != nil {
+	id, err := service.GetUserIDFromJWT(c)
+	if err != nil {
 		return c.SendStatus(fiber.StatusBadRequest)
 	}
 
