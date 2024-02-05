@@ -92,16 +92,7 @@ func GetClientAdmin(c *fiber.Ctx) error {
 		return c.SendStatus(fiber.StatusNotFound)
 	}
 
-	var orders []entity.Order
-	if result := database.DB.Model(&model.Order{}).
-		Select("orders.id, orders.identification_code, orders.status, restaurants.name as restaurant_name, orders.restaurant_id").
-		Joins("left join restaurants on restaurants.id = orders.restaurant_id").
-		Where("orders.client_id = ?", id).
-		Find(&orders).Error; result != nil {
-		return c.SendStatus(fiber.StatusNotFound)
-	}
-
-	return c.JSON(fiber.Map{"message": "Client's found", "data": fiber.Map{"id": client.ID, "name": client.Name, "email": client.Email, "order": orders}})
+	return c.JSON(fiber.Map{"message": "Client's found", "data": fiber.Map{"id": client.ID, "name": client.Name, "email": client.Email}})
 }
 
 func DeleteRestaurantAdmin(c *fiber.Ctx) error {
