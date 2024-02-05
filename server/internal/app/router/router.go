@@ -32,21 +32,26 @@ func SetupRoutes(app *fiber.App) {
 	client.Post("/order/:id", handler.AddOrder) // TODO: supprimer restaurant id
 	client.Get("/order/:id", handler.GetOrder)
 	client.Put("/update", handler.ClientUpdate)
-	// // ? Modifier une commande.
-	// client.Put("/order/:id") // TODO: créé handler
+	client.Delete("/delete", handler.DeleteClient)
 
 	admin := api.Group("/admin", middleware.AuthMiddleware(string(entity.AdminType)))
+	admin.Get(("/order"), handler.GetRestaurantsOrders)
 	admin.Get("/restaurant", handler.GetAllRestaurant)
 	admin.Post("/restaurant", handler.RegisterRestaurant)
 	admin.Put("/restaurant/:id", handler.UpdateRestaurant)
-	admin.Delete("/restaurant/:id", handler.DeleteRestaurant)
+	admin.Delete("/restaurant/:id", handler.DeleteRestaurantAdmin)
+	admin.Delete("/client/:id", handler.DeleteClientAdmin)
 	admin.Get("/profile", handler.GetAdmin)
 	admin.Put("/profile", handler.UpdateAdmin)
+	admin.Get("/client", handler.GetAllClient)
+	admin.Get("/client/:id", handler.GetClientAdmin)
+	admin.Put("/client/:id", handler.ClientUpdateAdmin)
 
 	restaurant := api.Group("/restaurant", middleware.AuthMiddleware(string(entity.RestaurantType)))
 	restaurant.Get("/me", handler.GetRestaurant)
 	restaurant.Put("/me/update", handler.UpdateRestaurant)
 	// // ? Lister toutes les commandes pour un restaurant.
+	restaurant.Delete("/me", handler.DeleteRestaurant)
 	restaurant.Get("/order", handler.GetRestaurantOrder)
 	// // ? Mettre à jour le statut d'une commande.
 	// restaurant.Put("/:id/order/:orderId") // TODO: créé handler

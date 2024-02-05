@@ -60,3 +60,18 @@ func ClientUpdate(c *fiber.Ctx) error {
 
 	return c.JSON(fiber.Map{"message": "Profile Updated", "data": nil})
 }
+
+func DeleteClient(c *fiber.Ctx) error {
+	id, err := service.GetUserIDFromJWT(c)
+	if err != nil {
+		return c.SendStatus(fiber.StatusBadRequest)
+	}
+
+	var client model.Client
+	if result := database.DB.Delete(&client, id); result.Error != nil {
+		return c.SendStatus(fiber.StatusInternalServerError)
+	}
+
+	return c.JSON(fiber.Map{"message": "User deleted", "data": nil})
+
+}
