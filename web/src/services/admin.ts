@@ -25,3 +25,7 @@ export function UpdateAdminProfileService({ email, name }: { email: string, name
 export function AdminClientService(): Promise<ClientList> {
   return KyInstancePrivate.get("admin/client").json()
 }
+
+export function AdminClientInfoService(id: number): Promise<Client> {
+  return KyInstancePrivate.get(`admin/client/${id}`).json()
+}

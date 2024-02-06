@@ -1,5 +1,6 @@
 import { AdminClientService } from "@/services/admin";
 import { useQuery } from "@tanstack/react-query";
+import { Link } from "@tanstack/react-router";
 
 export default function AdminClient() {
   const { isPending, isError, data, error } = useQuery({ queryKey: ["adminClient"], queryFn: () => AdminClientService() });
@@ -15,10 +16,10 @@ export default function AdminClient() {
       <div>user list</div>
       <div>
         {data.data.map((client) => (
-          <div key={client.id}>
+          <Link key={client.id} to="/admin/user/$id" params={{ id: client.id.toString() }} className="pointer">
             <div>{client.name}</div>
             <div>{client.email}</div>
-          </div>
+          </Link>
         ))}
       </div>
     </>
