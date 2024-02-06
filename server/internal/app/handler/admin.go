@@ -70,13 +70,13 @@ func UpdateAdmin(c *fiber.Ctx) error {
 }
 
 func GetAllClient(c *fiber.Ctx) error {
-	var clinet []model.Client
-	if result := database.DB.Find(&clinet); result.Error != nil {
+	var client []model.Client
+	if result := database.DB.Find(&client); result.Error != nil {
 		return c.SendStatus(fiber.StatusInternalServerError)
 	}
 
-	response := make([]entity.Client, len(clinet))
-	for i, r := range clinet {
+	response := make([]entity.Client, len(client))
+	for i, r := range client {
 		response[i] = entity.Client{
 			ID:    r.ID,
 			Name:  r.Name,
