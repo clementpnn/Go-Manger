@@ -38,7 +38,7 @@ func SetupRoutes(app *fiber.App) {
 	admin.Get(("/order"), handler.GetRestaurantsOrders)
 	admin.Get("/restaurant", handler.GetAllRestaurant)
 	admin.Post("/restaurant", handler.RegisterRestaurant)
-	admin.Put("/restaurant/:id", handler.UpdateRestaurant)
+	admin.Put("/restaurant/:id", handler.UpdateRestaurantById)
 	admin.Delete("/restaurant/:id", handler.DeleteRestaurantAdmin)
 	admin.Delete("/client/:id", handler.DeleteClientAdmin)
 	admin.Get("/profile", handler.GetAdmin)
