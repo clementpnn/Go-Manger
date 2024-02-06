@@ -1,4 +1,4 @@
-import { KyInstancePrivate } from "./utils/instance"
+import { KyInstancePrivate, KyInstancePublic } from "./utils/instance"
 
 export function AdminRestaurantService(): Promise<HomeRequest> {
   return KyInstancePrivate.get("admin/restaurant").json()
@@ -20,4 +20,8 @@ export function GetAdminProfileService(): Promise<AdminProfileInfo> {
 
 export function UpdateAdminProfileService({ email, name }: { email: string, name: string }): Promise<UpdateRequest> {
   return KyInstancePrivate.put("admin/profile", { json: { email, name } }).json()
+}
+
+export function RegisterAdminService({ email, name, password }: { email: string, name: string, password: string }): Promise<SignInRequest> {
+  return KyInstancePublic.post("auth/register/admin", { json: { email, name, password } }).json()
 }
