@@ -18,8 +18,8 @@ export default function AdminClientInfo() {
   return (
     <>
       <div>AdminClientInfo</div>
-      <div>{data.name}</div>
-      <div>{data.email}</div>
+      <div>{data.data.name}</div>
+      <div>{data.data.email}</div>
     </>
   );
 }

@@ -26,6 +26,6 @@ export function AdminClientService(): Promise<ClientList> {
   return KyInstancePrivate.get("admin/client").json()
 }
 
-export function AdminClientInfoService(id: number): Promise<Client> {
+export function AdminClientInfoService(id: number): Promise<ClientProfile> {
   return KyInstancePrivate.get(`admin/client/${id}`).json()
 }
