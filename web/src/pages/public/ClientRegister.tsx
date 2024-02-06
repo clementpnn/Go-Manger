@@ -3,9 +3,9 @@ import RegisterClientForm from "@/components/form/registerClient"
 
 export default function ClientRegister() {
   return (
-    <div className="flex flex-row">
+    <div className="flex justify-center items-center h-screen">
       <RegisterClientForm />
-      <img src={restaurant} alt="image of a restaurant" className="w-3/5 h-screen object-cover"/>
+      <img src={restaurant} alt="image of a restaurant" className="hidden lg:block lg:w-3/5 lg:h-screen"/>
     </div>
   )
 }
