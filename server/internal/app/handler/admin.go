@@ -9,10 +9,12 @@ import (
 	"go-manger/internal/domain/service"
 	"go-manger/internal/infrastructure/database"
 	"log"
+	"path/filepath"
 	"strconv"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/google/uuid"
 	"github.com/valyala/fasthttp"
 )
 
@@ -228,4 +230,65 @@ func listenForNewOrdersAdmin(newOrders chan<- entity.Order) {
 			lastChecked = time.Now()
 		}
 	}
+}
+
+func UpdateRestaurantById(c *fiber.Ctx) error {
+	id := c.Params("id")
+
+	if _, err := strconv.Atoi(id); err != nil {
+		return c.Status(400).JSON(fiber.Map{"message": "Invalid ID format", "data": nil})
+	}
+
+	input := new(model.Restaurant)
+	if err := c.BodyParser(input); err != nil {
+		return c.SendStatus(fiber.StatusBadRequest)
+	}
+
+	var restaurant model.Restaurant
+	if result := database.DB.First(&restaurant, id).Error; result != nil {
+		return c.SendStatus(fiber.StatusNotFound)
+	}
+
+	if input.Email != "" && input.Email != restaurant.Email {
+		restaurant.Email = input.Email
+	}
+
+	if input.Name != "" && input.Name != restaurant.Name {
+		restaurant.Name = input.Name
+	}
+
+	if input.Password != "" && input.Password != restaurant.Password {
+		hashedPassword, err := service.HashPassword(input.Password)
+		if err != nil {
+			return c.SendStatus(fiber.StatusInternalServerError)
+		}
+		restaurant.Password = hashedPassword
+	}
+
+	if input.Description != "" && input.Description != restaurant.Description {
+		restaurant.Description = input.Description
+	}
+
+	file, err := c.FormFile("image")
+	if err != nil {
+		return c.SendStatus(fiber.StatusInternalServerError)
+	}
+
+	extension := filepath.Ext(file.Filename)
+	uniqueFileName := uuid.New().String() + extension
+
+	err = c.SaveFile(file, "../../../uploads/"+uniqueFileName)
+	if err != nil {
+		return c.SendStatus(fiber.StatusInternalServerError)
+	}
+
+	if input.Image != restaurant.Image {
+		restaurant.Image = uniqueFileName
+	}
+
+	if err := database.DB.Updates(&restaurant).Error; err != nil {
+		return c.SendStatus(fiber.StatusInternalServerError)
+	}
+
+	return c.JSON(fiber.Map{"message": "Restaurant updated", "data": nil})
 }
