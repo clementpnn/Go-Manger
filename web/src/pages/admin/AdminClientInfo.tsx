@@ -1,6 +1,7 @@
+import { Button } from "@/components/ui/button";
 import { AdminClientInfoService } from "@/services/admin";
 import { useQuery } from "@tanstack/react-query";
-import { useParams } from "@tanstack/react-router";
+import { Link, useParams } from "@tanstack/react-router";
 
 export default function AdminClientInfo() {
   const { id } = useParams({ from: "/admin/user/$id" });
@@ -20,6 +21,10 @@ export default function AdminClientInfo() {
       <div>AdminClientInfo</div>
       <div>{data.data.name}</div>
       <div>{data.data.email}</div>
+      <Link to="/admin/user/update/$id" params={{ id: data.data.id.toString() }}>
+        update
+      </Link>
+      <Button>delete</Button>
     </>
   );
 }
