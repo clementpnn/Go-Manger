@@ -1,7 +1,8 @@
 import NavbarAdmin from "@/components/navbar/navbarAdmin";
+import { Button } from "@/components/ui/button";
 import { RestaurantInfoPublicService } from "@/services/public";
 import { useQuery } from "@tanstack/react-query";
-import { useParams } from "@tanstack/react-router";
+import { Link, useParams } from "@tanstack/react-router";
 
 export default function Restaurant() {
   const { id } = useParams({ from: "/restaurant/$id" });
@@ -22,9 +23,14 @@ export default function Restaurant() {
     <div className="flex flex-col gap-y-[3.75rem]">
       <NavbarAdmin />
       <div className="flex flex-row justify-between items-center px-20">
-        <div className="flex flex-col gap-x-4">
+        <div className="flex flex-col gap-y-3">
           <p className="header-2 text-neutral-3">{data.data.name}</p>
           <p className="body text-neutral-2">{data.data.description}</p>
+          <Link to="/admin/restaurant/update/$id" params={{ id: data.data.id.toString() }}>
+            <Button>
+              Modifier
+            </Button>
+          </Link>
         </div>
         <img src={`http://localhost:3000/uploads/${data.data.image}`} alt={`image of ${data.data.image}`} className="w-[25.75rem] h-[13.25rem] rounded-md"/>
       </div>
