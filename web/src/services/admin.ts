@@ -22,12 +22,20 @@ export function UpdateAdminProfileService({ email, name }: { email: string, name
   return KyInstancePrivate.put("admin/profile", { json: { email, name } }).json()
 }
 
+export function UpdateAdminClientProfileService({ email, name, id }: { email: string, name: string, id: string }): Promise<UpdateRequest> {
+  return KyInstancePrivate.put(`admin/client/${Number(id)}`, { json: { email, name } }).json()
+}
+
 export function AdminClientService(): Promise<ClientList> {
   return KyInstancePrivate.get("admin/client").json()
 }
 
 export function AdminClientInfoService(id: number): Promise<ClientProfile> {
   return KyInstancePrivate.get(`admin/client/${id}`).json()
+}
+
+export function AdminDeleteClientService(id: number): Promise<ApiRequest> {
+  return KyInstancePrivate.delete(`admin/client/${id}`).json()
 }
 
 export function UpdateRestaurantService(id: number, { email, name, password, description, image }: { email: string, name: string, password: string, description: string, image: File }): Promise<UpdateRequest> {
