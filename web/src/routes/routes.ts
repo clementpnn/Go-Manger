@@ -27,6 +27,7 @@ import AdminUpdateProfile from "@/pages/admin/AdminUpdateProfile";
 import ClientUpdateProfile from "@/pages/client/ClientUpdateProfile";
 import ClientRegister from "@/pages/public/ClientRegister";
 import RestaurantUpdateProfile from "@/pages/restaurant/RestaurantUpdateProfile";
+import AdminRegister from "@/pages/public/AdminRegister";
 import AdminClient from "@/pages/admin/AdminClient";
 import AdminClientInfo from "@/pages/admin/AdminClientInfo";
 import AdminClientUpdate from "@/pages/admin/AdminClientUpdate";
@@ -61,7 +62,8 @@ const AdminRestaurantRoute = new Route({ getParentRoute: () => rootRoute, path: 
 const AdminAddRestaurantRoute = new Route({ getParentRoute: () => rootRoute, path: "/admin/restaurant/add", component: withClientAuth(AdminAddRestaurant, User.Admin) })
 const AdminUpdateRestaurantRoute = new Route({ getParentRoute: () => rootRoute, path: "/admin/restaurant/update/$id", component: withClientAuth(AdminUpdateRestaurant, User.Admin) })
 const AdminProfileRoute = new Route({ getParentRoute: () => rootRoute, path: "/admin/profile", component: withClientAuth(AdminProfile, User.Admin) })
-const AdminUpdateAdminProfile = new Route({ getParentRoute: () => rootRoute, path: "/admin/profile/update", component: withClientAuth(AdminUpdateProfile, User.Admin) })
+const AdminUpdateAdminProfileRoute = new Route({ getParentRoute: () => rootRoute, path: "/admin/profile/update", component: withClientAuth(AdminUpdateProfile, User.Admin) })
+const RegisterAdminRoute = new Route({ getParentRoute: () => rootRoute, path: "/admin/registerAdmin", component: withClientAuth(AdminRegister, User.Admin) })
 const AdminClientListRoute = new Route({ getParentRoute: () => rootRoute, path: "/admin/user", component: withClientAuth(AdminClient, User.Admin) })
 const AdminClientRoute = new Route({ getParentRoute: () => rootRoute, path: "/admin/user/$id", component: withClientAuth(AdminClientInfo, User.Admin) })
 const AdminClientUpdateRoute = new Route({ getParentRoute: () => rootRoute, path: "/admin/user/update/$id", component: withClientAuth(AdminClientUpdate, User.Admin) })
@@ -73,6 +75,7 @@ const routeTree = rootRoute.addChildren([indexRoute, signInRoute, RestaurantInfo
   LoginRestaurateurRoute,
   LoginClientRoute,
   RegisterClientRoute,
+  RegisterAdminRoute,
   ClientRoute,
   ClientOrderRoute,
   ClientNewOrderRoute,
@@ -90,7 +93,7 @@ const routeTree = rootRoute.addChildren([indexRoute, signInRoute, RestaurantInfo
   AdminAddRestaurantRoute,
   AdminUpdateRestaurantRoute,
   AdminProfileRoute,
-  AdminUpdateAdminProfile,
+  AdminUpdateAdminProfileRoute,
   AdminClientListRoute,
   AdminClientRoute,
   AdminClientUpdateRoute,
