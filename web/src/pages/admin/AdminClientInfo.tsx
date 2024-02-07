@@ -1,4 +1,4 @@
-// import DeleteButton from "@/components/button/DeleteButton";
+import DeleteButton from "@/components/button/DeleteButton";
 import NavbarAdmin from "@/components/navbar/navbarAdmin";
 import { Button } from "@/components/ui/button";
 import { AdminClientInfoService } from "@/services/admin";
@@ -31,7 +31,7 @@ export default function AdminClientInfo() {
           <Link to="/admin/user/update/$id" params={{ id: data.data.id.toString() }}>
             <Button>Modifier</Button>
           </Link>
-          {/* <DeleteButton /> */}
+          <DeleteButton />
         </div>
       </div>
     </div>
