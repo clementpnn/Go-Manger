@@ -1,4 +1,5 @@
 import { KyInstancePrivate } from "./utils/instance"
+import { MenuItemType } from "@/types/restaurant";
 
 export function GetRestaurantProfileService(): Promise<RestaurantProfile> {
   return KyInstancePrivate.get("restaurant/me").json()
@@ -13,4 +14,8 @@ export function UpdateRestaurantProfileService({ email, name, password, descript
   formData.append("image", image, image.name);
 
   return KyInstancePrivate.put("restaurant/me/update", { body: formData }).json();
+}
+
+export function AddRestaurantMenuItemService({ name, description, type, price }: { name: string, description: string, type: MenuItemType, price : number }): Promise<UpdateRequest> {
+  return KyInstancePrivate.post("restaurant/menu", { json: { name, description, type, price } }).json()
 }
