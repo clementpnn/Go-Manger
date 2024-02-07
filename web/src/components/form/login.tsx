@@ -88,13 +88,6 @@ export default function LoginForm({ type }: { type: "client" | "restaurant" | "a
                 </Button>
               </Link>
             )}
-            {type === "admin" && (
-              <Link to="/registerAdmin">
-                <Button variant={"link"} className="text-primary w-full">
-                  Pas de compte ? Vous identifiez
-                </Button>
-              </Link>
-            )}
           </div>
         </form>
       </Form>

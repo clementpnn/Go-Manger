@@ -1,11 +1,13 @@
-import dishes from "@/assets/images/dishes.png"
 import RegisterAdminForm from "@/components/form/registerAdmin"
+import NavbarAdmin from "@/components/navbar/navbarAdmin"
 
 export default function AdminRegister() {
   return (
-    <div className="flex justify-center items-center h-screen">
-      <RegisterAdminForm />
-      <img src={dishes} alt="image of a dishes" className="hidden lg:block lg:w-3/5 lg:h-screen"/>
+    <div className="flex flex-col gap-y-[3.75rem]">
+      <NavbarAdmin />
+      <div className="flex items-center justify-center">
+        <RegisterAdminForm />
+      </div>
     </div>
   )
 }
