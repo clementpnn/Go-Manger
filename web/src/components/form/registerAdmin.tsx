@@ -10,7 +10,6 @@ import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import Spinner from "@/assets/icons/spinner.svg?react";
 import { H3 } from "../typography/h3";
-import { Link } from "@tanstack/react-router";
 import { registerAdmin } from "@/types/signin";
 import { RegisterAdminService } from "@/services/admin";
 
@@ -41,7 +40,7 @@ export default function RegisterAdminForm() {
 
   return (
     <div className="flex flex-col justify-center gap-y-20 px-5 w-full lg:px-20 lg:w-2/5">
-      <H3>Register Admin</H3>
+      <H3>Ajouter Admin</H3>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-y-[3.75rem]">
           <div className="flex flex-col gap-y-10">
@@ -88,12 +87,7 @@ export default function RegisterAdminForm() {
             />
           </div>
           <div className="flex flex-col gap-y-3">
-            <Button type="submit">{status === "pending" ? <Spinner /> : "S'identifier"}</Button>
-            <Link to="/loginAdmin">
-              <Button variant={"link"} className="text-primary w-full">
-                Vous avez déja un compte ? Vous connectez
-              </Button>
-            </Link>
+            <Button type="submit">{status === "pending" ? <Spinner /> : "Ajouter"}</Button>
           </div>
         </form>
       </Form>
