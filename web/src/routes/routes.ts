@@ -38,7 +38,6 @@ const LoginAdminRoute = new Route({ getParentRoute : () => rootRoute, path: "/lo
 const LoginRestaurateurRoute = new Route({ getParentRoute : () => rootRoute, path: "/loginRestaurateur", component: LoginRestaurateur })
 const LoginClientRoute = new Route({ getParentRoute : () => rootRoute, path: "/loginClient", component: LoginClient })
 const RegisterClientRoute = new Route({ getParentRoute: () => rootRoute, path: "/registerClient", component: ClientRegister })
-const RegisterAdminRoute = new Route({ getParentRoute: () => rootRoute, path: "/registerAdmin", component: AdminRegister })
 // Client routes
 const ClientRoute = new Route({ getParentRoute: () => rootRoute, path: "/client", component: withClientAuth(ClientInfo, User.Client) })
 const ClientOrderRoute = new Route({ getParentRoute: () => rootRoute, path: "/client/order", component: withClientAuth(ClientOrder, User.Client) })
@@ -60,6 +59,7 @@ const AdminAddRestaurantRoute = new Route({ getParentRoute: () => rootRoute, pat
 const AdminUpdateRestaurantRoute = new Route({ getParentRoute: () => rootRoute, path: "/admin/restaurant/update/$id", component: withClientAuth(AdminUpdateRestaurant, User.Admin) })
 const AdminProfileRoute = new Route({ getParentRoute: () => rootRoute, path: "/admin/profile", component: withClientAuth(AdminProfile, User.Admin) })
 const AdminUpdateAdminProfileRoute = new Route({ getParentRoute: () => rootRoute, path: "/admin/profile/update", component: withClientAuth(AdminUpdateProfile, User.Admin) })
+const RegisterAdminRoute = new Route({ getParentRoute: () => rootRoute, path: "/admin/registerAdmin", component: withClientAuth(AdminRegister, User.Admin) })
 // Not found route
 const NotFoundRoute = new Route({ getParentRoute: () => rootRoute, path: "*", component: NotFound })
 

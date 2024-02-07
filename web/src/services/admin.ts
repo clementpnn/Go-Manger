@@ -23,5 +23,5 @@ export function UpdateAdminProfileService({ email, name }: { email: string, name
 }
 
 export function RegisterAdminService({ email, name, password }: { email: string, name: string, password: string }): Promise<SignInRequest> {
-  return KyInstancePublic.post("auth/register/admin", { json: { email, name, password } }).json()
+  return KyInstancePrivate.post("auth/register/admin", { json: { email, name, password } }).json()
 }
