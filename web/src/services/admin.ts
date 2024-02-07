@@ -25,3 +25,30 @@ export function UpdateAdminProfileService({ email, name }: { email: string, name
 export function RegisterAdminService({ email, name, password }: { email: string, name: string, password: string }): Promise<SignInRequest> {
   return KyInstancePrivate.post("auth/register/admin", { json: { email, name, password } }).json()
 }
+
+export function UpdateAdminClientProfileService({ email, name, id }: { email: string, name: string, id: string }): Promise<UpdateRequest> {
+  return KyInstancePrivate.put(`admin/client/${Number(id)}`, { json: { email, name } }).json()
+}
+
+export function AdminClientService(): Promise<ClientList> {
+  return KyInstancePrivate.get("admin/client").json()
+}
+
+export function AdminClientInfoService(id: number): Promise<ClientProfile> {
+  return KyInstancePrivate.get(`admin/client/${id}`).json()
+}
+
+export function AdminDeleteClientService(id: number): Promise<ApiRequest> {
+  return KyInstancePrivate.delete(`admin/client/${id}`).json()
+}
+
+export function UpdateRestaurantService({ email, name, password, description, image, id }: { email: string, name: string, password: string, description: string, image: File, id: string }): Promise<UpdateRequest> {
+  const formData = new FormData();
+  formData.append("email", email);
+  formData.append("name", name);
+  formData.append("password", password);
+  formData.append("description", description);
+  formData.append("image", image, image.name);
+
+  return KyInstancePrivate.put(`admin/restaurant/${Number(id)}`, { body: formData }).json();
+}

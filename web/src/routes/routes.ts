@@ -28,6 +28,10 @@ import ClientUpdateProfile from "@/pages/client/ClientUpdateProfile";
 import ClientRegister from "@/pages/public/ClientRegister";
 import RestaurantUpdateProfile from "@/pages/restaurant/RestaurantUpdateProfile";
 import AdminRegister from "@/pages/public/AdminRegister";
+import AdminClient from "@/pages/admin/AdminClient";
+import AdminClientInfo from "@/pages/admin/AdminClientInfo";
+import AdminClientUpdate from "@/pages/admin/AdminClientUpdate";
+import AdminAllClients from "@/pages/admin/AdminAllClients";
 
 const rootRoute = new RootRoute()
 // Public routes
@@ -60,6 +64,10 @@ const AdminUpdateRestaurantRoute = new Route({ getParentRoute: () => rootRoute, 
 const AdminProfileRoute = new Route({ getParentRoute: () => rootRoute, path: "/admin/profile", component: withClientAuth(AdminProfile, User.Admin) })
 const AdminUpdateAdminProfileRoute = new Route({ getParentRoute: () => rootRoute, path: "/admin/profile/update", component: withClientAuth(AdminUpdateProfile, User.Admin) })
 const RegisterAdminRoute = new Route({ getParentRoute: () => rootRoute, path: "/admin/registerAdmin", component: withClientAuth(AdminRegister, User.Admin) })
+const AdminClientListRoute = new Route({ getParentRoute: () => rootRoute, path: "/admin/user", component: withClientAuth(AdminClient, User.Admin) })
+const AdminClientRoute = new Route({ getParentRoute: () => rootRoute, path: "/admin/user/$id", component: withClientAuth(AdminClientInfo, User.Admin) })
+const AdminClientUpdateRoute = new Route({ getParentRoute: () => rootRoute, path: "/admin/user/update/$id", component: withClientAuth(AdminClientUpdate, User.Admin) })
+const AdminAllClientsRoute = new Route({ getParentRoute: () => rootRoute, path: "/admin/clients", component: withClientAuth(AdminAllClients, User.Admin) })
 // Not found route
 const NotFoundRoute = new Route({ getParentRoute: () => rootRoute, path: "*", component: NotFound })
 
@@ -86,6 +94,10 @@ const routeTree = rootRoute.addChildren([indexRoute, signInRoute, RestaurantInfo
   AdminUpdateRestaurantRoute,
   AdminProfileRoute,
   AdminUpdateAdminProfileRoute,
+  AdminClientListRoute,
+  AdminClientRoute,
+  AdminClientUpdateRoute,
+  AdminAllClientsRoute,
   NotFoundRoute
 ])
 

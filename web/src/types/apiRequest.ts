@@ -61,3 +61,7 @@ type Client = {
 type ClientProfile = ApiRequest & {
   data: Client
 }
+
+type ClientList = ApiRequest & {
+  data: Client[]
+}

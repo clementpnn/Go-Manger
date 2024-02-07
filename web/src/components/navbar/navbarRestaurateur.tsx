@@ -9,10 +9,10 @@ export default function NavbarRestaurateur() {
         <span className="text-primary">Manger</span>
       </div>
       <div className="flex flex-row gap-x-10">
-        <Link to="/">
+        <Link to="/restaurant/order">
           <Button variant={"link"}>Commandes</Button>
         </Link>
-        <Link to="/">
+        <Link to="/restaurant/profile">
           <Button variant={"link"}>Restaurant</Button>
         </Link>
       </div>

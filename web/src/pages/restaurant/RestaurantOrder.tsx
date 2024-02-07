@@ -1,3 +1,5 @@
+import NavbarRestaurateur from "@/components/navbar/navbarRestaurateur";
+import RestaurateurOrder from "@/components/orders/restaurateurOrder";
 import { Order } from "@/types/order";
 import { useEffect, useState } from "react";
 
@@ -22,21 +24,22 @@ export default function RestaurantOrder() {
     };
   }, []);
   return (
-    <div>
-      <div>Restaurant</div>
-      {orders.length === 0 ? (
-        <p>No orders</p>
-      ) : (
-        <div className="flex">
-          {orders.map((order) => (
-            <div key={order.id}>
-              <div>{order.clientName}</div>
-              <div>{order.identificationCode}</div>
-              <div>{order.status}</div>
-            </div>
-          ))}
-        </div>
-      )}
+    <div className="flex flex-col gap-y-[3.75rem]">
+      <NavbarRestaurateur />
+      <div className="flex flex-col gap-y-10 px-20">
+        <p className="header-2 text-neutral-3">Commandes</p>
+        {orders.length === 0 ? (
+          <p className="body text-neutral-2">No orders</p>
+        ) : (
+          <div className="flex flex-col gap-y-10">
+            {orders.map((order) => (
+              <div key={order.id}>
+                <RestaurateurOrder state={"default"} name={order.clientName} code={order.identificationCode} details={order.status} />
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
