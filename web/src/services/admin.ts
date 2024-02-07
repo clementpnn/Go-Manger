@@ -38,7 +38,7 @@ export function AdminDeleteClientService(id: number): Promise<ApiRequest> {
   return KyInstancePrivate.delete(`admin/client/${id}`).json()
 }
 
-export function UpdateRestaurantService(id: number, { email, name, password, description, image }: { email: string, name: string, password: string, description: string, image: File }): Promise<UpdateRequest> {
+export function UpdateRestaurantService({ email, name, password, description, image, id }: { email: string, name: string, password: string, description: string, image: File, id: string }): Promise<UpdateRequest> {
   const formData = new FormData();
   formData.append("email", email);
   formData.append("name", name);
@@ -46,5 +46,5 @@ export function UpdateRestaurantService(id: number, { email, name, password, des
   formData.append("description", description);
   formData.append("image", image, image.name);
 
-  return KyInstancePrivate.put(`admin/restaurant/${id}`, { body: formData }).json();
+  return KyInstancePrivate.put(`admin/restaurant/${Number(id)}`, { body: formData }).json();
 }

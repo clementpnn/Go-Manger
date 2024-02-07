@@ -12,8 +12,10 @@ import Spinner from "@/assets/icons/spinner.svg?react";
 import { H3 } from "../typography/h3";
 import { UpdateRestaurantProfile } from "@/types/update";
 import { UpdateRestaurantService } from "@/services/admin";
+import { useParams } from "@tanstack/react-router";
 
 export default function UpdateRestaurantForm() {
+  const { id } = useParams({ from: "/restaurant/$id" });
   const form = useForm<z.infer<typeof UpdateRestaurantProfile>>({
     resolver: zodResolver(UpdateRestaurantProfile),
     mode: "onSubmit",
@@ -33,7 +35,7 @@ export default function UpdateRestaurantForm() {
   }, [status, data, isError, error]);
 
   function onSubmit(values: z.infer<typeof UpdateRestaurantProfile>) {
-    mutate({...values, id});
+    mutate({ ...values, id });
 
     form.reset();
   }
