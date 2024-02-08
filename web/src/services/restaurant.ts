@@ -16,6 +16,6 @@ export function UpdateRestaurantProfileService({ email, name, password, descript
   return KyInstancePrivate.put("restaurant/me/update", { body: formData }).json();
 }
 
-export function AddRestaurantMenuItemService({ name, description, type, price }: { name: string, description: string, type: MenuItemType, price : number }): Promise<UpdateRequest> {
+export function AddRestaurantMenuItemService({ name, description, type, price }: { name: string, description: string, type: MenuItemType, price : number }): Promise<ApiRequest> {
   return KyInstancePrivate.post("restaurant/menu", { json: { name, description, type, price } }).json()
 }
