@@ -16,7 +16,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import NavbarRestaurateur from "@/components/navbar/navbarRestaurateur";
 import { Textarea } from "@/components/ui/textarea";
 
-export default function RestaurantMenuItem() {
+export default function RestaurantAddMenuItem() {
   const form = useForm<z.infer<typeof AddRestaurantMenuItem>>({
     resolver: zodResolver(AddRestaurantMenuItem),
     mode: "onSubmit",
@@ -48,7 +48,7 @@ export default function RestaurantMenuItem() {
     <>
       <NavbarRestaurateur />
       <div className="w-full flex justify-center pt-16">
-        <div className="flex flex-col justify-center gap-y-20 px-20 w-2/5">
+        <div className="flex flex-col justify-center gap-y-10 px-20 w-2/5">
           <H3>Add Menu</H3>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-y-8">
