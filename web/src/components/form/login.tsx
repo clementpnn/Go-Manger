@@ -28,7 +28,11 @@ export default function LoginForm({ type }: { type: "client" | "restaurant" | "a
       localStorage.setItem("jwtToken", data.data);
 
       toast(data.message);
-      navigate({ to: `/${type}` });
+      if (type === "restaurant") {
+        navigate({ to: `/${type}/order` });
+      } else {
+        navigate({ to: `/${type}` });
+      }
     }
 
     if (isError) {
