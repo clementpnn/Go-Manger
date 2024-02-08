@@ -55,7 +55,7 @@ func SetupRoutes(app *fiber.App) {
 	restaurant.Get("/order", handler.GetRestaurantOrder)
 	// // ? Mettre à jour le statut d'une commande.
 	// restaurant.Put("/:id/order/:orderId") // TODO: créé handler
-	restaurant.Get("/menu", handler.GetRestaurantMenuWithJwt)
+	restaurant.Get("/menu", handler.GetMenuItemByRestaurant)
 	restaurant.Post("/menu/add", handler.AddNewMenuItem)
 	restaurant.Put("/menu/:id", handler.UpdateMenuItem)
 	restaurant.Delete("/menu/:id", handler.DeleteMenuItem)
