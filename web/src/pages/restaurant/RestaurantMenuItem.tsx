@@ -2,9 +2,11 @@ import NavbarRestaurateur from "@/components/navbar/navbarRestaurateur";
 import { Button } from "@/components/ui/button";
 import { DeleteRestaurantMenuService, GetRestaurantMenu } from "@/services/restaurant";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "@tanstack/react-router";
 
 export default function RestaurantMenuItem() {
   const queryClient = useQueryClient();
+  const navigate = useNavigate({ from: "/restaurant/menu/add" })
   const { isPending, isError, data, error } = useQuery({ queryKey: ["restaurantInfo"], queryFn: GetRestaurantMenu });
 
   const { mutate } = useMutation({
@@ -23,6 +25,10 @@ export default function RestaurantMenuItem() {
 
   const handleDeleteClick = (id: number) => {
     mutate(id)
+  }
+
+  const handleUpdateClick = (id: number) => {
+    navigate({ to: `/restaurant/menu/update/${id}` as any });
   }
 
   return (
@@ -51,6 +57,7 @@ export default function RestaurantMenuItem() {
                 </li>
               </ul>
               <Button onClick={()=>handleDeleteClick(item.id)}>Deleter</Button>
+              <Button onClick={()=>handleUpdateClick(item.id)}>Modifier</Button>
             </div>
 
           ))}
