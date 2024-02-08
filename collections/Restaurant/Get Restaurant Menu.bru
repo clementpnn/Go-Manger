@@ -1,11 +1,11 @@
 meta {
-  name: Delete Menu Item
+  name: Get Restaurant Menu
   type: http
-  seq: 5
+  seq: 2
 }
 
-delete {
-  url: {{baseUrl}}/restaurant/menu/1
+get {
+  url: {{baseUrl}}/restaurant/menu
   body: none
   auth: bearer
 }
