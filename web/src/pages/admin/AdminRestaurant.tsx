@@ -29,7 +29,7 @@ export default function AdminRestaurant() {
       </div>
       <div className="flex flex-wrap justify-between px-20 gap-y-10">
         {data.data.map((item: Restaurant) => (
-          <Link key={item.id} to="/restaurant/$id" params={{ id: item.id.toString() }} className="pointer">
+          <Link key={item.id} to="/admin/restaurant/$id" params={{ id: item.id.toString() }} className="pointer">
             <RestaurantCard restaurantName={item.name} description={item.description} image={item.image} />
           </Link>
         ))}
