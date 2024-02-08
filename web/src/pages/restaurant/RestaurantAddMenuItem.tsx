@@ -34,9 +34,6 @@ export default function RestaurantAddMenuItem() {
       console.log(error);
     }
 
-    if(data){
-      console.log(data)
-    }
   }, [status, data, isError, error]);
 
   function onSubmit(values: z.infer<typeof AddRestaurantMenuItem>) {
