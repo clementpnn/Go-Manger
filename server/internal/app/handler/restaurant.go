@@ -214,3 +214,28 @@ func listenForNewOrders(restaurantID uint, newOrders chan<- entity.OrderData) {
 		}
 	}
 }
+
+func GetRestaurantMenuWithJwt(c *fiber.Ctx) error {
+	idFloat, err := service.GetUserIDFromJWT(c)
+	if err != nil {
+		return c.SendStatus(fiber.StatusBadRequest)
+	}
+	idStr := strconv.FormatFloat(idFloat, 'f', -1, 64)
+	var restaurant model.Restaurant
+	if result := database.DB.Preload("MenuItems").Where("id = ?", idStr).First(&restaurant).Error; result != nil {
+		return c.SendStatus(fiber.StatusNotFound)
+	}
+
+	menuItems := make([]entity.RestaurantMenuItem, len(restaurant.MenuItems))
+	for i, r := range restaurant.MenuItems {
+		menuItems[i] = entity.RestaurantMenuItem{
+			ID:          r.ID,
+			Name:        r.Name,
+			Description: r.Description,
+			Price:       r.Price,
+			Available:   r.Available,
+			Type:        r.Type,
+		}
+	}
+	return c.JSON(fiber.Map{"message": "Restaurant's menu found", "data": fiber.Map{"id": restaurant.ID, "name": restaurant.Name, "description": restaurant.Description, "image": restaurant.Image, "menuItems": menuItems}})
+}
