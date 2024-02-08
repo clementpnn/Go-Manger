@@ -3,6 +3,7 @@ import { GetRestaurantProfileService } from "@/services/restaurant"
 import { Button } from "@/components/ui/button";
 import { Link } from "@tanstack/react-router";
 import NavbarRestaurateur from "@/components/navbar/navbarRestaurateur";
+import LogoutButton from "@/components/button/LogoutButton";
 
 export default function RestaurantProfile() {
   const { isPending, isError, data, error } = useQuery({
@@ -26,9 +27,12 @@ export default function RestaurantProfile() {
           <p className="body text-neutral-2">{data.data.name}</p>
           <p className="body text-neutral-2">{data.data.description}</p>
         </div>
-        <Link to="/restaurant/profile/update">
-          <Button>Modifier</Button>
-        </Link>
+        <div className="flex gap-x-10">
+          <Link to="/restaurant/profile/update">
+            <Button>Modifier</Button>
+          </Link>
+          <LogoutButton />
+        </div>
       </div>
     </div>
   )
