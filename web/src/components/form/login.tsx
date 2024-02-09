@@ -30,6 +30,8 @@ export default function LoginForm({ type }: { type: "client" | "restaurant" | "a
       toast(data.message);
       if (type === "restaurant") {
         navigate({ to: `/${type}/order` });
+      } else if (type === "client") {
+        navigate({ to: "/" })
       } else {
         navigate({ to: `/${type}` });
       }
