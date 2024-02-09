@@ -45,6 +45,7 @@ func SetupRoutes(app *fiber.App) {
 	admin.Put("/profile", handler.UpdateAdmin)
 	admin.Get("/client", handler.GetAllClient)
 	admin.Get("/client/:id", handler.GetClientAdmin)
+	admin.Get("/client/order/:id", handler.GetClientAdminOrder)
 	admin.Put("/client/:id", handler.ClientUpdateAdmin)
 	admin.Get("/client/orders/:id", handler.GetClientAdminOrder)
 

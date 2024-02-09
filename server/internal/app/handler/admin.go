@@ -292,3 +292,73 @@ func UpdateRestaurantById(c *fiber.Ctx) error {
 
 	return c.JSON(fiber.Map{"message": "Restaurant updated", "data": nil})
 }
+
+func GetClientAdminOrder(c *fiber.Ctx) error {
+	c.Set("Content-Type", "text/event-stream")
+	c.Set("Cache-Control", "no-cache")
+	c.Set("Connection", "keep-alive")
+	c.Set("Transfer-Encoding", "chunked")
+
+	id := c.Params("id")
+	if _, err := strconv.Atoi(id); err != nil {
+		return c.Status(400).JSON(fiber.Map{"message": "Invalid ID format", "data": nil})
+	}
+
+	uintID, err := strconv.ParseUint(id, 10, 64)
+	if err != nil {
+		fmt.Println("Erreur lors de la conversion de l'ID:", err)
+		return c.SendStatus(fiber.StatusBadRequest)
+	}
+
+	c.Context().SetBodyStreamWriter(fasthttp.StreamWriter(func(w *bufio.Writer) {
+		newOrders := make(chan entity.OrderClient)
+		go listenForClientAdminOrders(uint(uintID), newOrders)
+
+		for {
+			select {
+			case order := <-newOrders:
+				jsonData, _ := json.Marshal(order)
+				fmt.Fprintf(w, "data: %s\n\n", jsonData)
+				if err := w.Flush(); err != nil {
+					fmt.Printf("Error while flushing: %v. Closing http connection.\n", err)
+					return
+				}
+			case <-time.After(2 * time.Second):
+				fmt.Fprintf(w, ":keep-alive\n\n")
+				if err := w.Flush(); err != nil {
+					fmt.Printf("Error while flushing: %v. Closing http connection.\n", err)
+					return
+				}
+			}
+		}
+	}))
+
+	return nil
+}
+
+func listenForClientAdminOrders(clientID uint, newOrders chan<- entity.OrderClient) {
+	var lastChecked time.Time
+
+	for {
+		time.Sleep(2 * time.Second)
+
+		var orders []entity.OrderClient
+		if err := database.DB.Model(&model.Order{}).
+			Select("orders.id, orders.identification_code, orders.status, restaurants.name as restaurant_name").
+			Joins("left join restaurants on restaurants.id = orders.restaurant_id").
+			Where("orders.client_id = ? AND orders.created_at > ?", clientID, lastChecked).
+			Order("orders.updated_at DESC").
+			Find(&orders).Error; err != nil {
+			log.Printf("Error querying new orders: %v", err)
+			continue
+		}
+
+		for _, order := range orders {
+			newOrders <- order
+		}
+
+		if len(orders) > 0 {
+			lastChecked = time.Now()
+		}
+	}
+}
