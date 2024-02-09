@@ -28,7 +28,7 @@ export default function RestaurantMenuItem() {
   }
 
   const handleUpdateClick = (id: number) => {
-    navigate({ to: `/restaurant/menu/update/${id}` as any });
+    navigate({ to: `/restaurant/update/${id}` as any });
   }
 
   return (
@@ -37,7 +37,7 @@ export default function RestaurantMenuItem() {
       <div className="flex flex-col gap-y-10 px-20">
         <p className="header-3 text-neutral-3">Menu</p>
         <div className="flex flex-wrap justify-between gap-20">
-          {data.data.menuItems.map((item: MenuItem) => (
+          {data.data.map((item: MenuItem) => (
             <div key={item.id}>
               <ul>
                 <li className="list-disc body text-neutral-2">
@@ -56,8 +56,10 @@ export default function RestaurantMenuItem() {
                   {item.type}
                 </li>
               </ul>
-              <Button onClick={()=>handleDeleteClick(item.id)}>Deleter</Button>
-              <Button onClick={()=>handleUpdateClick(item.id)}>Modifier</Button>
+              <div className="flex gap-x-4">
+                <Button onClick={()=>handleUpdateClick(item.id)}>Modifier</Button>
+                <Button onClick={()=>handleDeleteClick(item.id)}>Delete</Button>
+              </div>
             </div>
 
           ))}

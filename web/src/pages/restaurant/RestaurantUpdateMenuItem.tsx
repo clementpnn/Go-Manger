@@ -19,7 +19,7 @@ import { useNavigate, useParams } from "@tanstack/react-router";
 
 export default function RestaurantUpdateMenuItem() {
   const navigate = useNavigate({ from: "/restaurant/menu/add" })
-  const { id } = useParams({ from: "/restaurant/menu/update/$id" });
+  const { id } = useParams({ from: "/restaurant/update/$id" });
   const form = useForm<z.infer<typeof FormRestaurantMenuItem>>({
     resolver: zodResolver(FormRestaurantMenuItem),
     mode: "onSubmit",
