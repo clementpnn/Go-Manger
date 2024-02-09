@@ -30,7 +30,7 @@ func SetupRoutes(app *fiber.App) {
 	client := api.Group("/client", middleware.AuthMiddleware(string(entity.ClientType)))
 	client.Get("/", handler.GetClient)
 	client.Post("/order/:id", handler.AddOrder) // TODO: supprimer restaurant id
-	client.Get("/order/:id", handler.GetOrder)
+	client.Get("/order", handler.GetClientOrder)
 	client.Put("/update", handler.ClientUpdate)
 	client.Delete("/delete", handler.DeleteClient)
 
@@ -46,6 +46,7 @@ func SetupRoutes(app *fiber.App) {
 	admin.Get("/client", handler.GetAllClient)
 	admin.Get("/client/:id", handler.GetClientAdmin)
 	admin.Put("/client/:id", handler.ClientUpdateAdmin)
+	admin.Get("/client/orders/:id", handler.GetClientAdminOrder)
 
 	restaurant := api.Group("/restaurant", middleware.AuthMiddleware(string(entity.RestaurantType)))
 	restaurant.Get("/me", handler.GetRestaurant)
