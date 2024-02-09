@@ -72,7 +72,7 @@ Go Manger is built on the following stack:
 
 Base URL: [http://localhost:5173](http://localhost:5173)
 
-*for example replace id with 1*
+*for example replaced id with 1*
 
 **Public Routes:**
 
