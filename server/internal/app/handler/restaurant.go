@@ -9,12 +9,12 @@ import (
 	"go-manger/internal/domain/service"
 	"go-manger/internal/infrastructure/database"
 	"log"
+	"path/filepath"
 	"strconv"
 	"time"
-	"path/filepath"
 
-	"github.com/google/uuid"
 	"github.com/gofiber/fiber/v2"
+	"github.com/google/uuid"
 	"github.com/valyala/fasthttp"
 )
 
@@ -213,4 +213,28 @@ func listenForNewOrders(restaurantID uint, newOrders chan<- entity.OrderData) {
 			lastChecked = time.Now()
 		}
 	}
+}
+
+func UpdateOrderRestaurant(c *fiber.Ctx) error {
+	id, err := service.GetUserIDFromJWT(c)
+	if err != nil {
+		return c.SendStatus(fiber.StatusBadRequest)
+	}
+
+	input := new(model.OrderStatus)
+	if err := c.BodyParser(input); err != nil {
+		return c.SendStatus(fiber.StatusBadRequest)
+	}
+
+	var order model.Order
+	if result := database.DB.First(&order, id).Error; result != nil {
+		return c.SendStatus(fiber.StatusNotFound)
+	}
+
+	order.Status = *input
+	if err := database.DB.Updates(&order).Error; err != nil {
+		return c.SendStatus(fiber.StatusInternalServerError)
+	}
+
+	return c.JSON(fiber.Map{"message": "Order update", "data": nil})
 }
