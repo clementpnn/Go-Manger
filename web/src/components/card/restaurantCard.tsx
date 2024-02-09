@@ -6,7 +6,7 @@ export interface RestaurantCardProperties {
 
 const RestaurantCard: React.FC<RestaurantCardProperties> = ({ restaurantName, description, image }) => {
   return (
-    <div className="relative z-30 h-[19.063rem] w-[19.063rem] flex flex-col justify-end">
+    <div className="relative z-30 h-[11.563rem] w-[11.563rem] lg:h-[19.063rem] lg:w-[19.063rem] flex flex-col justify-end">
       <img
         src={`http://localhost:3000/uploads/${image}`}
         alt="image restaurant"
