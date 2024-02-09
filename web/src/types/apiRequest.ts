@@ -42,6 +42,10 @@ type RestaurantInfoPublic = ApiRequest & {
   data: RestaurantWithMenu
 }
 
+type MenuItemByRestaurant = ApiRequest & {
+  data: MenuItem[]
+}
+
 type Admin = {
   id: number
   name: string

@@ -20,7 +20,7 @@ export function AddRestaurantMenuItemService({ name, description, type, price }:
   return KyInstancePrivate.post("restaurant/menu", { json: { name, description, type, price } }).json()
 }
 
-export function GetRestaurantMenu(): Promise<RestaurantInfoPublic> {
+export function GetRestaurantMenu(): Promise<MenuItemByRestaurant> {
   return KyInstancePrivate.get("restaurant/menu").json()
 }
 

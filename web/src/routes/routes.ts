@@ -55,7 +55,7 @@ const RestaurantRoute = new Route({ getParentRoute: () => rootRoute, path: "/res
 const RestaurantOrderRoute = new Route({ getParentRoute: () => rootRoute, path: "/restaurant/order", component: withClientAuth(RestaurantOrder, User.Restaurant) })
 const RestaurantMenuItemRoute = new Route({ getParentRoute: () => rootRoute, path: "/restaurant/menu", component: withClientAuth(RestaurantMenuItem, User.Restaurant) })
 const RestaurantAddMenuItemRoute = new Route({ getParentRoute: () => rootRoute, path: "/restaurant/menu/add", component: withClientAuth(RestaurantAddMenuItem, User.Restaurant) })
-const RestaurantUpdateMenuItemRoute = new Route({ getParentRoute: () => rootRoute, path: "/restaurant/menu/update/$id", component: withClientAuth(RestaurantUpdateMenuItem, User.Restaurant) })
+const RestaurantUpdateMenuItemRoute = new Route({ getParentRoute: () => rootRoute, path: "/restaurant/update/$id", component: withClientAuth(RestaurantUpdateMenuItem, User.Restaurant) })
 const RestaurantProfileRoute = new Route({ getParentRoute: () => rootRoute, path: "/restaurant/profile", component: withClientAuth(RestaurantProfile, User.Restaurant) })
 const RestaurantUpdateProfileRoute = new Route({ getParentRoute: () => rootRoute, path: "/restaurant/profile/update", component: withClientAuth(RestaurantUpdateProfile, User.Restaurant) })
 // Admin routes
