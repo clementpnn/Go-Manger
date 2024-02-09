@@ -1,3 +1,4 @@
+import NavbarClient from "@/components/navbar/navbarCient";
 import { OrderClient } from "@/types/order";
 import { useEffect, useState } from "react";
 
@@ -23,6 +24,7 @@ export default function ClientOrder() {
   }, []);
   return (
     <>
+      <NavbarClient />
       <div>ClientOrder</div>
       {orders.map((order) => (
         <div key={order.id}>

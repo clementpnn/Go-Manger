@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "@tanstack/react-router";
 import LogoutButton from "@/components/button/LogoutButton";
 import DeleteClientButton from "@/components/button/DeleteClientButton";
+import NavbarClient from "@/components/navbar/navbarCient";
 
 export default function ClientProfile() {
   const { isPending, isError, data, error } = useQuery({
@@ -19,7 +20,7 @@ export default function ClientProfile() {
   }
   return (
     <div className="flex flex-col gap-y-[3.75rem]">
-      {/* add client navbar */}
+      <NavbarClient />
       <p className="header-2 text-neutral-3 px-20">profile</p>
       <div className="flex flex-row justify-between items-center px-20">
         <div className="flex flex-col gap-y-10 justify-center">
