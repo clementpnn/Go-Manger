@@ -58,16 +58,25 @@ export default function AdminClientInfo() {
             <DeleteButton />
           </div>
         </div>
-      </div>
-      {orders.map((order) => (
-        <div key={order.id}>
-          <div>
-            <div>{order.restaurantName}</div>
-            <div>{order.identificationCode}</div>
-            <div>{order.status}</div>
-          </div>
+        <div className="flex flex-col gap-y-10 px-20">
+          <p className="header-3">Commandes</p>
+          {orders.length === 0 ? (
+            <p className="body text-neutral-2">0 order</p>
+          ) : (
+            <div className="flex flex-col gap-y-5">
+              {orders.map((order) => (
+                <div key={order.id}>
+                  <div className="flex flex-col gap-y-3 bg-neutral-0 rounded-md border border-neutral-2 p-5">
+                    <div className="body-sm text-neutral-2">{order.restaurantName}</div>
+                    <div className="body-sm text-neutral-2">{order.identificationCode}</div>
+                    <div className="body-sm text-neutral-2">{order.status}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
-      ))}
+      </div>
     </>
   );
 }
