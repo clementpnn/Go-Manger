@@ -20,15 +20,15 @@ export default function ClientProfile() {
   return (
     <div className="flex flex-col gap-y-[3.75rem]">
       {/* add client navbar */}
-      <p className="header-2 text-neutral-3 px-20">profile</p>
-      <div className="flex flex-row justify-between items-center px-20">
+      <p className="header-3 text-neutral-3 px-5 lg:header-2 lg:px-20">profile</p>
+      <div className="flex flex-col gap-y-10 justify-between px-5 lg:flex-row lg:items-center lg:px-20">
         <div className="flex flex-col gap-y-10 justify-center">
           <p className="body text-neutral-2">{data.data.name}</p>
           <p className="body text-neutral-2">{data.data.email}</p>
         </div>
-        <div className="flex flex-row gap-x-10">
+        <div className="flex flex-col gap-y-5 lg:flex-row lg:gap-x-10">
           <Link to="/client/profile/update">
-            <Button>Modifier</Button>
+            <Button className="w-full">Modifier</Button>
           </Link>
           <LogoutButton />
           <DeleteClientButton />
