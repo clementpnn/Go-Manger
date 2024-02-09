@@ -8,7 +8,7 @@ export enum MenuItemType {
 }
 
 
-export const AddRestaurantMenuItem = z.object({
+export const FormRestaurantMenuItem = z.object({
   name: z.string().min(0, { message: "Name cannot be empty" }).max(25, { message: "Name cannot be longer than 25 characters" }),
   description: z.string().min(1, { message: "Description cannot be empty" }).max(255, { message: "Description cannot be longer than 255 characters" }),
   type: z.nativeEnum(MenuItemType),

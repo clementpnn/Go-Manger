@@ -20,10 +20,14 @@ export function AddRestaurantMenuItemService({ name, description, type, price }:
   return KyInstancePrivate.post("restaurant/menu", { json: { name, description, type, price } }).json()
 }
 
-export function GetRestaurantMenu(): Promise<RestaurantInfoPublic> {
+export function GetRestaurantMenu(): Promise<MenuItemByRestaurant> {
   return KyInstancePrivate.get("restaurant/menu").json()
 }
 
 export function DeleteRestaurantMenuService(id: number): Promise<ApiRequest> {
   return KyInstancePrivate.delete(`restaurant/menu/${id}`).json()
+}
+
+export function UpdateRestaurantMenuService({ name, description, type, price, id }: { name: string, description: string, type: MenuItemType, price : number, id: string }): Promise<ApiRequest> {
+  return KyInstancePrivate.put(`restaurant/menu/${Number(id)}`, { json: { name, description, type, price } }).json()
 }

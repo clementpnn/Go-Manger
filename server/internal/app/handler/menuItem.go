@@ -90,3 +90,34 @@ func UpdateMenuItem(c *fiber.Ctx) error {
 
 	return c.JSON(fiber.Map{"message": "Menu item updated", "data": nil})
 }
+
+func GetMenuItemByRestaurant(c *fiber.Ctx) error {
+	restaurantID, err := service.GetUserIDFromJWT(c)
+	if err != nil {
+		return c.Status(500).JSON(fiber.Map{"message": "Couldn't get restaurant ID", "data": err})
+	}
+
+	var menuItems []model.MenuItem
+	if result := database.DB.Where("restaurant_id = ?", restaurantID).Find(&menuItems); result.Error != nil {
+		return c.Status(500).JSON(fiber.Map{"message": "Couldn't retrieve menu items", "data": result.Error})
+	}
+
+	formattedMenuItems := make([]map[string]interface{}, 0)
+	for _, item := range menuItems {
+		formattedItem := map[string]interface{}{
+			"id":          item.ID,
+			"name":        item.Name,
+			"description": item.Description,
+			"price":       item.Price,
+			"available":   item.Available,
+			"type":        string(item.Type),
+		}
+		formattedMenuItems = append(formattedMenuItems, formattedItem)
+	}
+
+	if len(formattedMenuItems) == 0 {
+		return c.Status(404).JSON(fiber.Map{"message": "No menu items found for this restaurant", "data": nil})
+	}
+
+	return c.JSON(fiber.Map{"message": "Menu items retrieved successfully", "data": formattedMenuItems})
+}

@@ -12,3 +12,7 @@ export function UpdateClientProfileService({ email, name, password }: { email: s
 export function RegisterClientService({ email, name, password }: { email: string, name: string, password: string }): Promise<SignInRequest> {
   return KyInstancePublic.post("auth/register/client", { json: { email, name, password } }).json()
 }
+
+export function DeleteClientService(): Promise<ApiRequest> {
+  return KyInstancePrivate.delete("client/delete").json()
+}

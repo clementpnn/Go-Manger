@@ -10,15 +10,15 @@ import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import Spinner from "@/assets/icons/spinner.svg?react";
 import { H3 } from "@/components/typography/h3";
-import { AddRestaurantMenuItem, MenuItemType } from "@/types/restaurant";
+import { FormRestaurantMenuItem, MenuItemType } from "@/types/restaurant";
 import { AddRestaurantMenuItemService } from "@/services/restaurant";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import NavbarRestaurateur from "@/components/navbar/navbarRestaurateur";
 import { Textarea } from "@/components/ui/textarea";
 
 export default function RestaurantAddMenuItem() {
-  const form = useForm<z.infer<typeof AddRestaurantMenuItem>>({
-    resolver: zodResolver(AddRestaurantMenuItem),
+  const form = useForm<z.infer<typeof FormRestaurantMenuItem>>({
+    resolver: zodResolver(FormRestaurantMenuItem),
     mode: "onSubmit",
     defaultValues: { name: "", description: "", type: MenuItemType.Starter, price: 0 },
   });
@@ -36,7 +36,7 @@ export default function RestaurantAddMenuItem() {
 
   }, [status, data, isError, error]);
 
-  function onSubmit(values: z.infer<typeof AddRestaurantMenuItem>) {
+  function onSubmit(values: z.infer<typeof FormRestaurantMenuItem>) {
     const submissionValues = {
       ...values,
       price: Number(values.price),
