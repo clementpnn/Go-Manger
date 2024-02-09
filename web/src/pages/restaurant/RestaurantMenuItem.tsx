@@ -40,7 +40,7 @@ export default function RestaurantMenuItem() {
         <div className="flex flex-wrap justify-between gap-20">
           {data.data.map((item: MenuItem) => (
             <div key={item.id}>
-              <ul className="list-none p-5 aspect-square shadow-lg rounded-md w-[280px]">
+              <ul className="list-none p-5 aspect-square border border-neutral-3 rounded-md w-[280px]">
                 <li className="flex justify-between items-end">
                   <p className={`body-xs ${item.available === true ? "text-green-500" : "text-red-500"}`}>
                     {item.available === true ? "Available" : "Not available"}
