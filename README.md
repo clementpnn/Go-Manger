@@ -34,6 +34,11 @@ DB_NAME="postgres"
 SECRET="secret"
 ```
 
+To test they routes without going to the front, open the collections file with [Bruno](https://www.usebruno.com/), and configure env:
+
+`baseUrl` http://127.0.0.1:3000/api<br>
+`jwt` Your token if you are connected
+
 To run the app locally, you can run the following commands:
 
 ```
