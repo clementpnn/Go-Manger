@@ -212,9 +212,9 @@ func listenForNewOrdersAdmin(newOrders chan<- entity.Order) {
 
 		var orders []entity.Order
 		if err := database.DB.Model(&model.Order{}).
-			Select("orders.id, orders.identification_code, orders.status, clients.name as client_name, restaurants.name as restaurants_name").
+			Select("orders.id, orders.identification_code, orders.status, clients.name as client_name, restaurants.name as restaurant_name").
 			Joins("left join clients on clients.id = orders.client_id").
-			Joins("left join restaurants on restaurants.id = orders.restaurants_id").
+			Joins("left join restaurants on restaurants.id = orders.restaurant_id").
 			Where("orders.created_at > ?", lastChecked).
 			Order("orders.updated_at DESC").
 			Find(&orders).Error; err != nil {
