@@ -1,5 +1,6 @@
+import NavbarAdmin from "@/components/navbar/navbarAdmin";
+import RestaurateurOrder from "@/components/orders/restaurateurOrder";
 import { Order } from "@/types/order";
-import { Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 
 export default function Admin() {
@@ -23,28 +24,23 @@ export default function Admin() {
     };
   }, []);
   return (
-    <>
-      <div>Admin</div>
-      <Link to="/admin/restaurant" className="pointer">
-        Voir tous les restaurants
-      </Link>
-      <div>
-        <div>Restaurant</div>
+    <div className="flex flex-col gap-y-[3.75rem]">
+      <NavbarAdmin />
+      <div className="flex flex-col gap-y-10 px-20">
+        <p className="header-2 text-neutral-3">Commandes</p>
         {orders.length === 0 ? (
-          <p>No orders</p>
+          <p className="body text-neutral-2">No orders</p>
         ) : (
-          <div className="flex">
+          <div className="flex flex-col gap-y-10">
             {orders.map((order) => (
               <div key={order.id}>
-                <div>{order.clientName}</div>
-                <div>{order.identificationCode}</div>
-                <div>{order.status}</div>
+                <RestaurateurOrder state={"default"} name={order.clientName} code={order.identificationCode} details={order.status} />
               </div>
             ))}
           </div>
         )}
       </div>
-    </>
+    </div>
   );
 }
 
