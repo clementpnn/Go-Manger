@@ -31,7 +31,7 @@ type MenuItem = {
   description: string
   price: number
   available: boolean
-  type: string
+  type: "starter" | "dish" | "dessert" | "drink"
 }
 
 type RestaurantWithMenu = Restaurant & {

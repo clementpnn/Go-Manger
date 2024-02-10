@@ -16,3 +16,7 @@ export function RegisterClientService({ email, name, password }: { email: string
 export function DeleteClientService(): Promise<ApiRequest> {
   return KyInstancePrivate.delete("client/delete").json()
 }
+
+export function AddOrderClientService({ id, orderItems }: { id: string, orderItems: { menuItemId: number; quantity: number; }[] }): Promise<ApiRequest> {
+  return KyInstancePrivate.post(`client/order/${Number(id)}`, { json: { orderItems } }).json()
+}
