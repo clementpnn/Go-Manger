@@ -34,7 +34,7 @@ DB_NAME="postgres"
 SECRET="secret"
 ```
 
-To test they routes without going to the front, open the collections file with [Bruno](https://www.usebruno.com/), and configure env:
+To test they routes without going to the front, open the collections file with [Bruno](https://www.usebruno.com/), and configure env (this does not include SSE routes and routes that upload an image):
 
 `baseUrl` http://127.0.0.1:3000/api<br>
 `jwt` Your token if you are connected
