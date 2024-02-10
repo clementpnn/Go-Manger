@@ -27,9 +27,9 @@ export default function ClientProfile() {
           <p className="body text-neutral-2">{data.data.name}</p>
           <p className="body text-neutral-2">{data.data.email}</p>
         </div>
-        <div className="flex flex-row gap-x-10">
+        <div className="flex flex-col gap-y-5 lg:flex-row lg:gap-x-10">
           <Link to="/client/profile/update">
-            <Button>Modifier</Button>
+            <Button className="w-full">Modifier</Button>
           </Link>
           <LogoutButton />
           <DeleteClientButton />
