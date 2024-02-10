@@ -1,3 +1,9 @@
+i:
+	cd web && pnpm install
+
+dev:
+	docker-compose up -d --build
+
 up: clean
 	docker-compose up -d --build
 

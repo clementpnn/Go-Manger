@@ -1,6 +1,4 @@
 import NavbarAdmin from "@/components/navbar/navbarAdmin";
-import { Button } from "@/components/ui/button";
-// import { Button } from "@/components/ui/button";
 import { AdminClientService } from "@/services/admin";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
@@ -32,5 +30,5 @@ export default function AdminAllClients() {
         ))}
       </div>
     </div>
-  )
+  );
 }
