@@ -1,4 +1,5 @@
 import RestaurantCard from "@/components/card/restaurantCard";
+import NavbarClient from "@/components/navbar/navbarCient";
 import NavbarHome from "@/components/navbar/navbarHome";
 import { HomeService } from "@/services/public";
 import { useQuery } from "@tanstack/react-query";
@@ -25,7 +26,7 @@ export default function Home() {
 
   return (
     <div className="flex flex-col gap-y-[3.75rem]">
-      {isAuthorized ? <div>navbarclient</div> : <NavbarHome /> }
+      {isAuthorized ? <NavbarClient/> : <NavbarHome /> }
       <div className="flex flex-col gap-y-[3.75rem] px-5 lg:px-20">
         <p className="header-2 text-neutral-3">Restaurants</p>
       </div>
