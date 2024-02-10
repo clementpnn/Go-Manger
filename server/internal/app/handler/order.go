@@ -25,8 +25,11 @@ func AddOrder(c *fiber.Ctx) error {
 	if err != nil {
 		return c.Status(400).JSON(fiber.Map{"message": "ID de restaurant invalide", "data": nil})
 	}
+
+	code := service.GenerateCode()
 	order.RestaurantID = uint(restaurantIDInt)
 	order.ClientID = uint(userID)
+	order.IdentificationCode = code
 
 	if err := database.DB.Create(&order).Error; err != nil {
 		return c.Status(500).JSON(fiber.Map{"message": "Impossible de créer la commande", "data": err})
@@ -38,7 +41,6 @@ func AddOrder(c *fiber.Ctx) error {
 
 func GetOrder(c *fiber.Ctx) error {
 	orderID := c.Params("id")
-
 	orderIDInt, err := strconv.Atoi(orderID)
 	if err != nil {
 		return c.Status(400).JSON(fiber.Map{"message": "ID de commande invalide", "data": nil})
