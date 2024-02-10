@@ -9,7 +9,7 @@ import ClientOrder from "@/pages/client/ClientOrder";
 import ClientNewOrder from "@/pages/client/ClientNewOrder";
 import ClientOrderDetail from "@/pages/client/ClientOrderDetail";
 import ClientProfile from "@/pages/client/ClientProfile";
-import RestaurantInfo from "@/pages/restaurant/RestaurantInfo";
+import RestaurantDelete from "@/pages/restaurant/RestaurantDelete";
 import RestaurantOrder from "@/pages/restaurant/RestaurantOrder";
 import RestaurantAddMenuItem from "@/pages/restaurant/RestaurantAddMenuItem";
 import RestaurantUpdateMenuItem from "@/pages/restaurant/RestaurantUpdateMenuItem";
@@ -52,13 +52,14 @@ const ClientOrderDetailRoute = new Route({ getParentRoute: () => rootRoute, path
 const ClientProfileRoute = new Route({ getParentRoute: () => rootRoute, path: "/client/profile", component: withClientAuth(ClientProfile, User.Client) })
 const ClientUpdateProfileRoute = new Route({ getParentRoute: () => rootRoute, path: "/client/profile/update", component: withClientAuth(ClientUpdateProfile, User.Client) })
 // Restaurant routes
-const RestaurantRoute = new Route({ getParentRoute: () => rootRoute, path: "/restaurant", component: withClientAuth(RestaurantInfo, User.Restaurant) })
 const RestaurantOrderRoute = new Route({ getParentRoute: () => rootRoute, path: "/restaurant/order", component: withClientAuth(RestaurantOrder, User.Restaurant) })
 const RestaurantMenuItemRoute = new Route({ getParentRoute: () => rootRoute, path: "/restaurant/menu", component: withClientAuth(RestaurantMenuItem, User.Restaurant) })
 const RestaurantAddMenuItemRoute = new Route({ getParentRoute: () => rootRoute, path: "/restaurant/menu/add", component: withClientAuth(RestaurantAddMenuItem, User.Restaurant) })
 const RestaurantUpdateMenuItemRoute = new Route({ getParentRoute: () => rootRoute, path: "/restaurant/update/$id", component: withClientAuth(RestaurantUpdateMenuItem, User.Restaurant) })
 const RestaurantProfileRoute = new Route({ getParentRoute: () => rootRoute, path: "/restaurant/profile", component: withClientAuth(RestaurantProfile, User.Restaurant) })
 const RestaurantUpdateProfileRoute = new Route({ getParentRoute: () => rootRoute, path: "/restaurant/profile/update", component: withClientAuth(RestaurantUpdateProfile, User.Restaurant) })
+const RestaurantRoute = new Route({ getParentRoute: () => rootRoute, path: "/restaurant/profile/delete", component: withClientAuth(RestaurantDelete, User.Restaurant) })
+
 // Admin routes
 const AdminRoute = new Route({ getParentRoute: () => rootRoute, path: "/admin", component: withClientAuth(Admin, User.Admin) })
 const AdminRestaurantRoute = new Route({ getParentRoute: () => rootRoute, path: "/admin/restaurant", component: withClientAuth(AdminRestaurant, User.Admin) })
