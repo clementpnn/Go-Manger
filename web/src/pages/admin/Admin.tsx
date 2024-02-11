@@ -11,7 +11,7 @@ export default function Admin() {
     const source = new EventSource(`http://127.0.0.1:3000/api/admin/order?token=${localStorage.getItem("jwtToken")}`);
 
     source.onmessage = (event: MessageEvent) => {
-      setOrders((prevOrders) => [...prevOrders, JSON.parse(event.data)]);
+      setOrders(JSON.parse(event.data));
     };
 
     source.onerror = function (event: Event) {
@@ -43,12 +43,3 @@ export default function Admin() {
     </div>
   );
 }
-
-// TODO: Tableau de bord de l'admin
-// vu sur les dernières commandes passées avec leur état (SSE ou WebSocket)
-// poussibilité d'avoir plus d'information sur la commande de de changer l'état de la commande
-// voir les demandes de tickets pour les restaurants et de les traiter (à voir)
-
-// Lien vers autres pages
-// possibilité de voir les restaurants et de les modifier / supprimer
-// possibilité de voir les clients et de les modifier / supprimer
