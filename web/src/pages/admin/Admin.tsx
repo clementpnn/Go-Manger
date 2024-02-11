@@ -36,7 +36,7 @@ export default function Admin() {
       <div className="flex flex-col gap-y-10 px-20">
         <p className="header-2 text-neutral-3">Commandes</p>
         {orders.length === 0 ? (
-          <p className="body text-neutral-2">No orders</p>
+          <p className="body text-neutral-2">0 commande</p>
         ) : (
           <div className="flex flex-col gap-y-10">
             {orders.map((order) => (

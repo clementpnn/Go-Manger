@@ -20,7 +20,7 @@ export default function RestaurantProfile() {
   return (
     <div className="flex flex-col gap-y-[3.75rem]">
       <NavbarRestaurateur />
-      <p className="header-2 text-neutral-3 px-20">Profile</p>
+      <p className="header-2 text-neutral-3 px-20">Profil</p>
       <div className="flex flex-row justify-between items-center px-20">
         <div className="flex flex-col gap-y-10 justify-center">
           <img src={`http://localhost:3000/uploads/${data.data.image}`} alt={`image of ${data.data.image}`} className="w-[12rem] h-[12rem] rounded-md"/>
@@ -31,10 +31,10 @@ export default function RestaurantProfile() {
           <Link to="/restaurant/profile/update">
             <Button>Modifier</Button>
           </Link>
-          <Link to="/restaurant/profile/delete">
-            <Button>Delete</Button>
-          </Link>
           <LogoutButton />
+          <Link to="/restaurant/profile/delete">
+            <Button variant={"destructive"}>Supprimer</Button>
+          </Link>
         </div>
       </div>
     </div>

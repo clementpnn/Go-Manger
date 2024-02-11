@@ -23,7 +23,7 @@ export default function AdminRestaurant() {
         <div className="flex flex-row justify-between items-center">
           <p className="header-2 text-neutral-3">Restaurants</p>
           <Link to="/admin/restaurant/add">
-            <Button>Add Restaurant</Button>
+            <Button>Ajouter Restaurant</Button>
           </Link>
         </div>
       </div>

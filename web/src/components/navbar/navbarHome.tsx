@@ -9,7 +9,7 @@ export default function NavbarHome() {
         <span className="text-primary">Manger</span>
       </div>
       <Link to="/signin">
-        <Button>Login</Button>
+        <Button>Se connecter</Button>
       </Link>
     </div>
   )

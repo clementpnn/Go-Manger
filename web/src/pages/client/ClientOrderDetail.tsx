@@ -21,10 +21,10 @@ export default function ClientOrderDetail() {
     <div className="flex flex-col gap-y-[3.75rem]">
       <NavbarClient />
       <div className="flex flex-col gap-y-10 px-20">
-        <p className="header-2 text-neutral-3">Order Informations</p>
+        <p className="header-2 text-neutral-3">Information Commande</p>
         <div className="flex flex-col gap-y-3">
           <p className="body text-neutral-2">CODE: {data.data.identificationCode}</p>
-          <p className="body text-neutral-2">STATUS : {data.data.status}</p>
+          <p className="body text-neutral-2">STATUT : {data.data.status}</p>
         </div>
       </div>
     </div>
