@@ -12,8 +12,10 @@ import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import Spinner from "@/assets/icons/spinner.svg?react";
 import { H3 } from "../typography/h3";
+import { useNavigate } from "@tanstack/react-router";
 
 export default function UpdateAdminProfileForm() {
+  const navigate = useNavigate({ from: "/admin/profile/update" })
   const form = useForm<z.infer<typeof UpdateAdminProfile>>({
     resolver: zodResolver(UpdateAdminProfile),
     mode: "onSubmit",
@@ -25,12 +27,13 @@ export default function UpdateAdminProfileForm() {
   useEffect(() => {
     if (status === "success") {
       toast(data.message);
+      navigate({ to: "/admin/profile" })
     }
 
     if (isError) {
       console.log(error);
     }
-  }, [status, data, isError, error]);
+  }, [status, data, isError, error, navigate]);
 
   function onSubmit(values: z.infer<typeof UpdateAdminProfile>) {
     mutate(values);
