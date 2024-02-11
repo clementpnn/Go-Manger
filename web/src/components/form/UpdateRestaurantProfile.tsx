@@ -15,7 +15,7 @@ import { UpdateRestaurantProfile } from "@/types/update";
 import { useNavigate } from "@tanstack/react-router";
 
 export default function UpdateRestaurantProfileForm() {
-  const navigate = useNavigate()
+  const navigate = useNavigate({ from: "/restaurant/profile/update" })
   const form = useForm<z.infer<typeof UpdateRestaurantProfile>>({
     resolver: zodResolver(UpdateRestaurantProfile),
     mode: "onSubmit",

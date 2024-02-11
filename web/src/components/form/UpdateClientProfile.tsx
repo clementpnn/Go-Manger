@@ -15,7 +15,7 @@ import { UpdateClientProfileService } from "@/services/client";
 import { useNavigate } from "@tanstack/react-router";
 
 export default function UpdateClientProfileForm() {
-  const navigate = useNavigate()
+  const navigate = useNavigate({ from: "/client/profile/update" })
   const form = useForm<z.infer<typeof UpdateClientProfile>>({
     resolver: zodResolver(UpdateClientProfile),
     mode: "onSubmit",
