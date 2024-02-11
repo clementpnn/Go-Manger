@@ -1,11 +1,11 @@
 meta {
-  name: Get Order
+  name: Delete Client Order
   type: http
-  seq: 3
+  seq: 5
 }
 
-get {
-  url: {{baseUrl}}/client/order/1
+delete {
+  url: {{baseUrl}}/client/delete
   body: none
   auth: bearer
 }
