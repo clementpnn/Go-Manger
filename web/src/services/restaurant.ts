@@ -39,3 +39,7 @@ export function UpdateRestaurantOrderService({ status, id }: { status: string, i
 export function DeleteRestaurantService(): Promise<ApiRequest> {
   return KyInstancePrivate.delete("restaurant/me/").json()
 }
+
+export function GetOrderInfoRestaurantService(id: number): Promise<OrderInfo> {
+  return KyInstancePrivate.get(`restaurant/order/${id}`).json()
+}
