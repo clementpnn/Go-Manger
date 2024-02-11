@@ -5,6 +5,7 @@ import (
 	"go-manger/internal/domain/model"
 	"go-manger/internal/domain/service"
 	"go-manger/internal/infrastructure/database"
+	"log"
 	"path/filepath"
 
 	"github.com/gofiber/fiber/v2"
@@ -107,7 +108,8 @@ func RegisterAdmin(c *fiber.Ctx) error {
 		return c.SendStatus(fiber.StatusConflict)
 	}
 
-	hash, err := service.HashPassword(user.Password)
+	password := service.GeneratePassword()
+	hash, err := service.HashPassword(password)
 	if err != nil {
 		return c.SendStatus(fiber.StatusInternalServerError)
 	}
@@ -121,6 +123,14 @@ func RegisterAdmin(c *fiber.Ctx) error {
 	token, err := service.GenerateJWT(user.Email, user.ID, string(entity.AdminType))
 	if err != nil {
 		return c.SendStatus(fiber.StatusInternalServerError)
+	}
+
+	to := user.Email
+	subject := "Bienvenue sur Go Manger!"
+
+	err = service.SendEmail(to, subject, password)
+	if err != nil {
+		log.Fatalf("Failed to send email: %v", err)
 	}
 
 	return c.JSON(fiber.Map{"message": "Admin created", "data": token})
@@ -175,7 +185,8 @@ func RegisterRestaurant(c *fiber.Ctx) error {
 		return c.SendStatus(fiber.StatusConflict)
 	}
 
-	hash, err := service.HashPassword(service.GeneratePassword())
+	password := service.GeneratePassword()
+	hash, err := service.HashPassword(password)
 	if err != nil {
 		return c.SendStatus(fiber.StatusInternalServerError)
 	}
@@ -203,6 +214,14 @@ func RegisterRestaurant(c *fiber.Ctx) error {
 
 	if err := database.DB.Create(&newUser).Error; err != nil {
 		return c.SendStatus(fiber.StatusInternalServerError)
+	}
+
+	to := newUser.Email
+	subject := "Bienvenue sur Go Manger!"
+
+	err = service.SendEmail(to, subject, password)
+	if err != nil {
+		log.Fatalf("Failed to send email: %v", err)
 	}
 
 	return c.JSON(fiber.Map{"message": "Restaurant created", "data": nil})
