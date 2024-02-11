@@ -21,7 +21,7 @@ export default function ClientProfile() {
   return (
     <div className="flex flex-col gap-y-[3.75rem]">
       <NavbarClient />
-      <p className="header-2 text-neutral-3 px-20">profile</p>
+      <p className="header-2 text-neutral-3 px-20">profil</p>
       <div className="flex flex-row justify-between items-center px-20">
         <div className="flex flex-col gap-y-10 justify-center">
           <p className="body text-neutral-2">{data.data.name}</p>

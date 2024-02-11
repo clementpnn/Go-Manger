@@ -47,7 +47,7 @@ export default function AdminClientInfo() {
         <NavbarAdmin />
         <div className="flex flex-row justify-between items-center px-20">
           <div className="flex flex-col gap-y-10 justify-center">
-            <p className="text-neutral-3 header-2">{data.data.name}'s profile</p>
+            <p className="text-neutral-3 header-2">Profil de {data.data.name}</p>
             <p className="body text-neutral-2">{data.data.name}</p>
             <p className="body text-neutral-2">{data.data.email}</p>
           </div>
@@ -61,7 +61,7 @@ export default function AdminClientInfo() {
         <div className="flex flex-col gap-y-10 px-20">
           <p className="header-3">Commandes</p>
           {orders.length === 0 ? (
-            <p className="body text-neutral-2">0 order</p>
+            <p className="body text-neutral-2">0 commande</p>
           ) : (
             <div className="flex flex-col gap-y-5">
               {orders.map((order) => (

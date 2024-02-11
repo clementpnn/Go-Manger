@@ -43,7 +43,7 @@ export default function UpdateClientProfileForm() {
 
   return (
     <div className="flex flex-col justify-center gap-y-20 px-5 w-full lg:px-20 lg:w-2/5">
-      <H3>Modifier profile</H3>
+      <H3>Modifier profil</H3>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-y-[3.75rem]">
           <div className="flex flex-col gap-y-10">

@@ -25,7 +25,7 @@ export default function NavbarClient() {
             <Button variant={"link"}>Commandes</Button>
           </Link>
           <Link to="/client/profile">
-            <Button variant={"link"}>Profile</Button>
+            <Button variant={"link"}>Profil</Button>
           </Link>
         </div>
       </div>
@@ -38,7 +38,7 @@ export default function NavbarClient() {
             <Button variant={"link"}>Commandes</Button>
           </Link>
           <Link to="/client/profile">
-            <Button variant={"link"}>Profile</Button>
+            <Button variant={"link"}>Profil</Button>
           </Link>
         </div>
       )}
