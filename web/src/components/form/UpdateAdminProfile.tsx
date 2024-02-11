@@ -12,8 +12,10 @@ import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import Spinner from "@/assets/icons/spinner.svg?react";
 import { H3 } from "../typography/h3";
+import { useNavigate } from "@tanstack/react-router";
 
 export default function UpdateAdminProfileForm() {
+  const navigate = useNavigate()
   const form = useForm<z.infer<typeof UpdateAdminProfile>>({
     resolver: zodResolver(UpdateAdminProfile),
     mode: "onSubmit",
@@ -34,7 +36,7 @@ export default function UpdateAdminProfileForm() {
 
   function onSubmit(values: z.infer<typeof UpdateAdminProfile>) {
     mutate(values);
-
+    navigate({ to: "/admin/profile" })
     form.reset();
   }
 

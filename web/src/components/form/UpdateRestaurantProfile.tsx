@@ -12,8 +12,10 @@ import Spinner from "@/assets/icons/spinner.svg?react";
 import { H3 } from "../typography/h3";
 import { UpdateRestaurantProfileService } from "@/services/restaurant";
 import { UpdateRestaurantProfile } from "@/types/update";
+import { useNavigate } from "@tanstack/react-router";
 
 export default function UpdateRestaurantProfileForm() {
+  const navigate = useNavigate()
   const form = useForm<z.infer<typeof UpdateRestaurantProfile>>({
     resolver: zodResolver(UpdateRestaurantProfile),
     mode: "onSubmit",
@@ -34,7 +36,7 @@ export default function UpdateRestaurantProfileForm() {
 
   function onSubmit(values: z.infer<typeof UpdateRestaurantProfile>) {
     mutate(values);
-
+    navigate({ to: "/restaurant/profile" })
     form.reset();
   }
 
