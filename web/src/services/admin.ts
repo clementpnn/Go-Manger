@@ -56,3 +56,7 @@ export function UpdateRestaurantService({ email, name, password, description, im
 export function UpdateRestaurantOrderAdminService({ status, id }: { status: string, id: number }): Promise<ApiRequest> {
   return KyInstancePrivate.put(`admin/client/order/${id}`, { json: status }).json()
 }
+
+export function GetOrderInfoAdminService(id: number): Promise<OrderInfo> {
+  return KyInstancePrivate.get(`admin/order/${id}`).json()
+}

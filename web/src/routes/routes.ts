@@ -34,6 +34,7 @@ import AdminClientUpdate from "@/pages/admin/AdminClientUpdate";
 import AdminAllClients from "@/pages/admin/AdminAllClients";
 import AdminRestaurantInfo from "@/pages/admin/AdminRestaurantInfo";
 import RestaurantMenuItem from "@/pages/restaurant/RestaurantMenuItem";
+import AdminOrderInfo from "@/pages/admin/AdminOrderInfo";
 
 const rootRoute = new RootRoute()
 // Public routes
@@ -73,6 +74,7 @@ const AdminClientRoute = new Route({ getParentRoute: () => rootRoute, path: "/ad
 const AdminClientUpdateRoute = new Route({ getParentRoute: () => rootRoute, path: "/admin/user/update/$id", component: withClientAuth(AdminClientUpdate, User.Admin) })
 const AdminAllClientsRoute = new Route({ getParentRoute: () => rootRoute, path: "/admin/clients", component: withClientAuth(AdminAllClients, User.Admin) })
 const AdminRestaurantInfoRoute = new Route({ getParentRoute: () => rootRoute, path: "/admin/restaurant/$id", component: withClientAuth(AdminRestaurantInfo, User.Admin) })
+const AdminOrderInfoRoute = new Route({ getParentRoute: () => rootRoute, path: "/admin/$id", component: withClientAuth(AdminOrderInfo, User.Admin) })
 // Not found route
 const NotFoundRoute = new Route({ getParentRoute: () => rootRoute, path: "*", component: NotFound })
 
@@ -105,6 +107,7 @@ const routeTree = rootRoute.addChildren([indexRoute, signInRoute, RestaurantInfo
   AdminClientUpdateRoute,
   AdminAllClientsRoute,
   AdminRestaurantInfoRoute,
+  AdminOrderInfoRoute,
   NotFoundRoute
 ])
 

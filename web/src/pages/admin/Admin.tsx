@@ -4,6 +4,7 @@ import { Order } from "@/types/order";
 import { useEffect, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { UpdateRestaurantOrderAdminService } from "@/services/admin";
+import { Link } from "@tanstack/react-router";
 
 export default function Admin() {
   const [orders, setOrders] = useState<Order[]>([]);
@@ -39,7 +40,7 @@ export default function Admin() {
         ) : (
           <div className="flex flex-col gap-y-10">
             {orders.map((order) => (
-              <div key={order.id}>
+              <Link key={order.id} to="/admin/$id" params={{ id: order.id.toString() }} className="pointer">
                 <div className="flex justify-between items-center gap-y-2 px-4 py-4 border border-neutral-2 bg-neutral-0 rounded-md">
                   <div className="flex items-center gap-10">
                     <div className="flex justify-center items-center bg-secondary py-2 px-4 rounded-md w-28 h-12">
@@ -72,7 +73,7 @@ export default function Admin() {
                     </Button>
                   </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         )}

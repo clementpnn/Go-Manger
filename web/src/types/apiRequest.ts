@@ -69,3 +69,14 @@ type ClientProfile = ApiRequest & {
 type ClientList = ApiRequest & {
   data: Client[]
 }
+
+type Order = {
+  id: number
+  name: string
+  status: string
+  identificationCode: string
+}
+
+type OrderInfo = ApiRequest & {
+  data: Order
+}
