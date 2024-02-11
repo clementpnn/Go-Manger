@@ -40,6 +40,6 @@ export function DeleteRestaurantService(): Promise<ApiRequest> {
   return KyInstancePrivate.delete("restaurant/me/").json()
 }
 
-export function GetOrderInfoRestaurantService(id: number): Promise<OrderInfo> {
+export function GetOrderInfoRestaurantService(id: number): Promise<OrderInfoRestaurant> {
   return KyInstancePrivate.get(`restaurant/order/${id}`).json()
 }

@@ -77,6 +77,23 @@ type Order = {
   identificationCode: string
 }
 
+type Item = {
+  name: string
+  quantity: number
+}
+
+type OrderRestaurant = {
+  id: number
+  clientName: string
+  status: string
+  identificationCode: string
+  orderItems: Item[]
+}
+
 type OrderInfo = ApiRequest & {
   data: Order
+}
+
+type OrderInfoRestaurant = ApiRequest & {
+  data: OrderRestaurant
 }

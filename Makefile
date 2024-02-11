@@ -4,9 +4,6 @@ i:
 dev:
 	docker-compose up -d --build
 
-run:
-	docker-compose build
-
 up: clean
 	docker-compose up -d --build
 

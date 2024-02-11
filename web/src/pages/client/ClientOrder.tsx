@@ -29,15 +29,27 @@ export default function ClientOrder() {
       <div className="flex flex-col gap-y-10">
         <div className="px-5 header-3 text-neutral-3 lg:px-20 lg:header-2">Mes Commandes</div>
         <div className="px-5 grid grid-cols-2 gap-5 lg:flex lg:flex-wrap lg:justify-between lg:px-20 lg:gap-10">
-          {orders.map((order) => (
-            <Link key={order.id} to="/client/order/$id" params={{ id: order.id.toString() }} className="pointer">
-              <div className="flex flex-col justify-center gap-y-3 bg-neutral-0 rounded-md px-2 h-[11.563rem] w-[11.563rem] lg:h-[19.063rem] lg:w-[19.063rem]">
-                <div className="body-sm text-neutral-2 lg:body">{order.restaurantName}</div>
-                <div className="body-sm text-neutral-2 lg:body">{order.identificationCode}</div>
-                <div className="body-sm text-neutral-2 lg:body">{order.status}</div>
-              </div>
-            </Link>
-          ))}
+          {orders.length === 0 ? (
+            <p className="body text-neutral-2">No orders</p>
+          ) : (
+            <div className="flex flex-col gap-y-10 w-full">
+              {orders.map((order) => (
+                <Link key={order.id} to="/client/order/$id" params={{ id: order.id.toString() }} className="pointer">
+                  <div className="flex justify-between items-center gap-y-2 px-4 py-4 border border-neutral-2 bg-neutral-0 rounded-md w-full">
+                    <div className="flex items-center gap-10">
+                      <div className="flex justify-center items-center bg-secondary py-2 px-4 rounded-md w-28 h-12">
+                        <p className="body text-neutral-2">{order.identificationCode}</p>
+                      </div>
+                      <div className="flex flex-col gap-y-2">
+                        <p className="body-sm text-neutral-400">{order.status}</p>
+                        <p className="header-4 text-neutral-2">{order.restaurantName}</p>
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>
