@@ -19,6 +19,17 @@ export default function AdminRestaurantInfo() {
     return <span>Error: {error.message}</span>;
   }
 
+  const sortedMenuItems: Record<MenuItem["type"], MenuItem[]> = {
+    starter: [],
+    dish: [],
+    dessert: [],
+    drink: [],
+  };
+
+  data.data.menuItems.forEach((item: MenuItem) => {
+    sortedMenuItems[item.type]?.push(item);
+  });
+
   return (
     <div className="flex flex-col gap-y-[3.75rem]">
       <NavbarAdmin />
@@ -37,25 +48,23 @@ export default function AdminRestaurantInfo() {
       <div className="flex flex-col gap-y-10 px-20">
         <p className="header-3 text-neutral-3">Menu</p>
         <div className="flex flex-wrap justify-between gap-20">
-          {data.data.menuItems.map((item: any) => (
-            <ul key={item.id}>
-              <li className="list-disc body text-neutral-2">
-                {item.name}
-              </li>
-              <li className="list-disc body text-neutral-2">
-                {item.description}
-              </li>
-              <li className="list-disc body text-neutral-2">
-                {item.price}
-              </li>
-              <li className="list-disc body text-neutral-2">
-                {item.available === true ? "available" : "not available"}
-              </li>
-              <li className="list-disc body text-neutral-2">
-                {item.type}
-              </li>
-            </ul>
-          ))}
+        {Object.entries(sortedMenuItems).map(
+          ([type, items]) =>
+            items.length > 0 && (
+              <div key={type} className="w-full">
+                <h2 className="header-4 font-bold capitalize mb-4">{type}</h2>
+                <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                  {items.map((item: any) => (
+                    <div key={item.id} className="p-6 flex flex-col gap-2 border border-neutral-3 rounded-md bg-white">
+                      <h3 className="header-4 font-semibold">{item.name}</h3>
+                      <p className="body-sm text-gray-500">{item.description}</p>
+                      <p className="body text-gray-700 font-bold">{item.price} €</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )
+          )}
         </div>
       </div>
     </div>
