@@ -17,7 +17,7 @@ export default function RegisterAdminForm() {
   const form = useForm<z.infer<typeof registerAdmin>>({
     resolver: zodResolver(registerAdmin),
     mode: "onSubmit",
-    defaultValues: { email: "", name: "", password: "" },
+    defaultValues: { email: "", name: "" },
   });
 
   const { mutate, data, isError, error, status } = useMutation({ mutationFn: RegisterAdminService });
