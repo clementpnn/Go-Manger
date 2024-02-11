@@ -13,8 +13,10 @@ import Spinner from "@/assets/icons/spinner.svg?react";
 import { H3 } from "../typography/h3";
 import { RegisterClientService } from "@/services/client";
 import { Link } from "@tanstack/react-router";
+import { useNavigate } from "@tanstack/react-router";
 
 export default function RegisterClientForm() {
+  const navigate = useNavigate({ from: "/registerClient" })
   const form = useForm<z.infer<typeof registerClient>>({
     resolver: zodResolver(registerClient),
     mode: "onSubmit",
@@ -25,7 +27,9 @@ export default function RegisterClientForm() {
 
   useEffect(() => {
     if (status === "success") {
+      localStorage.setItem("jwtToken", data.data);
       toast(data.message);
+      navigate({ to: "/" })
     }
 
     if (isError) {
