@@ -53,16 +53,10 @@ func GetOrder(c *fiber.Ctx) error {
 		return c.Status(404).JSON(fiber.Map{"message": "Commande non trouvée"})
 	}
 
-	var client model.Client
-	if err := database.DB.First(&client, order.ClientID).Error; err != nil {
-		return c.Status(404).JSON(fiber.Map{"message": "Client non trouvée"})
-	}
-
 	orderResponse := entity.OrderResponse{
 		ID:                 order.ID,
 		IdentificationCode: order.IdentificationCode,
 		Status:             order.Status,
-		ClientName:         client.Name,
 	}
 
 	for _, item := range order.OrderItems {

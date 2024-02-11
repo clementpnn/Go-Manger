@@ -21,6 +21,6 @@ export function AddOrderClientService({ id, orderItems }: { id: string, orderIte
   return KyInstancePrivate.post(`client/order/${Number(id)}`, { json: { orderItems } }).json()
 }
 
-export function GetOrderInfoClientService(id: number): Promise<OrderInfo> {
+export function GetOrderInfoClientService(id: number): Promise<OrderInfoRestaurant> {
   return KyInstancePrivate.get(`client/order/${id}`).json()
 }

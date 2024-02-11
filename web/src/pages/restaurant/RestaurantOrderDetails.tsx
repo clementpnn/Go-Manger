@@ -24,7 +24,6 @@ export default function RestaurantOrderDetails() {
       <div className="flex flex-col gap-y-10 px-20">
         <p className="header-2 text-neutral-3">Information Commande</p>
         <div className="flex flex-col gap-y-3">
-          <p className="body text-neutral-2">CLIENT: {data.data.clientName}</p>
           <p className="body text-neutral-2">CODE: {data.data.identificationCode}</p>
           <p className="body text-neutral-2">STATUT : {data.data.status}</p>
           {data.data.orderItems.map((item, _) => (

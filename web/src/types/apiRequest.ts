@@ -84,7 +84,6 @@ type Item = {
 
 type OrderRestaurant = {
   id: number
-  clientName: string
   status: string
   identificationCode: string
   orderItems: Item[]

@@ -25,8 +25,14 @@ export default function ClientOrderDetail() {
         <div className="flex flex-col gap-y-3">
           <p className="body text-neutral-2">CODE: {data.data.identificationCode}</p>
           <p className="body text-neutral-2">STATUT : {data.data.status}</p>
+          {data.data.orderItems.map((item, _) => (
+            <div key={_} className="gap-4">
+              <p className="body text-neutral-2">Plât: {item.name}</p>
+              <p className="body text-neutral-2">Quantité : {item.quantity}</p>
+            </div>
+          ))}
         </div>
       </div>
     </div>
-  )
+  );
 }

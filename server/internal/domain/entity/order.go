@@ -33,6 +33,5 @@ type OrderResponse struct {
 	ID                 uint                `json:"id"`
 	IdentificationCode string              `json:"identificationCode"`
 	Status             model.OrderStatus   `json:"status"`
-	ClientName         string              `json:"clientName"`
 	OrderItems         []OrderItemResponse `json:"orderItems"`
 }
