@@ -1,0 +1,19 @@
+meta {
+  name: Update Order Restaurant
+  type: http
+  seq: 8
+}
+
+put {
+  url: {{baseUrl}}/restaurant/order/1
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{jwt}}
+}
+
+body:json {
+  "ready"
+}

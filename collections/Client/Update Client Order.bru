@@ -1,0 +1,22 @@
+meta {
+  name: Update Client Order
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{baseUrl}}/client/update
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{jwt}}
+}
+
+body:json {
+  {
+    "email": "rouge@example.com",
+    "password": "9290"
+  }
+}
