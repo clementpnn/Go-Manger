@@ -15,6 +15,7 @@ import { AddRestaurantMenuItemService } from "@/services/restaurant";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import NavbarRestaurateur from "@/components/navbar/navbarRestaurateur";
 import { Textarea } from "@/components/ui/textarea";
+import { Link } from "@tanstack/react-router";
 
 export default function RestaurantAddMenuItem() {
   const form = useForm<z.infer<typeof FormRestaurantMenuItem>>({
@@ -41,6 +42,7 @@ export default function RestaurantAddMenuItem() {
       ...values,
       price: Number(values.price),
     };
+    console.log(submissionValues)
     mutate(submissionValues);
     form.reset();
   }
@@ -51,6 +53,9 @@ export default function RestaurantAddMenuItem() {
       <div className="w-full flex justify-center pt-16">
         <div className="flex flex-col justify-center gap-y-10 px-20 w-2/5">
           <H3>Add Menu</H3>
+          <Link to="/restaurant/menu">
+            <Button variant="secondary">Back</Button>
+          </Link>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-y-8">
               <FormField
@@ -120,7 +125,7 @@ export default function RestaurantAddMenuItem() {
               />
 
               <Button type="submit">
-                {status === "pending" ? <Spinner /> : "Changer"}
+                {status === "pending" ? <Spinner /> : "Add"}
               </Button>
             </form>
           </Form>
