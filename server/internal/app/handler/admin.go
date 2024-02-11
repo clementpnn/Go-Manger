@@ -179,13 +179,13 @@ func GetRestaurantsOrders(c *fiber.Ctx) error {
 	c.Set("Transfer-Encoding", "chunked")
 
 	c.Context().SetBodyStreamWriter(fasthttp.StreamWriter(func(w *bufio.Writer) {
-		newOrders := make(chan entity.Order)
-		go listenForNewOrdersAdmin(newOrders)
+		allOrders := make(chan []entity.Order)
+		go listenForNewOrdersAdmin(allOrders)
 
 		for {
 			select {
-			case order := <-newOrders:
-				jsonData, _ := json.Marshal(order)
+			case orders := <-allOrders:
+				jsonData, _ := json.Marshal(orders)
 				fmt.Fprintf(w, "data: %s\n\n", jsonData)
 				if err := w.Flush(); err != nil {
 					fmt.Printf("Error while flushing: %v. Closing http connection.\n", err)
@@ -204,9 +204,7 @@ func GetRestaurantsOrders(c *fiber.Ctx) error {
 	return nil
 }
 
-func listenForNewOrdersAdmin(newOrders chan<- entity.Order) {
-	var lastChecked time.Time
-
+func listenForNewOrdersAdmin(allOrders chan<- []entity.Order) {
 	for {
 		time.Sleep(2 * time.Second)
 
@@ -215,20 +213,13 @@ func listenForNewOrdersAdmin(newOrders chan<- entity.Order) {
 			Select("orders.id, orders.identification_code, orders.status, clients.name as client_name, restaurants.name as restaurant_name").
 			Joins("left join clients on clients.id = orders.client_id").
 			Joins("left join restaurants on restaurants.id = orders.restaurant_id").
-			Where("orders.created_at > ?", lastChecked).
 			Order("orders.updated_at DESC").
 			Find(&orders).Error; err != nil {
-			log.Printf("Error querying new orders: %v", err)
+			log.Printf("Error querying orders: %v", err)
 			continue
 		}
 
-		for _, order := range orders {
-			newOrders <- order
-		}
-
-		if len(orders) > 0 {
-			lastChecked = time.Now()
-		}
+		allOrders <- orders
 	}
 }
 
@@ -311,13 +302,13 @@ func GetClientAdminOrder(c *fiber.Ctx) error {
 	}
 
 	c.Context().SetBodyStreamWriter(fasthttp.StreamWriter(func(w *bufio.Writer) {
-		newOrders := make(chan entity.OrderClient)
-		go listenForClientAdminOrders(uint(uintID), newOrders)
+		allOrders := make(chan []entity.OrderClient)
+		go listenForClientAdminOrders(uint(uintID), allOrders)
 
 		for {
 			select {
-			case order := <-newOrders:
-				jsonData, _ := json.Marshal(order)
+			case orders := <-allOrders:
+				jsonData, _ := json.Marshal(orders)
 				fmt.Fprintf(w, "data: %s\n\n", jsonData)
 				if err := w.Flush(); err != nil {
 					fmt.Printf("Error while flushing: %v. Closing http connection.\n", err)
@@ -336,9 +327,7 @@ func GetClientAdminOrder(c *fiber.Ctx) error {
 	return nil
 }
 
-func listenForClientAdminOrders(clientID uint, newOrders chan<- entity.OrderClient) {
-	var lastChecked time.Time
-
+func listenForClientAdminOrders(clientID uint, allOrders chan<- []entity.OrderClient) {
 	for {
 		time.Sleep(2 * time.Second)
 
@@ -346,19 +335,13 @@ func listenForClientAdminOrders(clientID uint, newOrders chan<- entity.OrderClie
 		if err := database.DB.Model(&model.Order{}).
 			Select("orders.id, orders.identification_code, orders.status, restaurants.name as restaurant_name").
 			Joins("left join restaurants on restaurants.id = orders.restaurant_id").
-			Where("orders.client_id = ? AND orders.created_at > ?", clientID, lastChecked).
+			Where("orders.client_id = ?", clientID).
 			Order("orders.updated_at DESC").
 			Find(&orders).Error; err != nil {
-			log.Printf("Error querying new orders: %v", err)
+			log.Printf("Error querying orders for client %d: %v", clientID, err)
 			continue
 		}
 
-		for _, order := range orders {
-			newOrders <- order
-		}
-
-		if len(orders) > 0 {
-			lastChecked = time.Now()
-		}
+		allOrders <- orders
 	}
 }

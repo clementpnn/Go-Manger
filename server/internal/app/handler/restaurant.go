@@ -163,13 +163,13 @@ func GetRestaurantOrder(c *fiber.Ctx) error {
 	}
 
 	c.Context().SetBodyStreamWriter(fasthttp.StreamWriter(func(w *bufio.Writer) {
-		newOrders := make(chan entity.OrderData)
-		go listenForNewOrders(uint(id), newOrders)
+		allOrders := make(chan []entity.OrderData)
+		go listenForNewOrders(uint(id), allOrders)
 
 		for {
 			select {
-			case order := <-newOrders:
-				jsonData, _ := json.Marshal(order)
+			case orders := <-allOrders:
+				jsonData, _ := json.Marshal(orders)
 				fmt.Fprintf(w, "data: %s\n\n", jsonData)
 				if err := w.Flush(); err != nil {
 					fmt.Printf("Error while flushing: %v. Closing http connection.\n", err)
@@ -188,9 +188,7 @@ func GetRestaurantOrder(c *fiber.Ctx) error {
 	return nil
 }
 
-func listenForNewOrders(restaurantID uint, newOrders chan<- entity.OrderData) {
-	var lastChecked time.Time
-
+func listenForNewOrders(restaurantID uint, allOrders chan<- []entity.OrderData) {
 	for {
 		time.Sleep(2 * time.Second)
 
@@ -198,20 +196,14 @@ func listenForNewOrders(restaurantID uint, newOrders chan<- entity.OrderData) {
 		if err := database.DB.Model(&model.Order{}).
 			Select("orders.id, orders.identification_code, orders.status, clients.name as client_name").
 			Joins("left join clients on clients.id = orders.client_id").
-			Where("orders.restaurant_id = ? AND orders.created_at > ?", restaurantID, lastChecked).
+			Where("orders.restaurant_id = ?", restaurantID).
 			Order("orders.updated_at DESC").
 			Find(&orders).Error; err != nil {
-			log.Printf("Error querying new orders: %v", err)
+			log.Printf("Error querying orders for restaurant %d: %v", restaurantID, err)
 			continue
 		}
 
-		for _, order := range orders {
-			newOrders <- order
-		}
-
-		if len(orders) > 0 {
-			lastChecked = time.Now()
-		}
+		allOrders <- orders
 	}
 }
 
