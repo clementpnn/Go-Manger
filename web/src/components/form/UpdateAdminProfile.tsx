@@ -17,7 +17,7 @@ export default function UpdateAdminProfileForm() {
   const form = useForm<z.infer<typeof UpdateAdminProfile>>({
     resolver: zodResolver(UpdateAdminProfile),
     mode: "onSubmit",
-    defaultValues: { email: "", name: "" },
+    defaultValues: { email: "", name: "", password: "" },
   });
 
   const { mutate, data, isError, error, status } = useMutation({ mutationFn: UpdateAdminProfileService });
@@ -66,6 +66,20 @@ export default function UpdateAdminProfileForm() {
                   <FormLabel>Name</FormLabel>
                   <FormControl>
                     <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Password</FormLabel>
+                  <FormControl>
+                    <Input type="password" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
