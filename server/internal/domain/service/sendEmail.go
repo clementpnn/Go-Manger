@@ -10,8 +10,8 @@ func SendEmail(to, subject, password string) error {
 	from := os.Getenv("SMTP_EMAIL")
 	pass := os.Getenv("SMTP_EMAIL_PASSWORD")
 
-	smtpHost := "smtp." + os.Getenv("SMTP_EMAIL")
-	smtpPort := os.Getenv("SMTP_PORT")
+	smtpHost := "smtp.gmail.com"
+	smtpPort := "587"
 
 	auth := smtp.PlainAuth("", from, pass, smtpHost)
 
@@ -32,7 +32,7 @@ func SendEmail(to, subject, password string) error {
                 </tr>
             </table>
             <p>Nous vous recommandons de changer votre mot de passe dès votre première connexion.</p>
-            <p><a href="https://go-manger.com/login">Cliquez ici pour vous connecter</a></p>
+            <p><a href="http://localhost:8080/signin">Cliquez ici pour vous connecter</a></p>
             <p>Merci de nous avoir choisi pour vos aventures culinaires !</p>
         </body>
         </html>

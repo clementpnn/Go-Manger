@@ -71,20 +71,6 @@ export default function RegisterAdminForm() {
                 </FormItem>
               )}
             />
-
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Password</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
           </div>
           <div className="flex flex-col gap-y-3">
             <Button type="submit">{status === "pending" ? <Spinner /> : "Ajouter"}</Button>
