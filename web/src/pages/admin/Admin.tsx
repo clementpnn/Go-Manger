@@ -40,7 +40,7 @@ export default function Admin() {
         ) : (
           <div className="flex flex-col gap-y-10">
             {orders.map((order) => (
-              <Link key={order.id} to="/admin/$id" params={{ id: order.id.toString() }} className="pointer">
+              <div key={order.id}>
                 <div className="flex justify-between items-center gap-y-2 px-4 py-4 border border-neutral-2 bg-neutral-0 rounded-md">
                   <div className="flex items-center gap-10">
                     <div className="flex justify-center items-center bg-secondary py-2 px-4 rounded-md w-28 h-12">
@@ -52,6 +52,9 @@ export default function Admin() {
                     </div>
                   </div>
                   <div className="flex flex-row gap-x-4">
+                    <Link to="/admin/$id" params={{ id: order.id.toString() }}>
+                      <Button>Voir infos</Button>
+                    </Link>
                     <Button
                       onClick={() => handleClick("started", order.id)}
                       className={`${order.status === "pending" ? "block" : "hidden"}`}
@@ -73,7 +76,7 @@ export default function Admin() {
                     </Button>
                   </div>
                 </div>
-              </Link>
+              </div>
             ))}
           </div>
         )}
