@@ -1,3 +1,4 @@
+import NavbarClient from "@/components/navbar/navbarCient";
 import NavbarHome from "@/components/navbar/navbarHome";
 import { Button } from "@/components/ui/button";
 import { AddOrderClientService } from "@/services/client";
@@ -75,7 +76,7 @@ export default function Restaurant() {
 
   return (
     <div className="flex flex-col gap-y-[3.75rem]">
-      {isAuthorized ? <div>navbarclient</div> : <NavbarHome />}
+      {isAuthorized ? <NavbarClient /> : <NavbarHome />}
       <div className="flex flex-col gap-y-5 lg:flex-row lg:justify-between lg:items-center px-5 lg:px-20">
         <div className="flex flex-col gap-y-3">
           <p className="header-2 text-neutral-3">{data.data.name}</p>
@@ -89,34 +90,34 @@ export default function Restaurant() {
       </div>
       <div className="flex flex-col gap-y-10 px-5 lg:px-20">
         <p className="header-3 text-neutral-3">Menu</p>
-        <div className="flex flex-wrap justify-between gap-20">
+        <div className="flex flex-wrap justify-between gap-10">
           {Object.entries(sortedMenuItems).map(
             ([type, items]) =>
               items.length > 0 && (
-                <div key={type} className="mb-10">
-                  <h2 className="text-2xl font-bold capitalize mb-4">{type}</h2>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <div key={type} className="w-full">
+                  <h2 className="header-4 font-bold capitalize mb-4">{type}</h2>
+                  <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                     {items.map((item: any) => (
-                      <div key={item.id} className="p-4 shadow-lg rounded-lg bg-white">
-                        <h3 className="text-xl font-semibold">{item.name}</h3>
+                      <div key={item.id} className="p-6 flex flex-col gap-2 border border-neutral-3 rounded-md bg-white">
+                        <h3 className="header-4 font-semibold">{item.name}</h3>
                         <p className="text-gray-500">{item.description}</p>
-                        <p className="text-gray-700 font-bold">{item.price}</p>
+                        <p className="text-gray-700 font-bold">{item.price} €</p>
                         {isAuthorized &&
                           (item.available ? (
                             <div className="flex items-center">
-                              <button
+                              <Button
+                                variant="secondary"
                                 onClick={() => decrementCount(item.id)}
-                                className="px-2 py-1 text-gray-600 border border-gray-400 rounded"
                               >
                                 -
-                              </button>
+                              </Button>
                               <span className="px-4">{itemCounts[item.id] || 0}</span>
-                              <button
+                              <Button
+                                variant="secondary"
                                 onClick={() => incrementCount(item.id)}
-                                className="px-2 py-1 text-gray-600 border border-gray-400 rounded"
                               >
                                 +
-                              </button>
+                              </Button>
                             </div>
                           ) : (
                             <p className="text-red-500">Not available</p>
