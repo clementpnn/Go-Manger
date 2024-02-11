@@ -31,3 +31,7 @@ export function DeleteRestaurantMenuService(id: number): Promise<ApiRequest> {
 export function UpdateRestaurantMenuService({ name, description, type, price, id }: { name: string, description: string, type: MenuItemType, price : number, id: string }): Promise<ApiRequest> {
   return KyInstancePrivate.put(`restaurant/menu/${Number(id)}`, { json: { name, description, type, price } }).json()
 }
+
+export function UpdateRestaurantOrderService({ status, id }: { status: string, id: number }): Promise<ApiRequest> {
+  return KyInstancePrivate.put(`restaurant/order/${id}`, { json: status }).json()
+}
