@@ -179,48 +179,28 @@ func GetRestaurantsOrders(c *fiber.Ctx) error {
 	c.Set("Transfer-Encoding", "chunked")
 
 	c.Context().SetBodyStreamWriter(fasthttp.StreamWriter(func(w *bufio.Writer) {
-		allOrders := make(chan []entity.Order)
-		go listenForNewOrdersAdmin(allOrders)
-
 		for {
-			select {
-			case orders := <-allOrders:
-				jsonData, _ := json.Marshal(orders)
-				fmt.Fprintf(w, "data: %s\n\n", jsonData)
-				if err := w.Flush(); err != nil {
-					fmt.Printf("Error while flushing: %v. Closing http connection.\n", err)
-					return
-				}
-			case <-time.After(2 * time.Second):
-				fmt.Fprintf(w, ":keep-alive\n\n")
-				if err := w.Flush(); err != nil {
-					fmt.Printf("Error while flushing: %v. Closing http connection.\n", err)
-					return
-				}
+			time.Sleep(2 * time.Second)
+			var orders []entity.Order
+			if err := database.DB.Model(&model.Order{}).
+				Select("orders.id, orders.identification_code, orders.status, clients.name as client_name, restaurants.name as restaurant_name").
+				Joins("left join clients on clients.id = orders.client_id").
+				Joins("left join restaurants on restaurants.id = orders.restaurant_id").
+				Order("orders.updated_at DESC").
+				Find(&orders).Error; err != nil {
+				log.Printf("Error querying orders: %v", err)
+			}
+
+			jsonData, _ := json.Marshal(orders)
+			fmt.Fprintf(w, "data: %s\n\n", jsonData)
+			if err := w.Flush(); err != nil {
+				fmt.Printf("Error while flushing: %v. Closing http connection.\n", err)
+				return
 			}
 		}
 	}))
 
 	return nil
-}
-
-func listenForNewOrdersAdmin(allOrders chan<- []entity.Order) {
-	for {
-		time.Sleep(2 * time.Second)
-
-		var orders []entity.Order
-		if err := database.DB.Model(&model.Order{}).
-			Select("orders.id, orders.identification_code, orders.status, clients.name as client_name, restaurants.name as restaurant_name").
-			Joins("left join clients on clients.id = orders.client_id").
-			Joins("left join restaurants on restaurants.id = orders.restaurant_id").
-			Order("orders.updated_at DESC").
-			Find(&orders).Error; err != nil {
-			log.Printf("Error querying orders: %v", err)
-			continue
-		}
-
-		allOrders <- orders
-	}
 }
 
 func UpdateRestaurantById(c *fiber.Ctx) error {
