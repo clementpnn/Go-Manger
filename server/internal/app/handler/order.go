@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"go-manger/internal/domain/entity"
 	"go-manger/internal/domain/model"
 	"go-manger/internal/domain/service"
 	"go-manger/internal/infrastructure/database"
@@ -43,13 +44,38 @@ func GetOrder(c *fiber.Ctx) error {
 	orderID := c.Params("id")
 	orderIDInt, err := strconv.Atoi(orderID)
 	if err != nil {
-		return c.Status(400).JSON(fiber.Map{"message": "ID de commande invalide", "data": nil})
+		return c.Status(400).JSON(fiber.Map{"message": "ID de commande invalide"})
 	}
 
-	order := model.Order{}
-	if result := database.DB.Preload("OrderItems").First(&order, orderIDInt); result.Error != nil {
-		return c.Status(404).JSON(fiber.Map{"message": "Commande non trouvée", "data": nil})
+	var order model.Order
+	if err := database.DB.Preload("OrderItems").
+		First(&order, orderIDInt).Error; err != nil {
+		return c.Status(404).JSON(fiber.Map{"message": "Commande non trouvée"})
 	}
 
-	return c.JSON(fiber.Map{"message": "Commande trouvée", "data": order})
+	var client model.Client
+	if err := database.DB.First(&client, order.ClientID).Error; err != nil {
+		return c.Status(404).JSON(fiber.Map{"message": "Client non trouvée"})
+	}
+
+	orderResponse := entity.OrderResponse{
+		ID:                 order.ID,
+		IdentificationCode: order.IdentificationCode,
+		Status:             order.Status,
+		ClientName:         client.Name,
+	}
+
+	for _, item := range order.OrderItems {
+		var items model.MenuItem
+		if err := database.DB.First(&items, item.MenuItemID).Error; err != nil {
+			return c.Status(404).JSON(fiber.Map{"message": "Item non trouvée"})
+		}
+		orderItemResponse := entity.OrderItemResponse{
+			Name:     items.Name,
+			Quantity: item.Quantity,
+		}
+		orderResponse.OrderItems = append(orderResponse.OrderItems, orderItemResponse)
+	}
+
+	return c.JSON(fiber.Map{"message": "Commande trouvée", "data": orderResponse})
 }
