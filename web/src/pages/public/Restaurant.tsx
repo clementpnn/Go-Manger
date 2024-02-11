@@ -7,11 +7,13 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { useParams } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { useNavigate } from "@tanstack/react-router";
 
 export default function Restaurant() {
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [itemCounts, setItemCounts] = useState<{ [key: number]: number }>({});
   const jwt = localStorage.getItem("jwtToken");
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (jwt) {
@@ -68,7 +70,7 @@ export default function Restaurant() {
 
     if (itemsToOrder.length > 0) {
       mutate({ id, orderItems: itemsToOrder });
-      // faire la redirection vers l'order
+      navigate({ to: "/client/order" })
     } else {
       toast("Aucun item sélectionné");
     }
