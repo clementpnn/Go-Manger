@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { DeleteRestaurantMenuService, GetRestaurantMenu } from "@/services/restaurant";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 
 export default function RestaurantMenuItem() {
   const queryClient = useQueryClient();
@@ -37,6 +37,9 @@ export default function RestaurantMenuItem() {
       <NavbarRestaurateur />
       <div className="flex flex-col gap-y-10 px-20">
         <p className="header-3 text-neutral-3">Menu</p>
+        <Link to="/restaurant/menu/add">
+          <Button>Add</Button>
+        </Link>
         <div className="flex flex-wrap justify-between gap-20">
           {data.data.map((item: MenuItem) => (
             <div key={item.id}>
@@ -66,11 +69,8 @@ export default function RestaurantMenuItem() {
                 <li className="body text-neutral-2 mt-4">
                   {item.price} €
                 </li>
-
-
               </ul>
             </div>
-
           ))}
         </div>
       </div>
