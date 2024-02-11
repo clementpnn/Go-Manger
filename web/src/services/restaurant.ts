@@ -32,6 +32,10 @@ export function UpdateRestaurantMenuService({ name, description, type, price, id
   return KyInstancePrivate.put(`restaurant/menu/${Number(id)}`, { json: { name, description, type, price } }).json()
 }
 
+export function UpdateRestaurantOrderService({ status, id }: { status: string, id: number }): Promise<ApiRequest> {
+  return KyInstancePrivate.put(`restaurant/order/${id}`, { json: status }).json()
+}
+
 export function DeleteRestaurantService(): Promise<ApiRequest> {
   return KyInstancePrivate.delete("restaurant/me/").json()
 }

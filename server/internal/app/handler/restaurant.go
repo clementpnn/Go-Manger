@@ -208,8 +208,8 @@ func listenForNewOrders(restaurantID uint, allOrders chan<- []entity.OrderData) 
 }
 
 func UpdateOrderRestaurant(c *fiber.Ctx) error {
-	id, err := service.GetUserIDFromJWT(c)
-	if err != nil {
+	id := c.Params("id")
+	if _, err := strconv.Atoi(id); err != nil {
 		return c.SendStatus(fiber.StatusBadRequest)
 	}
 
