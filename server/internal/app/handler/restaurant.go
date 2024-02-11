@@ -200,8 +200,14 @@ func UpdateOrderRestaurant(c *fiber.Ctx) error {
 	}
 
 	var order model.Order
-	if result := database.DB.First(&order, id).Error; result != nil {
-		return c.SendStatus(fiber.StatusNotFound)
+	if *input == "refused" {
+		if result := database.DB.Delete(&order, id).Error; result != nil {
+			return c.SendStatus(fiber.StatusNotFound)
+		}
+	} else {
+		if result := database.DB.First(&order, id).Error; result != nil {
+			return c.SendStatus(fiber.StatusNotFound)
+		}
 	}
 
 	order.Status = *input
