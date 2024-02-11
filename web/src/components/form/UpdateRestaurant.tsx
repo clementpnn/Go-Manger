@@ -13,9 +13,11 @@ import { H3 } from "../typography/h3";
 import { UpdateRestaurantProfile } from "@/types/update";
 import { UpdateRestaurantService } from "@/services/admin";
 import { useParams } from "@tanstack/react-router";
+import { useNavigate } from "@tanstack/react-router";
 
 export default function UpdateRestaurantForm() {
   const { id } = useParams({ from: "/restaurant/$id" });
+  const navigate = useNavigate({ from:"/admin/restaurant/update/$id" })
   const form = useForm<z.infer<typeof UpdateRestaurantProfile>>({
     resolver: zodResolver(UpdateRestaurantProfile),
     mode: "onSubmit",
@@ -27,16 +29,16 @@ export default function UpdateRestaurantForm() {
   useEffect(() => {
     if (status === "success") {
       toast(data.message);
+      navigate({ to: "/admin/restaurant" })
     }
 
     if (isError) {
       console.log(error);
     }
-  }, [status, data, isError, error]);
+  }, [status, data, isError, error, navigate]);
 
   function onSubmit(values: z.infer<typeof UpdateRestaurantProfile>) {
     mutate({ ...values, id });
-
     form.reset();
   }
 
