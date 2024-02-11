@@ -31,12 +31,16 @@ DB_PORT="5432"
 DB_USER="root"
 DB_PASSWORD="root"
 DB_NAME="postgres"
+
 SECRET="secret"
+
+SMTP_EMAIL="your_email@example.com"
+SMTP_EMAIL_PASSWORD="your_password"
+SMTP_PORT="587"
 ```
 
 To test they routes without going to the front, open the collections file with [Bruno](https://www.usebruno.com/), and configure env (this does not include SSE routes and routes that upload an image):
 
-`baseUrl` http://127.0.0.1:3000/api<br>
 `jwt` Your token if you are connected
 
 To run the app locally, you can run the following commands:
@@ -75,12 +79,19 @@ Go Manger is built on the following stack:
 
 ## Routes
 
-Base URL: [http://localhost:5173](http://localhost:5173)
+Base URL: [http://localhost:8080](http://localhost:8080)
 
 *for example replaced id with 1*
 
 **Public Routes:**
 
 `/` Shows the list of all restaurants<br>
-`restaurant/id` Displays a restaurant and its menu, you can also order if you are authenticated as a customer<br>
+`/restaurant/id` Displays a restaurant and its menu, you can also order if you are authenticated as a customer<br>
 `/signin` Allows users to login or register, restaurants to login and admins to login<br>
+
+**Customer Routes:**
+
+`/client/order` Displays the details of an order placed by the customer, it is possible to click on an order to see its details<br>
+`/client/order/id` Displays the details of an order made by the customer<br>
+`client/profile` Allows you to see the customer's information, it is also possible to update your profile, log out or delete your account<br>
+`client/profile/update` Allows you to update the desired information<br>
