@@ -60,3 +60,7 @@ export function UpdateRestaurantOrderAdminService({ status, id }: { status: stri
 export function GetOrderInfoAdminService(id: number): Promise<OrderInfo> {
   return KyInstancePrivate.get(`admin/order/${id}`).json()
 }
+
+export function AdminDeleteRestaurantService(id: number): Promise<ApiRequest> {
+  return KyInstancePrivate.delete(`admin/restaurant/${id}`).json()
+}
