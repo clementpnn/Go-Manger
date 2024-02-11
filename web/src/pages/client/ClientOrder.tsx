@@ -45,30 +45,6 @@ export default function ClientOrder() {
                         <p className="header-4 text-neutral-2">{order.restaurantName}</p>
                       </div>
                     </div>
-                    {/* <div className="flex flex-row gap-x-4">
-                      <Link to="/admin/$id" params={{ id: order.id.toString() }}>
-                        <Button>Voir infos</Button>
-                      </Link>
-                      <Button
-                        onClick={() => handleClick("started", order.id)}
-                        className={`${order.status === "pending" ? "block" : "hidden"}`}
-                      >
-                        Accepter
-                      </Button>
-                      <Button
-                        onClick={() => handleClick("refused", order.id)}
-                        className={`${order.status === "pending" ? "block" : "hidden"}`}
-                        variant={"destructive"}
-                      >
-                        Refuser
-                      </Button>
-                      <Button onClick={() => handleClick("ready", order.id)} className={`${order.status === "started" ? "block" : "hidden"}`}>
-                        Terminée
-                      </Button>
-                      <Button onClick={() => handleClick("recover", order.id)} className={`${order.status === "ready" ? "block" : "hidden"}`}>
-                        Récupérée
-                      </Button>
-                    </div> */}
                   </div>
                 </Link>
               ))}
