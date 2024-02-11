@@ -7,14 +7,14 @@ import { useEffect, useState } from "react";
 
 export default function RestaurantOrder() {
   const [orders, setOrders] = useState<Order[]>([]);
-  const { mutate } = useMutation({ mutationFn: UpdateRestaurantOrderService })
+  const { mutate } = useMutation({ mutationFn: UpdateRestaurantOrderService });
 
   useEffect(() => {
     setOrders([]);
     const source = new EventSource(`http://127.0.0.1:3000/api/restaurant/order?token=${localStorage.getItem("jwtToken")}`);
 
     source.onmessage = (event: MessageEvent) => {
-      setOrders((prevOrders) => [...prevOrders, JSON.parse(event.data)]);
+      setOrders(JSON.parse(event.data));
     };
 
     source.onerror = function (event: Event) {
@@ -27,8 +27,8 @@ export default function RestaurantOrder() {
     };
   }, []);
   const handleClick = (status: string, id: number) => {
-    mutate({ status, id })
-  }
+    mutate({ status, id });
+  };
   return (
     <div className="flex flex-col gap-y-[3.75rem]">
       <NavbarRestaurateur />
@@ -64,16 +64,10 @@ export default function RestaurantOrder() {
                     >
                       Refuser
                     </Button>
-                    <Button
-                      onClick={() => handleClick("ready", order.id)}
-                      className={`${order.status === "started" ? "block" : "hidden"}`}
-                    >
+                    <Button onClick={() => handleClick("ready", order.id)} className={`${order.status === "started" ? "block" : "hidden"}`}>
                       Terminée
                     </Button>
-                    <Button
-                      onClick={() => handleClick("recover", order.id)}
-                      className={`${order.status === "ready" ? "block" : "hidden"}`}
-                    >
+                    <Button onClick={() => handleClick("recover", order.id)} className={`${order.status === "ready" ? "block" : "hidden"}`}>
                       Récupérée
                     </Button>
                   </div>

@@ -282,46 +282,27 @@ func GetClientAdminOrder(c *fiber.Ctx) error {
 	}
 
 	c.Context().SetBodyStreamWriter(fasthttp.StreamWriter(func(w *bufio.Writer) {
-		allOrders := make(chan []entity.OrderClient)
-		go listenForClientAdminOrders(uint(uintID), allOrders)
-
 		for {
-			select {
-			case orders := <-allOrders:
-				jsonData, _ := json.Marshal(orders)
-				fmt.Fprintf(w, "data: %s\n\n", jsonData)
-				if err := w.Flush(); err != nil {
-					fmt.Printf("Error while flushing: %v. Closing http connection.\n", err)
-					return
-				}
-			case <-time.After(2 * time.Second):
-				fmt.Fprintf(w, ":keep-alive\n\n")
-				if err := w.Flush(); err != nil {
-					fmt.Printf("Error while flushing: %v. Closing http connection.\n", err)
-					return
-				}
+			time.Sleep(2 * time.Second)
+			var orders []entity.OrderClient
+			if err := database.DB.Model(&model.Order{}).
+				Select("orders.id, orders.identification_code, orders.status, restaurants.name as restaurant_name").
+				Joins("left join restaurants on restaurants.id = orders.restaurant_id").
+				Where("orders.client_id = ?", uintID).
+				Order("orders.updated_at DESC").
+				Find(&orders).Error; err != nil {
+				log.Printf("Error querying orders for client %d: %v", uintID, err)
 			}
+
+			jsonData, _ := json.Marshal(orders)
+			fmt.Fprintf(w, "data: %s\n\n", jsonData)
+			if err := w.Flush(); err != nil {
+				fmt.Printf("Error while flushing: %v. Closing http connection.\n", err)
+				return
+			}
+
 		}
 	}))
 
 	return nil
-}
-
-func listenForClientAdminOrders(clientID uint, allOrders chan<- []entity.OrderClient) {
-	for {
-		time.Sleep(2 * time.Second)
-
-		var orders []entity.OrderClient
-		if err := database.DB.Model(&model.Order{}).
-			Select("orders.id, orders.identification_code, orders.status, restaurants.name as restaurant_name").
-			Joins("left join restaurants on restaurants.id = orders.restaurant_id").
-			Where("orders.client_id = ?", clientID).
-			Order("orders.updated_at DESC").
-			Find(&orders).Error; err != nil {
-			log.Printf("Error querying orders for client %d: %v", clientID, err)
-			continue
-		}
-
-		allOrders <- orders
-	}
 }

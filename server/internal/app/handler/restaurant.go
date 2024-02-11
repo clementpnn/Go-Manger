@@ -163,48 +163,29 @@ func GetRestaurantOrder(c *fiber.Ctx) error {
 	}
 
 	c.Context().SetBodyStreamWriter(fasthttp.StreamWriter(func(w *bufio.Writer) {
-		allOrders := make(chan []entity.OrderData)
-		go listenForNewOrders(uint(id), allOrders)
-
 		for {
-			select {
-			case orders := <-allOrders:
-				jsonData, _ := json.Marshal(orders)
-				fmt.Fprintf(w, "data: %s\n\n", jsonData)
-				if err := w.Flush(); err != nil {
-					fmt.Printf("Error while flushing: %v. Closing http connection.\n", err)
-					return
-				}
-			case <-time.After(2 * time.Second):
-				fmt.Fprintf(w, ":keep-alive\n\n")
-				if err := w.Flush(); err != nil {
-					fmt.Printf("Error while flushing: %v. Closing http connection.\n", err)
-					return
-				}
+			time.Sleep(2 * time.Second)
+			var orders []entity.OrderData
+			if err := database.DB.Model(&model.Order{}).
+				Select("orders.id, orders.identification_code, orders.status, clients.name as client_name").
+				Joins("left join clients on clients.id = orders.client_id").
+				Where("orders.restaurant_id = ?", id).
+				Order("orders.updated_at DESC").
+				Find(&orders).Error; err != nil {
+				log.Printf("Error querying orders for restaurant %d: %v", int(id), err)
+
+			}
+
+			jsonData, _ := json.Marshal(orders)
+			fmt.Fprintf(w, "data: %s\n\n", jsonData)
+			if err := w.Flush(); err != nil {
+				fmt.Printf("Error while flushing: %v. Closing http connection.\n", err)
+				return
 			}
 		}
 	}))
 
 	return nil
-}
-
-func listenForNewOrders(restaurantID uint, allOrders chan<- []entity.OrderData) {
-	for {
-		time.Sleep(2 * time.Second)
-
-		var orders []entity.OrderData
-		if err := database.DB.Model(&model.Order{}).
-			Select("orders.id, orders.identification_code, orders.status, clients.name as client_name").
-			Joins("left join clients on clients.id = orders.client_id").
-			Where("orders.restaurant_id = ?", restaurantID).
-			Order("orders.updated_at DESC").
-			Find(&orders).Error; err != nil {
-			log.Printf("Error querying orders for restaurant %d: %v", restaurantID, err)
-			continue
-		}
-
-		allOrders <- orders
-	}
 }
 
 func UpdateOrderRestaurant(c *fiber.Ctx) error {
