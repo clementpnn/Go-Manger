@@ -16,7 +16,7 @@ export default function AdminClientInfo() {
     const source = new EventSource(`http://127.0.0.1:3000/api/admin/client/order/${id}?token=${localStorage.getItem("jwtToken")}`);
 
     source.onmessage = (event: MessageEvent) => {
-      setOrders((prevOrders) => [...prevOrders, JSON.parse(event.data)]);
+      setOrders(JSON.parse(event.data));
     };
 
     source.onerror = function (event: Event) {
