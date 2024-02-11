@@ -27,16 +27,17 @@ export default function UpdateRestaurantProfileForm() {
   useEffect(() => {
     if (status === "success") {
       toast(data.message);
+      navigate({ to: "/restaurant/profile" })
     }
 
     if (isError) {
       console.log(error);
     }
-  }, [status, data, isError, error]);
+  }, [status, data, isError, error, navigate]);
 
   function onSubmit(values: z.infer<typeof UpdateRestaurantProfile>) {
     mutate(values);
-    navigate({ to: "/restaurant/profile" })
+
     form.reset();
   }
 

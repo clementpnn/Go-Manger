@@ -27,16 +27,17 @@ export default function UpdateAdminProfileForm() {
   useEffect(() => {
     if (status === "success") {
       toast(data.message);
+      navigate({ to: "/admin/profile" })
     }
 
     if (isError) {
       console.log(error);
     }
-  }, [status, data, isError, error]);
+  }, [status, data, isError, error, navigate]);
 
   function onSubmit(values: z.infer<typeof UpdateAdminProfile>) {
     mutate(values);
-    navigate({ to: "/admin/profile" })
+
     form.reset();
   }
 

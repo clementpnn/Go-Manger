@@ -27,16 +27,17 @@ export default function UpdateClientProfileForm() {
   useEffect(() => {
     if (status === "success") {
       toast(data.message);
+      navigate({ to: "/client/profile" })
     }
 
     if (isError) {
       console.log(error);
     }
-  }, [status, data, isError, error]);
+  }, [status, data, isError, error, navigate]);
 
   function onSubmit(values: z.infer<typeof UpdateClientProfile>) {
     mutate(values);
-    navigate({ to: "/client/profile" })
+
     form.reset();
   }
 
