@@ -100,8 +100,8 @@ export default function Restaurant() {
                     {items.map((item: any) => (
                       <div key={item.id} className="p-6 flex flex-col gap-2 border border-neutral-3 rounded-md bg-white">
                         <h3 className="header-4 font-semibold">{item.name}</h3>
-                        <p className="text-gray-500">{item.description}</p>
-                        <p className="text-gray-700 font-bold">{item.price} €</p>
+                        <p className="body-sm text-gray-500">{item.description}</p>
+                        <p className="body text-gray-700 font-bold">{item.price} €</p>
                         {isAuthorized &&
                           (item.available ? (
                             <div className="flex items-center">
