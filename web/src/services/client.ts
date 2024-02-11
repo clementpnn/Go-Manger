@@ -20,3 +20,7 @@ export function DeleteClientService(): Promise<ApiRequest> {
 export function AddOrderClientService({ id, orderItems }: { id: string, orderItems: { menuItemId: number; quantity: number; }[] }): Promise<ApiRequest> {
   return KyInstancePrivate.post(`client/order/${Number(id)}`, { json: { orderItems } }).json()
 }
+
+export function GetOrderInfoClientService(id: number): Promise<OrderInfo> {
+  return KyInstancePrivate.get(`client/order/${id}`).json()
+}
