@@ -12,6 +12,9 @@ export default function NavbarRestaurateur() {
         <Link to="/restaurant/order">
           <Button variant={"link"}>Commandes</Button>
         </Link>
+        <Link to="/restaurant/menu">
+          <Button variant={"link"}>Menu</Button>
+        </Link>
         <Link to="/restaurant/profile">
           <Button variant={"link"}>Restaurant</Button>
         </Link>

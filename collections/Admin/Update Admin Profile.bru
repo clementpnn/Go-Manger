@@ -1,11 +1,11 @@
 meta {
-  name: Update Menu Item
+  name: Update Admin Profile
   type: http
-  seq: 5
+  seq: 9
 }
 
 put {
-  url: {{baseUrl}}/restaurant/menu/1
+  url: {{baseUrl}}/admin/profile
   body: json
   auth: bearer
 }
@@ -16,7 +16,6 @@ auth:bearer {
 
 body:json {
   {
-    "name": "test",
-    "price": 5.50
+    "name": "vert"
   }
 }

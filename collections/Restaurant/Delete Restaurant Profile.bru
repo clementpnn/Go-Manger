@@ -1,11 +1,11 @@
 meta {
-  name: All Clients
+  name: Delete Restaurant Profile
   type: http
-  seq: 5
+  seq: 2
 }
 
-get {
-  url: {{baseUrl}}/admin/client
+delete {
+  url: {{baseUrl}}/restaurant/me
   body: none
   auth: bearer
 }
