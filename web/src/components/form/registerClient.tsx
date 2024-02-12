@@ -16,7 +16,7 @@ import { Link } from "@tanstack/react-router";
 import { useNavigate } from "@tanstack/react-router";
 
 export default function RegisterClientForm() {
-  const navigate = useNavigate({ from: "/registerClient" })
+  const navigate = useNavigate({ from: "/registerClient" });
   const form = useForm<z.infer<typeof registerClient>>({
     resolver: zodResolver(registerClient),
     mode: "onSubmit",
@@ -29,7 +29,7 @@ export default function RegisterClientForm() {
     if (status === "success") {
       localStorage.setItem("jwtToken", data.data);
       toast(data.message);
-      navigate({ to: "/" })
+      navigate({ to: "/" });
     }
 
     if (isError) {
@@ -84,7 +84,7 @@ export default function RegisterClientForm() {
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} type="password" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

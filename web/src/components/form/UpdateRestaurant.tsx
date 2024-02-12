@@ -17,7 +17,7 @@ import { useNavigate } from "@tanstack/react-router";
 
 export default function UpdateRestaurantForm() {
   const { id } = useParams({ from: "/restaurant/$id" });
-  const navigate = useNavigate({ from:"/admin/restaurant/update/$id" })
+  const navigate = useNavigate({ from: "/admin/restaurant/update/$id" });
   const form = useForm<z.infer<typeof UpdateRestaurantProfile>>({
     resolver: zodResolver(UpdateRestaurantProfile),
     mode: "onSubmit",
@@ -29,7 +29,7 @@ export default function UpdateRestaurantForm() {
   useEffect(() => {
     if (status === "success") {
       toast(data.message);
-      navigate({ to: "/admin/restaurant" })
+      navigate({ to: "/admin/restaurant" });
     }
 
     if (isError) {
@@ -83,7 +83,7 @@ export default function UpdateRestaurantForm() {
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} type="password" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -123,9 +123,7 @@ export default function UpdateRestaurantForm() {
               )}
             />
           </div>
-          <Button type="submit">
-            {status === "pending" ? <Spinner /> : "Changer"}
-          </Button>
+          <Button type="submit">{status === "pending" ? <Spinner /> : "Changer"}</Button>
         </form>
       </Form>
     </div>
