@@ -11,8 +11,8 @@ func SeedAdmins() {
 
 	if count == 0 {
 		admins := []model.Admin{
-			{Name: "Admin1", Email: "admin1@example.com", Password: "password1"},
-			{Name: "Admin2", Email: "admin2@example.com", Password: "password2"},
+			{Name: "Vico", Email: "admin1@example.com", Password: "password1"},
+			{Name: "Vito", Email: "admin2@example.com", Password: "password2"},
 		}
 
 		for _, admin := range admins {

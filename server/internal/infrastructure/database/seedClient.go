@@ -11,8 +11,8 @@ func SeedClients() {
 
 	if count == 0 {
 		clients := []model.Client{
-			{Name: "Client1", Email: "client1@example.com", Password: "password1"},
-			{Name: "Client2", Email: "client2@example.com", Password: "password2"},
+			{Name: "Adibas", Email: "client1@example.com", Password: "password1"},
+			{Name: "Now Balance", Email: "client2@example.com", Password: "password2"},
 		}
 
 		for _, client := range clients {
