@@ -36,7 +36,7 @@ DB_NAME="postgres"
 
 SECRET="secret"
 
-SMTP_EMAIL="your_email@example.com"
+SMTP_EMAIL="your_email@gmail.com"
 SMTP_EMAIL_PASSWORD="your_password"
 ```
 
