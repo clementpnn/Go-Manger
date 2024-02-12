@@ -36,7 +36,6 @@ SECRET="secret"
 
 SMTP_EMAIL="your_email@example.com"
 SMTP_EMAIL_PASSWORD="your_password"
-SMTP_PORT="587"
 ```
 
 To test they routes without going to the front, open the collections file with [Bruno](https://www.usebruno.com/), and configure env (this does not include SSE routes and routes that upload an image):
@@ -87,11 +86,36 @@ Base URL: [http://localhost:8080](http://localhost:8080)
 
 `/` Shows the list of all restaurants<br>
 `/restaurant/id` Displays a restaurant and its menu, you can also order if you are authenticated as a customer<br>
-`/signin` Allows users to login or register, restaurants to login and admins to login<br>
+`/signin` Allows users to login or register, restaurants to login and admins to login
 
 **Customer Routes:**
 
 `/client/order` Displays the details of an order placed by the customer, it is possible to click on an order to see its details<br>
-`/client/order/id` Displays the details of an order made by the customer<br>
-`client/profile` Allows you to see the customer's information, it is also possible to update your profile, log out or delete your account<br>
-`client/profile/update` Allows you to update the desired information<br>
+`/client/order/id` Displays the details of an order<br>
+`/client/profile` Allows you to see the customer's information, it is also possible to update your profile, log out or delete your account<br>
+`/client/profile/update` Allows you to update the desired information
+
+**Restaurant Routes:**
+
+`/restaurant/order` Shows all orders, allows you to see the details or indicate if "accepted" or "refused", if accept then you can indicate that the order is "finish" then that the order is "recovered"<br>
+`/restaurant/order/id` Displays the details of an order<br>
+`/restaurant/menu` Shows the list of all menu items and the possibility of adding, update and delete item<br>
+`/restaurant/menu/add` Created menu item<br>
+`restaurant/update/id` Allows you to update the desired information for item<br>
+`restaurant/profile` Allows you to see the restaurant's information, it is also possible to update your profile, log out or delete your account<br>
+`restaurant/profile/update` Allows you to update the desired information
+
+**Admin Routes:**
+
+`/admin` Shows all orders, allows you to see the details or indicate if "accepted" or "refused", if accept then you can indicate that the order is "finish" then that the order is "recovered"<br>
+`/admin/id` Displays the details of an order<br>
+`/admin/restaurant` Shows the list of all restaurants and the possibility of adding a restaurant<br>
+`/admin/restaurant/add` Adding a restaurant<br>
+`/admin/restaurant/id` Displays the details of an order with menu, update and delete button<br>
+`/admin/restaurant/id` Allows you to update the desired information<br>
+`/admin/clients` Shows the list of all customers<br>
+`/admin/user/id` Allows you to see the customer's information and his orders, it is also possible to update or delete account<br>
+`/admin/user/update/id` Allows to update the customer<br>
+`/admin/registerAdmin` Created admin account<br>
+`/admin/profile` Allows you to see the admin's information, it is also possible to update your profile or log out your account<br>
+`/admin/profile/update` Allows you to update the desired information for your account
