@@ -1,3 +1,5 @@
+<img alt="Home Page" src="./assets/home.png">
+
 <h1 align="center">GO Manger</h1>
 <p align="center">
   School Project
