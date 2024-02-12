@@ -31,7 +31,7 @@ export default function LoginForm({ type }: { type: "client" | "restaurant" | "a
       if (type === "restaurant") {
         navigate({ to: `/${type}/order` });
       } else if (type === "client") {
-        navigate({ to: "/" })
+        navigate({ to: "/" });
       } else {
         navigate({ to: `/${type}` });
       }
@@ -78,7 +78,7 @@ export default function LoginForm({ type }: { type: "client" | "restaurant" | "a
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input {...field} placeholder="Entrez votre mot de passe" />
+                    <Input {...field} placeholder="Entrez votre mot de passe" type="password" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
